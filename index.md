@@ -7,7 +7,7 @@ title: Home
 
 <ul>
   {% for page in site.pages %}
-    {% if page.path contains 'writeups/' %}
+    {% if page.path and page.path contains 'writeups/' %}
       <li><a href="{{ page.url }}">{{ page.title }}</a></li>
     {% endif %}
   {% endfor %}
