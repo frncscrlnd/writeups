@@ -6,3 +6,5 @@ permalink: pretty
 collections:
   tryhackme:
     output: true
+    directory: writeups/tryhackme
+

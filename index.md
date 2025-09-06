@@ -11,9 +11,4 @@ title: Home
   {% endfor %}
 </ul>
 
-<h1>Debug: contenuto della collezione</h1>
-<ul>
-  {% for page in site.tryhackme %}
-    <li>{{ page.path }} — {{ page.title }}</li>
-  {% endfor %}
-</ul>
+
