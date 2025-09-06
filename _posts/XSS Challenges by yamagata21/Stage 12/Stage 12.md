@@ -1,5 +1,5 @@
 ---
-Layout: page
-Title: 12
-Permalink: /xss21/12
+layout: page
+title: 12
+permalink: /xss21/12
 ---

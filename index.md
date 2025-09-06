@@ -3,12 +3,10 @@ layout: default
 title: Home
 ---
 
-# I miei Writeups
+# Walkthroughs for thm/htb rooms, writeups and challenges 
 
 <ul>
-  {% for page in site.pages %}
-    {% if page.path and page.path contains 'writeups/' %}
-      <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-    {% endif %}
+  {% for page in site.tryhackme %}
+    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
   {% endfor %}
 </ul>

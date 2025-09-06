@@ -1,7 +1,7 @@
 ---
-Layout: page
-Title: 8
-Permalink: /xss21/8
+layout: page
+title: 8
+permalink: /xss21/8
 ---
 https://xss-quiz.int21h.jp/stage008.php
 **What you have to do:**  

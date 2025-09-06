@@ -1,4 +1,8 @@
-title: Writeups
+title: frncscrlnd's writeups
 theme: minima
 markdown: kramdown
 permalink: pretty
+
+collections:
+  tryhackme:
+    output: true
