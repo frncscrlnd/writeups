@@ -1,5 +1,6 @@
 title: frncscrlnd's writeups
 markdown: kramdown
+theme: minima
 permalink: pretty
 
 collections:
@@ -9,15 +10,3 @@ collections:
   yamagata_xss:
     output: true
     permalink: /xss21/:path/
-
-remote_theme: abhinavs/moonwalk
-
-moonwalk:
-  dark_mode: true
-  show_description: true
-  show_post_excerpts: true
-
-plugins:
-  - jekyll-remote-theme
-  - jekyll-feed
-  - jekyll-seo-tag
