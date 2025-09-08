@@ -22,7 +22,9 @@ ul li {
 
 <ul>
   {% for page in site.tryhackme %}
-    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+    <li>
+      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+    </li>
   {% endfor %}
 </ul>
 
