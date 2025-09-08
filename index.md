@@ -30,9 +30,11 @@ ul li {
 <ul>
   {% assign sorted_pages = site.yamagata_xss | sort %}
   {% for page in sorted_pages %}
-    {% assign page_number = page.title | split: " " | last | plus: 0 %}
-    <li data-order="{{ page_number }}">
-      <a href="{{ page.url }}">{{ page.title }}</a>
-    </li>
+    {% if page.title contains "Stage" %}
+      {% assign page_number = page.title | split: " " | last | plus: 0 %}
+      <li data-order="{{ page_number }}">
+        <a href="{{ page.url }}">{{ page.title }}</a>
+      </li>
+    {% endif %}
   {% endfor %}
 </ul>
