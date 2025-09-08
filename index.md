@@ -10,12 +10,13 @@ ul {
 }
 
 ul li {
-  display: list-item; /* assicura che i li siano blocchi */
+  display: list-item; 
   margin-bottom: 5px;
 }
 </style>
 
-# Walkthroughs for thm/htb rooms, writeups and challenges 
+# Stuck on a challenge/room/CTF?
+<br>
 
 ## Walkthroughs for TryHackMe
 

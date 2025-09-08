@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 2
-permalink: /xss21/2
+permalink: writeups/xss21/2
 ---
 ## Stage 2
 https://xss-quiz.int21h.jp/stage2.php
