@@ -25,7 +25,7 @@ ul li {
   {% endfor %}
 </ul>
 
-## Walkthroughs for yamagata21' XSS challenges
+## Walkthroughs for XSS challenges (by yamagata21)
 
 {% assign sorted_pages = site.yamagata_xss | sort %}
 {% for page in sorted_pages %}
