@@ -6,10 +6,10 @@ permalink: pretty
 collections:
   tryhackme:
     output: true
-    permalink: writeups/tryhackme/:path/
+    permalink: writeups/tryhackme/:title/
   yamagata_xss:
     output: true
-    permalink: writeups/xss21/:path/
+    permalink: writeups/xss21/:title/
 
 include:
   - _tryhackme/images/**/*
