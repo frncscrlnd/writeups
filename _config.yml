@@ -6,5 +6,8 @@ permalink: pretty
 collections:
   tryhackme:
     output: true
-
+    permalink: /tryhackme/:path/
+  yamagata_xss:
+    output: true
+    permalink: /xss21/:path/
 
