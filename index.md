@@ -28,13 +28,16 @@ ul li {
 ## Walkthroughs for XSS challenges (by yamagata21)
 
 <ul>
-  {% assign sorted_pages = site.yamagata_xss | sort %}
+  {% assign sorted_pages = site.yamagata_xss | sort: "title" %}
+  {% assign sorted_pages = sorted_pages | sort: "page_number" %}
   {% for page in sorted_pages %}
-    {% if page.title == page.title | plus: 0 %}
-      <li data-order="{{ page.title }}">
+    {% assign page_number = page.title | plus: 0 %}
+    {% if page_number == page_number %} 
+      <li data-order="{{ page_number }}">
         <a href="{{ page.url }}">{{ page.title }}</a>
       </li>
     {% endif %}
   {% endfor %}
 </ul>
+
 
