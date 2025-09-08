@@ -30,11 +30,11 @@ ul li {
 <ul>
   {% assign sorted_pages = site.yamagata_xss | sort %}
   {% for page in sorted_pages %}
-    {% assign page_number = page.title | plus: 0 %}
-    {% if page_number == page_number %}  <!-- Verifica che il titolo sia un numero -->
-      <li data-order="{{ page_number }}">
+    {% if page.title == page.title | plus: 0 %}
+      <li data-order="{{ page.title }}">
         <a href="{{ page.url }}">{{ page.title }}</a>
       </li>
     {% endif %}
   {% endfor %}
 </ul>
+
