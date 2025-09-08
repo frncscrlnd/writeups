@@ -18,7 +18,7 @@ ul li {
 # Stuck on a challenge/room/CTF?
 <br>
 
-## Walkthroughs for TryHackMe
+## TryHackMe
 
 <ul>
   {% for page in site.tryhackme %}
@@ -26,7 +26,7 @@ ul li {
   {% endfor %}
 </ul>
 
-## Walkthroughs for XSS challenges (by yamagata21)
+## XSS challenges (by yamagata21)
 
 <ul>
   {% assign sorted_pages = site.yamagata_xss | sort: "title" %}
