@@ -6,10 +6,22 @@ permalink: pretty
 collections:
   tryhackme:
     output: true
-    permalink: "writeups/tryhackme/:title/"
+    permalink: /writeups/tryhackme/:title/
   yamagata_xss:
     output: true
-    permalink: "writeups/xss21/:title/"
+    permalink: /writeups/xss/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: tryhackme
+    values:
+      layout: page
+  - scope:
+      path: ""
+      type: yamagata_xss
+    values:
+      layout: page
 
 include:
   - _tryhackme/images/**/*

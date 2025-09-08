@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 1
-permalink: writeups/xss21/1
+permalink: /writeups/xss21/1
 ---
 The XSS Challenges by Yamagata21 constitute one of the pioneering and educational XSS (Cross‑Site Scripting) challenge sets available, dating back to 2008. Comprised of 20 successive stages (though a few later ones may only function properly in legacy environments like older versions of Internet Explorer), the series begins with straightforward reflected XSS injections using `alert(document.domain)` and gradually progresses towards less intuitive scenarios.
 
