@@ -28,7 +28,7 @@ ul li {
 # Walkthroughs for yamagata21' XSS challenges
 
 <ul>
-  {% for page in site.tryhackme %}
+  {% for page in site.yamagata_xss %}
     <li><a href="{{ page.url }}">{{ page.title }}</a></li>
   {% endfor %}
 </ul>
