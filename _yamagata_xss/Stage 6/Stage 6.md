@@ -1,7 +1,6 @@
 ---
 layout: page
 title: 6
-permalink: /writeups/xss21/6
 ---
 https://xss-quiz.int21h.jp/stage-no6.php
 **What you have to do:**  

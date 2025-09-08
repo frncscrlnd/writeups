@@ -3,26 +3,13 @@ markdown: kramdown
 theme: jekyll-theme-midnight
 permalink: pretty
 
+baseurl: "/writeups"   
+url: "https://tuo-username.github.io" 
+
 collections:
   tryhackme:
     output: true
-    permalink: /writeups/tryhackme/:title/
+    permalink: /tryhackme/:title/
   yamagata_xss:
     output: true
-    permalink: /writeups/xss/:title/
-
-defaults:
-  - scope:
-      path: ""
-      type: tryhackme
-    values:
-      layout: page
-  - scope:
-      path: ""
-      type: yamagata_xss
-    values:
-      layout: page
-
-include:
-  - _tryhackme/images/**/*
-  - _xss_challenges/images/**/*
+    permalink: /xss/:title/

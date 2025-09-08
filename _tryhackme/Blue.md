@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Blue
-permalink: /writeups/tryhackme/Blue/
 ---
 "Blue" is an entry-level TryHackMe room, designed to introduce users to basic Windows exploitation techniques. The main objective is to gain root access by exploiting a known vulnerability in the **SMB (Server Message Block)** protocol. Specifically, the target machine is vulnerable to [EternalBlue](https://it.wikipedia.org/wiki/EternalBlue) ([CVE-2017-0144](https://nvd.nist.gov/vuln/detail/CVE-2017-0144)), a critical flaw in Microsoft’s SMBv1 implementation.
 

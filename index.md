@@ -35,7 +35,7 @@ ul li {
     {% assign page_number = page.title | plus: 0 %}
     {% if page_number == page_number %} 
       <li data-order="{{ page_number }}">
-        <a href="{{ page.url }}">{{ page.title }}</a>
+        <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
       </li>
     {% endif %}
   {% endfor %}
