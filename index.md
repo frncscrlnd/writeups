@@ -17,7 +17,7 @@ ul li {
 
 # Walkthroughs for thm/htb rooms, writeups and challenges 
 
-# Walkthroughs for TryHackMe
+## Walkthroughs for TryHackMe
 
 <ul>
   {% for page in site.tryhackme %}
@@ -25,7 +25,7 @@ ul li {
   {% endfor %}
 </ul>
 
-# Walkthroughs for yamagata21' XSS challenges
+## Walkthroughs for yamagata21' XSS challenges
 
 <ul>
   {% for page in site.yamagata_xss %}
