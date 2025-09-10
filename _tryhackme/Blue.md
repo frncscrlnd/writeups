@@ -30,7 +30,7 @@ We can answer these questions with just one nmap scan:
 
 `nmap --script vuln [target_IP]`
 This will return all open ports (9 in total, 3 under port 1000) and all known vulnerabilities (including the EternalBlue exploit, or ms17-010).
-![nmap](images/blue/ports.png)
+![nmap]({{ site.baseurl }}/tryhackme/images/blue/ports.png)
 
 ## Gain Access
 To get through this section you'll need to install the Metasploit framework. Then:
