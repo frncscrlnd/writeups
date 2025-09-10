@@ -7,6 +7,8 @@ title: 2
 
 ## Stage 2
 https://xss-quiz.int21h.jp/stage2.php
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *close the current tag and add SCRIPT tag...*

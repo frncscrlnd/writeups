@@ -7,6 +7,8 @@ title: 6
 
 #  Stage 6
 https://xss-quiz.int21h.jp/stage-no6.php
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *event handler attributes.*

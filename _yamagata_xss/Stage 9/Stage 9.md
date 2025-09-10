@@ -7,6 +7,8 @@ title: 9
 
 # Stage 9
 https://xss-quiz.int21h.jp/stage_09.php
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *UTF-7 XSS*.

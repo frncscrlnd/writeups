@@ -9,6 +9,8 @@ The XSS Challenges by Yamagata21 constitute one of the pioneering and educationa
 
 ## Stage 1
 https://xss-quiz.int21h.jp/
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *very simple...*

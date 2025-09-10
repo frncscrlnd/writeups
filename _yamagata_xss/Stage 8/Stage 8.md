@@ -7,6 +7,8 @@ title: 8
 
 # Stage 8
 https://xss-quiz.int21h.jp/stage008.php
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *the 'javascript' scheme*.

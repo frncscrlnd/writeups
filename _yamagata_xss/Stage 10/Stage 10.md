@@ -7,6 +7,8 @@ title: 10
 
 # Satge 10
 https://xss-quiz.int21h.jp/stage00010.php
+
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *s/domain//g*
