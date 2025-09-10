@@ -3,6 +3,8 @@ layout: default
 title: 2
 ---
 [← Back to the Home page]({{ site.baseurl }}/)
+
+
 ## Stage 2
 https://xss-quiz.int21h.jp/stage2.php
 **What you have to do:**  
