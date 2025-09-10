@@ -2,6 +2,7 @@
 layout: default
 title: 3
 ---
+[← Back to the Home page]({{ site.baseurl }}/)
 https://xss-quiz.int21h.jp/stage-3.php
 **What you have to do:** 
 Inject the following JavaScript command: `alert(document.domain);`
