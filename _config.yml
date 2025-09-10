@@ -3,7 +3,7 @@ markdown: kramdown
 theme: jekyll-theme-midnight
 permalink: pretty
 
-baseurl: "/writeups"   
+baseurl: "/writeups"  
 url: "https://tuo-username.github.io" 
 
 collections:

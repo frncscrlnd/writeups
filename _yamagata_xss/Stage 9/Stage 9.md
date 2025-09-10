@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: 9
 ---
 https://xss-quiz.int21h.jp/stage_09.php
