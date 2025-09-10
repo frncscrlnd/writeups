@@ -15,6 +15,8 @@ This machine can be downloaded from [this page](https://darkstar7471.com/resourc
 - [Recon](#recon)
 - [Gain Access](#gain-access)
 - [Escalate](#escalate)
+- [Cracking](#cracking)
+- [Find flags!](#find-flags)
 
 ---
 
@@ -28,7 +30,7 @@ We can answer these questions with just one nmap scan:
 
 `nmap --script vuln [target_IP]`
 This will return all open ports (9 in total, 3 under port 1000) and all known vulnerabilities (including the EternalBlue exploit, or ms17-010).
-![nmap](images/blue/ports.png)
+![nmap](writeups/images/blue/ports.png)
 
 ## Gain Access
 To get through this section you'll need to install the Metasploit framework. Then:
@@ -93,7 +95,7 @@ You can also list all the processes with the ps command and you can migrate to o
 Find a process that runs at NT AUTHORITY\SYSTEM and copy its' PID.
 Now migrate to it with `migrate [PID]` (e.g., `migrate 2868`).
 
-Cracking
+## Cracking
 Now use the `hashdump` command.
 
 ![hashdump](\images\blue\hashdump.png)
@@ -108,7 +110,7 @@ We'll run John The Ripper on the file with:
 This will return alqfna22 as the password.
 ![john](\images\blue\john.png)
 
-Find flags!
+## Find flags!
 The first flag is located in the C:\ folder:
 
 > flag{access_the_machine}
