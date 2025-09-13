@@ -14,8 +14,3 @@ collections:
     output: true
     permalink: /xss/:title/
 
-  include:
-- _tryhackme/**/images/**/*
-- _yamagata_xss/**/images/**/*
-- _tryhackme/**/files/**/*
-- _yamagata_xss/**/files/**/*
