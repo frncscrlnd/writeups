@@ -16,5 +16,5 @@ Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *very simple...*
 
 If characters like `<`, `>`, or `&` are submitted, they are displayed exactly as entered (e.g., _"No results for **"<"**"_, when it should be _"No results for **"<"**_").  
-![first](images/1.png)
+![first]({{ site.baseurl }}/assets/images/xss21/1/1.png)
 This means that user input is not sanitized and that JavaScript code such as `<script>alert(document.domain)</script>` can be submitted and potentially executed in the user's browser.

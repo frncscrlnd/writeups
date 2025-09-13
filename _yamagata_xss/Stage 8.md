@@ -15,7 +15,9 @@ Inject the following JavaScript command: `alert(document.domain);`
 
 This page turns user input into a URL. We'll follow the hint and type a JavaScript URI like this: 
 `javascript:alert(document.domain);`:
-![[Pasted image 20250727231045.png]]
+![8.1]({{ site.baseurl }}/assets/images/xss21/8/8.1.png)
+
 An URL will now be displayed:
-![[Pasted image 20250727231118.png]]
+![8.2]({{ site.baseurl }}/assets/images/xss21/8/8.2.png)
+
 Clicking on it solves the challenge.
