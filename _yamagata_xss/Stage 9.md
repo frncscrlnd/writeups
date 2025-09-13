@@ -2,7 +2,6 @@
 layout: default
 title: 9
 ---
-[← Back to the Home page]({{ site.baseurl }}/)
 
 
 # Stage 9
