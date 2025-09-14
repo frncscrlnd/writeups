@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 6
+title: Stage 6
 ---
 
 

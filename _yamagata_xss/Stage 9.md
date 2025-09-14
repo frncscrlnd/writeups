@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 9
+title: Stage 9
 ---
 
 

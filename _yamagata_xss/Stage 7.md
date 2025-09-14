@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 7
+title: Stage 7
 ---
 https://xss-quiz.int21h.jp/stage07.php
 **What you have to do:**  
