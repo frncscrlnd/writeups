@@ -28,6 +28,8 @@ ul li {
   {% endfor %}
 </ul>
 
+---
+
 ## XSS challenges (by yamagata21)
 
 <ul>
@@ -43,4 +45,16 @@ ul li {
   {% endfor %}
 </ul>
 
+---
+
+## Bandit (OverTheWire)
+
+<ul>
+  {% assign sorted_bandit = site.bandit | sort: "title" %}
+  {% for page in sorted_bandit %}
+    <li>
+      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+    </li>
+  {% endfor %}
+</ul>
 
