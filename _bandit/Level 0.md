@@ -19,4 +19,5 @@ Syntax for ssh connections goes as follows:
 
 in our case:
 `ssh bandit0@bandit.labs.overthewire.org -p 2220`
+
 Password: `bandit0`
