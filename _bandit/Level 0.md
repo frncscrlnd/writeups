@@ -14,6 +14,7 @@ Bandit is designed to teach you by doing: you connect over SSH, inspect director
 
 To get to Level 0 you'll need to log in to the target machine (bandit.labs.overthewire.org) using ssh on port 2220. The username is bandit0 and the password is bandit0.
 Syntax for ssh connections goes as follows:
+
 `ssh` [username]@[hostname/machine ip] optional (if the port you're connecting to is different from the standard 22):[ -p [port number]]
 
 in our case:
