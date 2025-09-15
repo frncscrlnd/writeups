@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Level 1
+title: Level 0 → Level 1 
 order: 1
 ---
 
-# Level 1
+# Level 0 → Level 1
 
 Once we've logged in as we've seen in [Level 0]({{ site.baseurl }}/bandit/level-0) we can see all files and directories inside a directory with the `ls` command.
 
