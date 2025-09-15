@@ -8,8 +8,7 @@ Welcome to this series of write‑ups covering the Bandit challenges from OverTh
 
 Bandit is designed to teach you by doing: you connect over SSH, inspect directories, examine hidden files, work with permissions, piping, and other tools of the trade. Each level supplies new puzzles that gradually build on what you’ve already experienced, reinforcing your knowledge through hands‑on practice.
 
-> [!TIP]
-> Make a list of all passwords as they won't be saved anywhere else
+> Tip: Make a list of all passwords as they won't be saved anywhere else
 
 # Level 0
 
