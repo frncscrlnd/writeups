@@ -50,11 +50,15 @@ ul li {
 ## Bandit (OverTheWire)
 
 <ul>
-  {% assign sorted_bandit = site.bandit | sort: "title" %}
-  {% for page in sorted_bandit %}
-    <li>
+
+<ul>
+  {% assign sorted_bandit_pages = site.bandit | sort: "title" %}
+  {% for page in sorted_bandit_pages %}
+    {% assign level_number = page.title | remove: 'Level ' | plus: 0 %}
+    <li data-order="{{ level_number }}">
       <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
     </li>
   {% endfor %}
+</ul>
 </ul>
 
