@@ -33,19 +33,19 @@ ul li {
 ## XSS challenges (by yamagata21)
 
 <ul>
-  {% assign pages_with_numbers = "" | split: "" %}
+  {% assign temp_array = "" | split: "," %}
   
   {% for page in site.yamagata_xss %}
     {% assign page_number = page.title | remove: "Stage " | plus: 0 %}
-    {% assign page_with_number = page %}
-    {% assign page_with_number.order = page_number %}
-    {% assign pages_with_numbers = pages_with_numbers | push: page_with_number %}
+    {% assign temp_item = page | hash: "order", page_number %}
+    {% assign temp_array = temp_array | push: temp_item %}
   {% endfor %}
   
-  {% assign sorted_pages = pages_with_numbers | sort: "order" %}
-  {% for page in sorted_pages %}
+  {% assign sorted_pages = temp_array | sort: "order" %}
+  
+  {% for item in sorted_pages %}
     <li>
-      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+      <a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a>
     </li>
   {% endfor %}
 </ul>
