@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Stage 8
+order: 8
 ---
 
 

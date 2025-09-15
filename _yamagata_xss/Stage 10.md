@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Stage 10
+order: 10
 ---
 
 # Stage 10

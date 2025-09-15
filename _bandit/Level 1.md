@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Level 1
+order: 1
 ---
 
 # Level 1

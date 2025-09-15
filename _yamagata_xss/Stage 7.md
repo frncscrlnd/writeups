@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Stage 7
+order: 7
 ---
 https://xss-quiz.int21h.jp/stage07.php
 **What you have to do:**  

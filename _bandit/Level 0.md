@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Level 0
+order: 0
 ---
 
 Welcome to this series of write‑ups covering the Bandit challenges from OverTheWire — a great playground for anyone wanting to sharpen their command line skills, explore Linux fundamentals, and deepen their understanding of basic security concepts.
