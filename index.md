@@ -33,15 +33,20 @@ ul li {
 ## XSS challenges (by yamagata21)
 
 <ul>
-  {% assign sorted_pages = site.yamagata_xss | sort: "title" %}
-  {% assign sorted_pages = sorted_pages | sort: "page_number" %}
+  {% assign pages_with_numbers = "" | split: "" %}
+  
+  {% for page in site.yamagata_xss %}
+    {% assign page_number = page.title | remove: "Stage " | plus: 0 %}
+    {% assign page_with_number = page %}
+    {% assign page_with_number.order = page_number %}
+    {% assign pages_with_numbers = pages_with_numbers | push: page_with_number %}
+  {% endfor %}
+  
+  {% assign sorted_pages = pages_with_numbers | sort: "order" %}
   {% for page in sorted_pages %}
-    {% assign page_number = page.title | plus: 0 %}
-    {% if page_number == page_number %} 
-      <li data-order="{{ page_number }}">
-        <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
-      </li>
-    {% endif %}
+    <li>
+      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+    </li>
   {% endfor %}
 </ul>
 
@@ -50,15 +55,21 @@ ul li {
 ## Bandit (OverTheWire)
 
 <ul>
-
-<ul>
-  {% assign sorted_bandit_pages = site.bandit | sort: "title" %}
-  {% for page in sorted_bandit_pages %}
+  {% assign pages_array = site.bandit | sort: "title" %}
+  {% assign sorted_pages = "" | split: "" %}
+  
+  {% for page in pages_array %}
     {% assign level_number = page.title | remove: 'Level ' | plus: 0 %}
-    <li data-order="{{ level_number }}">
+    {% assign page_with_order = page %}
+    {% assign page_with_order.order = level_number %}
+    {% assign sorted_pages = sorted_pages | push: page_with_order %}
+  {% endfor %}
+  
+  {% assign sorted_pages = sorted_pages | sort: "order" %}
+  {% for page in sorted_pages %}
+    <li>
       <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
     </li>
   {% endfor %}
-</ul>
 </ul>
 
