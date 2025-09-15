@@ -41,7 +41,7 @@ ul li {
     </ul>
 </details>
 
-## ## Bandit (OverTheWire)
+## Bandit (OverTheWire)
 <details open>
   <summary>> show levels</summary>
   <ul>
