@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Level 4 → 5
+title: Level 4 → Level 5
 order: 5
 ---
 
