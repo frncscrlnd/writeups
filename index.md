@@ -20,7 +20,7 @@ ul li {
 
 ## TryHackMe
 <details>
-  <summary>> show rooms</summary>
+  <summary>> show/hide rooms</summary>
   <ul>
   {% for page in site.tryhackme %}
     <li>
@@ -32,7 +32,7 @@ ul li {
 
 ## XSS challenges (by yamagata21)
 <details open>
-  <summary>> show stages</summary>
+  <summary>> show/hide stages</summary>
     <ul>
       {% assign sorted_xss = site.yamagata_xss | sort: "order" %}
       {% for page in sorted_xss %}
@@ -43,7 +43,7 @@ ul li {
 
 ## Bandit (OverTheWire)
 <details open>
-  <summary>> show levels</summary>
+  <summary>> show/hide levels</summary>
   <ul>
     {% assign sorted_bandit = site.bandit | sort: "order" %}
     {% for page in sorted_bandit %}
