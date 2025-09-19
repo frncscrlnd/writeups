@@ -15,7 +15,7 @@ After `cd`ing into inhere we can see that ther's multiple directories. Instead o
 
 We can do this with this command: `find inhere -type f -size 1033c`
 
-This will only return files that are 1033bytes in size. in our case: 
+This will only return files (`-type f`) that are 1033bytes (`-size 1033c`) in size. in our case: 
 
 `inhere/maybehere07/.file2`
 
