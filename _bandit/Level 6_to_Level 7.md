@@ -33,7 +33,7 @@ Let's run
 `cat ./var/lib/dpkg/info/bandit7.password`
 
 
-And we'll get the password for the nex level:
+And we'll get the password for the next level:
 
-`morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj`
+> `morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj`
 
