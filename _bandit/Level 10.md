@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Level 10
+title: Level  → Level 10
 order: 10
 ---
 
-# Level 10
+# Level  → Level 10
