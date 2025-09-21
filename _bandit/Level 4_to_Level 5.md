@@ -11,7 +11,7 @@ After logging in with
 
 Password: `2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ`
 
-The `ls` command shows the inhere folder, which is the target of our research. Moving into this directory with `cd` and by showing its' content with `ls` again, we'll see that there are 9 files in here:
+that the `ls` command shows the inhere folder, which is the target of our research. Moving into this directory with `cd` and by showing its' content with `ls` again, we'll see that there are 9 files in here:
 
 `-file00  -file01  -file02  -file03  -file04  -file05  -file06  -file07  -file08  -file09`
 

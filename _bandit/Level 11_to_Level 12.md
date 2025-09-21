@@ -11,7 +11,7 @@ After logging in with
 
 Password: `dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr`
 
-By running `ls` we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, this text file is ROT13 encoded, a type of encoding based on the [Ceasar cipher](https://en.wikipedia.org/wiki/Caesar_cipher) that has a key value of 13. 
+and running `ls` we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, this text file is ROT13 encoded, a type of encoding based on the [Ceasar cipher](https://en.wikipedia.org/wiki/Caesar_cipher) that has a key value of 13. 
 We'll need to use `tr` to decode this string. 
 
 `tr` basically replaces characters in a text file by mapping characters from one charset to another (e.g. `tr 'a-z' 'A-Z'`turns the text to uppercase).

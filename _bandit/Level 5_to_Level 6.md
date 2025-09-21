@@ -11,7 +11,7 @@ After logging in with
 
 Password: `4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw`
 
-After `cd`ing into inhere we can see that ther's multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find: 
+and after `cd`ing into inhere we can see that ther's multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find: 
 
 - human-readable; 
 - 1033 bytes in size;

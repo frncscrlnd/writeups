@@ -11,7 +11,7 @@ After logging in with
 
 Password: `morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj`
 
-By using `ls` we can see that in the /bandit7 directory there's a `data.txt` file. Running `cat` on this file returns a wall of text. We can use grep to navigate through this text as we know e have to search for the word "millionth":
+and using `ls` we can see that in the /bandit7 directory there's a `data.txt` file. Running `cat` on this file returns a wall of text. We can use grep to navigate through this text as we know e have to search for the word "millionth":
 
 `grep millionth data.txt`
 

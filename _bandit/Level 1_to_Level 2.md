@@ -11,7 +11,7 @@ After logging in with
 
 Password: `ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If`
 
-We'll see that typing the `ls` command lists a "-" file. Since the `-` character is not accepted as an argument for cat, we'll nee dot use the whole filename: `./-`
+we'll see that typing the `ls` command lists a "-" file. Since the `-` character is not accepted as an argument for cat, we'll nee dot use the whole filename: `./-`
 
 By typing `cat ./-` we can unlock the password for the next level:
 

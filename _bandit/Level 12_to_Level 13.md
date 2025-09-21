@@ -11,7 +11,7 @@ After logging in with
 
 Password: `7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4`
 
-By running `ls` we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a [hexdump](https://en.wikipedia.org/wiki/Hex_dump) of a file that's been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We'll go with the first option: lets `cd` to `/tmp` (`cd /tmp`) and make a temporary directory with `mktemp -d`, which will return the path to the directory (e.g `/tmp/tmp.nNrWI3pdyH`). 
+and running `ls` we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a [hexdump](https://en.wikipedia.org/wiki/Hex_dump) of a file that's been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We'll go with the first option: lets `cd` to `/tmp` (`cd /tmp`) and make a temporary directory with `mktemp -d`, which will return the path to the directory (e.g `/tmp/tmp.nNrWI3pdyH`). 
 
 We'll then copy the content of `data.txt` to this directory with `cp ~/data.txt .` (`~` stands for the `home` directory and `.` is the directory you want to copy the file to). We can also rename it with `mv data.txt hexdata.txt` (`mv` stands for move; the second field is the new file name). 
 

@@ -11,7 +11,7 @@ After logging in with
 
 Password: `263JGJPfgU6LtdEvgfWU1XP5yac29mFx`
 
-The `ls` command shows a `--spaces in this filename--` file. Since we know from [Level 2]({{ site.baseurl }}/bandit/level-1_to_level-2), every file whose name contains a `-` must be passed as an argument only by its' full filename:
+that the `ls` command shows a `--spaces in this filename--` file. Since we know from [Level 2]({{ site.baseurl }}/bandit/level-1_to_level-2), every file whose name contains a `-` must be passed as an argument only by its' full filename:
 
 `cat ./--spaces in this filename--` should do the job then, right?
 

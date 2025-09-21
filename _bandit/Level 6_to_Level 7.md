@@ -11,7 +11,7 @@ After logging in with
 
 Password: `HWasnPhtq9AVKe0dmk45nxy20cvUa6EG`
 
-We see, by running -ls, that no file is here. We'll have to look at the machine's root (`/`) directory with `cd /`. Just like [Level 5 → Level 6]({{ site.baseurl }}/bandit/level-5_to_level-6) we have some info about our target file: 
+we see, by running -ls, that no file is here. We'll have to look at the machine's root (`/`) directory with `cd /`. Just like [Level 5 → Level 6]({{ site.baseurl }}/bandit/level-5_to_level-6) we have some info about our target file: 
 
 - it's owned by user bandit7;
 - it's owned by group bandit6;
