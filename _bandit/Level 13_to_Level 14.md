@@ -21,4 +21,4 @@ Then we just need to follow the instruction given by the game adn read the conte
 
 This will give us the password for the next level:
 
-`MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS`
+> `MU4VWeTyJk8ROof1qqmcBPaLh7lDCPvS`
