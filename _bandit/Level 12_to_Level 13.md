@@ -7,7 +7,7 @@ order: 13
 # Level Level 12 → Level 13
 After logging in with 
 
-`ssh bandit11@bandit.labs.overthewire.org -p 2220`
+`ssh bandit12@bandit.labs.overthewire.org -p 2220`
 
 Password: `7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4`
 

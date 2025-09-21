@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Level 8
+title: Level 7 → Level 8
 order: 8
 ---
 
