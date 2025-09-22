@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Level 15
+title: Level 14 → Level 15
 order: 15
 ---
 
-# Level 15
+# Level 14 → Level 15
 After logging in with 
 
 `ssh bandit14@bandit.labs.overthewire.org -p 2220`
