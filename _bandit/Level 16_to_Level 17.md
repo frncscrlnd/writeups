@@ -106,4 +106,4 @@ Let's connect copy the key to a file: like we did in [Level 12 → Level 13]({{ 
 
 Then we can login into the next level with:
 
-> `ssh -i pvt16.key bandit17@localhost`
+> `ssh -i sshkey.private bandit17@localhost`
