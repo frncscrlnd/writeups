@@ -102,8 +102,12 @@ and send our password. This will return the provate key for our next level:
 > -----END RSA PRIVATE KEY-----
 > ```
 
-Let's connect copy the key to a file: like we did in [Level 12 → Level 13]({{ site.baseurl }}/bandit/level-12_to_level-13), let's `cd` into `/tmp` and make a temporary directory with `mktemp -d`; then move into the new directory with cd and create a file by running `touch sshkey.private` (or whatever name you want to give to the file). Use nano to edit the file by running `nano sshkey.private`, then paste the content of the key. 
+Let's connect copy the key to a file: like we did in [Level 12 → Level 13]({{ site.baseurl }}/bandit/level-12_to_level-13), let's `cd` into `/tmp` and make a temporary directory with `mktemp -d`; then move into the new directory with cd and create a file by running `touch sshkey.private` (or whatever name you want to give to the file). Use nano to edit the file by running `nano sshkey.private`, then paste the content of the key. The we need to change the permissions for this file, as a private key can only be used by one user: 
+
+`chmod 700 sshkey.private`
+
+This means that the user has read, write and execute (rwx) permissions, while the group ond other users have no permissions.
 
 Then we can login into the next level with:
 
-> `ssh -i sshkey.private bandit17@localhost`
+> `ssh -p 2220 -i sshkey.private bandit17@localhost`
