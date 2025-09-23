@@ -10,22 +10,22 @@ After logging in with the private key ([Level 16 → Level 17]({{ site.baseurl }
 
 To visualiza the differences between two files we ca use the `diff` command:
 
-`diff passswords.new passwords.old`
+`diff passwords.old passswords.new`
 
 This will be the output:
 
 ```
 bandit17@bandit:~$ diff passwords.new passwords.old
 42c42
-< x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
+< gvE89l3AhAhg3Mi9G2990zGnn42c8v20
 ---
-> gvE89l3AhAhg3Mi9G2990zGnn42c8v20
+> x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO
 ```
 
 This means that on line 42 this line
 
-`x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO`
+`gvE89l3AhAhg3Mi9G2990zGnn42c8v20`
 
 was replaced with this one, which is our new password:
 
-> `gvE89l3AhAhg3Mi9G2990zGnn42c8v20`
+> `x2gLTTjFwMOhQ8oWNbMN362QKxfRqGlO`
