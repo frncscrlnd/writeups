@@ -11,7 +11,7 @@ After logging in with
 
 Password: `0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO`
 
-by using `ls` we become aware that ther is a `suconnect` file in the home/bandit20 directory. This is, as the game tells us, a setuid binary that makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (`0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO` from [Level 19 → Level 20]({{ site.baseurl }}/bandit/level-119_to_level-20)). If the password is correct, it will transmit the password for the next level ([Level 20 → Level 21]({{ site.baseurl }}/bandit/level-20_to_level-21)). 
+by using `ls` we become aware that ther is a `suconnect` file in the home/bandit20 directory. This is, as the game tells us, a setuid binary that makes a connection to localhost on the port you specify as a commandline argument. It then reads a line of text from the connection and compares it to the password in the previous level (`0qXahG8ZjOVMN9Ghs7iOWsCfZyXOUbYO` from [Level 19 → Level 20]({{ site.baseurl }}/bandit/level-19_to_level-20)). If the password is correct, it will transmit the password for the next level ([Level 20 → Level 21]({{ site.baseurl }}/bandit/level-20_to_level-21)). 
 To verify our password we first need to set up a listener where we are going to send the password from, then run ./suconnect [port number] on a second terminal. To do this we must run a netcat listener with nc -lp [port number]. To choose which port number we're going to use (it is important for us not to choose a port number that's already in use) we are gonna run nmap on our machine like we did in [Level 16 → Level 17]({{ site.baseurl }}/bandit/level-16_to_level-17): 
 
 `nmap localhost`

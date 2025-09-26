@@ -26,7 +26,7 @@ chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
 cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
 ```
 
-this basically changes the permissions on the `/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv` file adn writes the password from `bandit_22`into it. 
+this basically changes the permissions on the `/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv` file and writes the password from `bandit_22`into it. 
 
 Let's read its content:
 
