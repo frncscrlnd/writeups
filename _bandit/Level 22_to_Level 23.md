@@ -11,7 +11,7 @@ After logging in with
 
 Password: `tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q`
 
-we find out that, just like in [Level 21 → Level 22]({{ site.baseurl }}/bandit/level-21_to_level-22), a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the the /etc/cron.d/ directory by using `cd /etc/cron.d/`, once we're in this directory, `ls` shows something like:
+we find out that, just like in [Level 21 → Level 22]({{ site.baseurl }}/bandit/level-21_to_level-22), a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the /etc/cron.d/ directory by using `cd /etc/cron.d/`, once we're in this directory, `ls` shows something like:
 
 ```
 behemoth4_cleanup  cronjob_bandit22  cronjob_bandit24  leviathan5_cleanup    otw-tmp-dir
@@ -42,16 +42,16 @@ cat /etc/bandit_pass/$myname > /tmp/$mytarget
 
 This means that the password file from /etc/bandit_pass/bandit22 is copied into /tmp/[the result of the MD5 hash on bandit22, up to the first space char (-d ' ') (-f 1 stands for the first Field, as the result is separated in two fileds by a space)].
 
-Let' run the same command as we see in the script:
+Let' run the same command as we see in the script, with `bandit23` as the result of the `whoami` command (we have to think of ourselves as the bandit23 user, since this script is executed by tha user):
 
-`echo I am user bandit22 | md5sum | cut -d ' ' -f 1`
+`echo I am user bandit23 | md5sum | cut -d ' ' -f 1`
 
 this will return our destination folder:
 
-`8169b67bd894ddbb4412f91573b38db3`
+`8ca319486bfbbc3663ea0fbe81326349`
 
-let's read the content of our tmp/8169b67bd894ddbb4412f91573b38db3 file: `cat tmp/8169b67bd894ddbb4412f91573b38db3`
+let's read the content of our /tmp/8ca319486bfbbc3663ea0fbe81326349 file: ` cat /tmp/8ca319486bfbbc3663ea0fbe81326349`
 
 this will return our password:
 
-> `tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q`
+> `0Zf11ioIjMVN551jX3CmStKLYqjk54Ga`
