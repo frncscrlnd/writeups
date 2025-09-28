@@ -8,7 +8,7 @@ order: 0
 {% assign current_index = nil %}
 
 {% for item in items %}
-  {% if item.title == page.title %}
+  {% if item.path == page.path %}
     {% assign current_index = forloop.index0 %}
   {% endif %}
 {% endfor %}
@@ -18,16 +18,26 @@ order: 0
     {% assign prev_item = items[current_index | minus: 1] %}
   {% endif %}
   {% assign next_item = items[current_index | plus: 1] %}
-  
+
   <nav class="nav-bandit">
     {% if prev_item %}
-      <a class="prev" href="{{ prev_item.url | relative_url }}">← Previous: {{ prev_item.title }}</a>
+      <a class="prev" href="{{ prev_item.url | relative_url }}">← Precedente: {{ prev_item.title }}</a>
     {% endif %}
     {% if next_item %}
-      <a class="next" href="{{ next_item.url | relative_url }}">Next: {{ next_item.title }} →</a>
+      <a class="next" href="{{ next_item.url | relative_url }}">Successivo: {{ next_item.title }} →</a>
     {% endif %}
   </nav>
 {% endif %}
+
+<!-- debug -->
+<hr>
+<p><strong>DEBUG:</strong></p>
+<ul>
+  <li>Current path: {{ page.path }}</li>
+  <li>Current index: {{ current_index }}</li>
+  <li>Next page path: {{ next_item.path }}</li>
+  <li>Next page title: {{ next_item.title }}</li>
+</ul>
 
 <br>
 
@@ -55,7 +65,7 @@ Password: `bandit0`
 {% assign current_index = nil %}
 
 {% for item in items %}
-  {% if item.title == page.title %}
+  {% if item.path == page.path %}
     {% assign current_index = forloop.index0 %}
   {% endif %}
 {% endfor %}
@@ -65,13 +75,23 @@ Password: `bandit0`
     {% assign prev_item = items[current_index | minus: 1] %}
   {% endif %}
   {% assign next_item = items[current_index | plus: 1] %}
-  
+
   <nav class="nav-bandit">
     {% if prev_item %}
-      <a class="prev" href="{{ prev_item.url | relative_url }}">← Previous: {{ prev_item.title }}</a>
+      <a class="prev" href="{{ prev_item.url | relative_url }}">← Precedente: {{ prev_item.title }}</a>
     {% endif %}
     {% if next_item %}
-      <a class="next" href="{{ next_item.url | relative_url }}">Next: {{ next_item.title }} →</a>
+      <a class="next" href="{{ next_item.url | relative_url }}">Successivo: {{ next_item.title }} →</a>
     {% endif %}
   </nav>
 {% endif %}
+
+<!-- debug -->
+<hr>
+<p><strong>DEBUG:</strong></p>
+<ul>
+  <li>Current path: {{ page.path }}</li>
+  <li>Current index: {{ current_index }}</li>
+  <li>Next page path: {{ next_item.path }}</li>
+  <li>Next page title: {{ next_item.title }}</li>
+</ul>
