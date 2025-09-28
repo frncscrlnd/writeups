@@ -5,23 +5,26 @@ order: 0
 ---
 
 {% assign items = site.bandit | sort: "order" %}
-
 {% assign current_index = nil %}
+
 {% for item in items %}
-  {% if item.path == page.path %}
+  {% if item.title == page.title %}
     {% assign current_index = forloop.index0 %}
   {% endif %}
 {% endfor %}
 
 {% if current_index != nil %}
-  {% assign prev_item = items[current_index | minus: 1] %}
+  {% if current_index > 0 %}
+    {% assign prev_item = items[current_index | minus: 1] %}
+  {% endif %}
   {% assign next_item = items[current_index | plus: 1] %}
+  
   <nav class="nav-bandit">
     {% if prev_item %}
-      <a class="prev" href="{{ prev_item.url | relative_url }}">← Precedente: {{ prev_item.title }}</a>
+      <a class="prev" href="{{ prev_item.url | relative_url }}">← Previous: {{ prev_item.title }}</a>
     {% endif %}
     {% if next_item %}
-      <a class="next" href="{{ next_item.url | relative_url }}">Successivo: {{ next_item.title }} →</a>
+      <a class="next" href="{{ next_item.url | relative_url }}">Next: {{ next_item.title }} →</a>
     {% endif %}
   </nav>
 {% endif %}
@@ -49,23 +52,26 @@ Password: `bandit0`
 <br>
 
 {% assign items = site.bandit | sort: "order" %}
-
 {% assign current_index = nil %}
+
 {% for item in items %}
-  {% if item.path == page.path %}
+  {% if item.title == page.title %}
     {% assign current_index = forloop.index0 %}
   {% endif %}
 {% endfor %}
 
 {% if current_index != nil %}
-  {% assign prev_item = items[current_index | minus: 1] %}
+  {% if current_index > 0 %}
+    {% assign prev_item = items[current_index | minus: 1] %}
+  {% endif %}
   {% assign next_item = items[current_index | plus: 1] %}
+  
   <nav class="nav-bandit">
     {% if prev_item %}
-      <a class="prev" href="{{ prev_item.url | relative_url }}">← Precedente: {{ prev_item.title }}</a>
+      <a class="prev" href="{{ prev_item.url | relative_url }}">← Previous: {{ prev_item.title }}</a>
     {% endif %}
     {% if next_item %}
-      <a class="next" href="{{ next_item.url | relative_url }}">Successivo: {{ next_item.title }} →</a>
+      <a class="next" href="{{ next_item.url | relative_url }}">Next: {{ next_item.title }} →</a>
     {% endif %}
   </nav>
 {% endif %}
