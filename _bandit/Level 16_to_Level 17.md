@@ -70,7 +70,7 @@ The port we are looking for is claarly 31790, as it supports SSL and has an unkn
 
 `openssl s_client -connect localhost:31790`
 
-and send our password. This will return the provate key for our next level:
+and send our password. This will return the private key for our next level:
 
 > ``` 
 > -----BEGIN RSA PRIVATE KEY-----
