@@ -19,4 +19,4 @@ Well not really, as there also are some spaces inside the filename. This means w
 
 cat `./"--spaces in this filename--"` wil give us our password:
 
-`MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx`
+> `MNk8KNH3Usiio41PRUEoDFPqfxLPlSmx`

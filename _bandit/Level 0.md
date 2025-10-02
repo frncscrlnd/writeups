@@ -18,6 +18,9 @@ Syntax for ssh connections goes as follows:
 `ssh` [username]@[hostname/machine ip] optional (if the port you're connecting to is different from the standard 22):[ -p [port number]]
 
 in our case:
+
 `ssh bandit0@bandit.labs.overthewire.org -p 2220`
 
-Password: `bandit0`
+Password: 
+
+> `bandit0`

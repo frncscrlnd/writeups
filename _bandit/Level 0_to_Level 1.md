@@ -11,4 +11,5 @@ Once we've logged in as we've seen in [Level 0]({{ site.baseurl }}/bandit/level-
 This will tell us there's a readme file in the riectory we're in (which is /home/bandit0 if you use the `pwd` (print working directory) command). We can read it with the cat command.
 
 This will return a welcome text and the password for Level 2: 
+
 > ZjLjTmM6FvvyRnrb2rfNWOZOTa6ip5If

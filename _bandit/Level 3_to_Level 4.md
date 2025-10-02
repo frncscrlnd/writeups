@@ -18,4 +18,6 @@ that the game tells us that the file we're looking for is hidden in the inhere d
 
 This command tells us there is a `...Hiding-From-You` file in this directory; let's read its' content with `cat ...Hiding-From-You`:
 
-The password is `2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ`
+The password is:
+
+> `2WmrDFRmJIq3IPxneAaMGhap0pFhF3NJ`

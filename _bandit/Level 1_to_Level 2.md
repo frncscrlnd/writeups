@@ -15,4 +15,4 @@ we'll see that typing the `ls` command lists a "-" file. Since the `-` character
 
 By typing `cat ./-` we can unlock the password for the next level:
 
-`263JGJPfgU6LtdEvgfWU1XP5yac29mFx`
+> `263JGJPfgU6LtdEvgfWU1XP5yac29mFx`

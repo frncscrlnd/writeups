@@ -3,6 +3,45 @@ layout: default
 title: Crack The Hash
 ---
 
+This room is all about finding the [hashing function](https://en.wikipedia.org/wiki/Hash_function) ([MD5](https://en.wikipedia.org/wiki/MD5), [SHA-256](https://en.wikipedia.org/wiki/SHA-2), [SHA-1](https://en.wikipedia.org/wiki/SHA-1)...) from a given digest. 
+We'll use [hashcat](https://hashcat.net/hashcat/) and [hashcat's wiki examples](https://hashcat.net/wiki/doku.php?id=example_hashes).
+
 ### Table of contents:
 - [Level 1](#level-1)
 - [Level 2](#level-2)
+
+## Level 1
+
+- 48bb6e862e54f2a795ffc4e541caed4d
+
+First write the digest inside a file `echo 48bb6e862e54f2a795ffc4e541caed4d > hash.txt`
+
+To figure out which hashing function has been used, run 
+
+`hashcat 48bb6e862e54f2a795ffc4e541caed4d` or`hashcat hash.txt`
+
+The first result will be `MD4`, let's try it (`MD4`'s hascat code is `900`):
+
+`hashcat -m 900 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+`-m` specifies te hashing function, `-a` means it' a [dictionary attack](https://en.wikipedia.org/wiki/Dictionary_attack) and `/usr/share/wordlists/rockyou.txt` is the path to [rockyou](https://en.wikipedia.org/wiki/RockYou), a famous wordlist we are going to use.
+
+`MD4` is wrong, so let's try the second result, `MD5`(code `0`):
+
+`hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+This will return `48bb6e862e54f2a795ffc4e541caed4d:easy`
+
+The plaintext will be:
+
+> `easy`
+
+- CBFDAC6008F9CAB4083784CBD1874F76618D2A97 
+
+- 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032
+
+- $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom
+
+- 279412f945939ba78ce0758d3fd83daa
+
+## Level 2
