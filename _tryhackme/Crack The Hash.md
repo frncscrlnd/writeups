@@ -20,6 +20,13 @@ To figure out which hashing function has been used, run
 
 `hashcat 48bb6e862e54f2a795ffc4e541caed4d` or`hashcat hash.txt`
 
+we'll get somthing like:
+
+>     # | Name                                                       | Category
+> ======+============================================================*==========
+>    900 | MD4                                                        | Raw Hash
+>      0 | MD5                                                        | Raw Hash
+
 The first result will be `MD4`, let's try it (`MD4`'s hascat code is `900`):
 
 `hashcat -m 900 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
@@ -37,6 +44,30 @@ The plaintext will be:
 > `easy`
 
 - CBFDAC6008F9CAB4083784CBD1874F76618D2A97 
+  
+Let's do the same for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo CBFDAC6008F9CAB4083784CBD1874F76618D2A97 hash.txt` 
+
+Let's figure out what hashing function has been used:
+
+`haschat CBFDAC6008F9CAB4083784CBD1874F76618D2A97` or `hascat hash.txt`
+
+this will return:
+
+>     # | Name                                                       | Category
+> ======+============================================================*==========
+>    100 | SHA1                                                        | Raw Hash
+
+Let's try `SHA1`:
+
+`hashcat -m 100 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+This will return:
+
+`cbfdac6008f9cab4083784cbd1874f76618d2a97:password123`
+
+the plaintext will be:
+
+> `password123`
 
 - 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032
 
