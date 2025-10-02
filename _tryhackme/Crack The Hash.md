@@ -12,7 +12,7 @@ We'll use [hashcat](https://hashcat.net/hashcat/) and [hashcat's wiki examples](
 
 ## Level 1
 
-- 48bb6e862e54f2a795ffc4e541caed4d
+- `48bb6e862e54f2a795ffc4e541caed4d`
 
 First write the digest inside a file `echo 48bb6e862e54f2a795ffc4e541caed4d > hash.txt`
 
@@ -20,12 +20,12 @@ To figure out which hashing function has been used, run
 
 `hashcat 48bb6e862e54f2a795ffc4e541caed4d` or`hashcat hash.txt`
 
-we'll get somthing like:
+we'll get something like:
 
->     # | Name                                                       | Category
-> ======+============================================================*==========
->    900 | MD4                                                        | Raw Hash
->      0 | MD5                                                        | Raw Hash
+| ID   | Name | Category  |
+|------|------|-----------|
+| 900  | MD4  | Raw Hash  |
+| 0    | MD5  | Raw Hash  |
 
 The first result will be `MD4`, let's try it (`MD4`'s hascat code is `900`):
 
@@ -43,7 +43,7 @@ The plaintext will be:
 
 > `easy`
 
-- CBFDAC6008F9CAB4083784CBD1874F76618D2A97 
+- `CBFDAC6008F9CAB4083784CBD1874F76618D2A97`
   
 Let's do the same for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo CBFDAC6008F9CAB4083784CBD1874F76618D2A97 hash.txt` 
 
@@ -53,9 +53,9 @@ Let's figure out what hashing function has been used:
 
 this will return:
 
->     # | Name                                                       | Category
-> ======+============================================================*==========
->    100 | SHA1                                                        | Raw Hash
+| ID   | Name | Category  |
+|------|------|-----------|
+| 100  | SHA1  | Raw Hash  |
 
 Let's try `SHA1`:
 
@@ -69,7 +69,33 @@ the plaintext will be:
 
 > `password123`
 
-- 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032
+- `1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032`
+
+Let's do the same for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032 hash.txt` 
+
+Let's figure out what hashing function has been used:
+
+`haschat 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032` or `hascat hash.txt`
+
+this will return:
+
+| ID   | Name | Category  |
+|------|------|-----------|
+| 34600  | MD6 (256)  | Raw Hash  |
+| 1400  | SHA256  | Raw Hash  |
+| 17400  | SHA356  | Raw Hash  |
+
+`MD6` looks like an unpopular function for this type of challenges, so we can skip it. Let's try `SHA256`:
+
+`hashcat -m 1400 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+This will return:
+
+`1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032:letmein`
+
+so the plaintext will be:
+
+> `letmein`
 
 - $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom
 
