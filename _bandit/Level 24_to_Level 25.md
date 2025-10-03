@@ -38,7 +38,12 @@ done
 cat tries.txt | nc localhost 30002 > res.txt
 ```
 
+---
+**NOTE**
+
 Remember to put your password for bandit24 as it will change.
+
+---
 
 This will print all combinations inside `tries.txt`, then write all outcomes in `res.txt`. Let's give this file esecuting permissions with `chmod +x bruteforce.sh`, then run it.
 

@@ -97,8 +97,33 @@ so the plaintext will be:
 
 > `letmein`
 
-- $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom
+- `$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`
 
-- 279412f945939ba78ce0758d3fd83daa
+Let's do it all over again for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' hash.txt` 
+
+---
+**NOTE**
+
+Use '' quotes as `$` chars won't be displayed as they are used for variables and parameters. 
+
+---
+
+Let's figure out what hashing function has been used:
+
+`haschat $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom` or `hascat hash.txt`
+
+This will return:
+
+`No hash-mode matches the structure of the input hash.`
+
+Hashcat has no clue what function has been used. Let' search [hashcat's wiki examples](https://hashcat.net/wiki/doku.php?id=example_hashes) for this pattern: `$2`
+
+One of the results is [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). The code for this function is `3200`. let's try it:
+
+`hashcat -m 3200 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+running this command, as thm tells us, will take a long time.
+
+- `279412f945939ba78ce0758d3fd83daa`
 
 ## Level 2

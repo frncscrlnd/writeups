@@ -16,7 +16,6 @@ ul li {
 </style>
 
 # Stuck on a challenge/room/CTF?
-<br>
 
 ## TryHackMe
 <details>
