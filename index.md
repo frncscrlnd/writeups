@@ -31,7 +31,7 @@ ul li {
 </details>
 
 ## XSS challenges (by yamagata21)
-<details open>
+<details>
   <summary>> show/hide</summary>
     <ul>
       {% assign sorted_xss = site.yamagata_xss | sort: "order" %}
@@ -42,7 +42,7 @@ ul li {
 </details>
 
 ## Bandit (OverTheWire)
-<details open>
+<details>
   <summary>> show/hide</summary>
   <ul>
     {% assign sorted_bandit = site.bandit | sort: "order" %}
