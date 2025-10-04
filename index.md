@@ -17,13 +17,6 @@ ul li {
 
 # Stuck on a challenge/room/CTF?
 
----
-**NOTE**
-
-The following writeups contain spoilers.
-
----
-
 ## TryHackMe
 <details>
   <summary>> show/hide</summary>
