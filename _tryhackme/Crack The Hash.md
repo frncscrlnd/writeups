@@ -99,7 +99,7 @@ so the plaintext will be:
 
 - `$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`
 
-Let's do it all over again for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' hash.txt` 
+Let's do it all over again for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' > hash.txt` 
 
 ---
 **NOTE**
@@ -110,7 +110,7 @@ Use '' quotes as `$` chars won't be displayed as they are used for variables and
 
 Let's figure out what hashing function has been used:
 
-`haschat $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom` or `hascat hash.txt`
+`hashcat $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom` or `hashcat hash.txt`
 
 This will return:
 
@@ -143,5 +143,32 @@ our plaintext will be:
 > `bleh`
 
 - `279412f945939ba78ce0758d3fd83daa`
+
+New digest, same stuff: `> hash.txt` to empty the `hash.txt` file, then `echo '279412f945939ba78ce0758d3fd83daa' > hash.txt`
+
+Let's figure out what hashing function has been used:
+
+`hashcat 279412f945939ba78ce0758d3fd83daa` or `hascat hash.txt`
+
+This will return:
+
+| ID   | Name | Category  |
+|------|------|-----------|
+| 900  | MD4  | Raw Hash  |
+
+Let's try `MD4`:
+
+`hashcat -m 900 -a 0 hash.txt /usr/share/wordlists/rockyou.txt`
+
+this method, unfortunely, won't return anything (`Status...........: Exhausted
+`). This means that hashcat ha tried all of rocyou's combinations and they all failed.
+
+What we can still do, however, is checking if this password was already cracked. Let's try [crackstation](https://crackstation.net/):
+
+![crackstation]({{ site.baseurl }}/assets/images/thm/cth/crackstation.png)
+
+We finally got it. Our plaintext is:
+
+> `Eternity22`
 
 ## Level 2
