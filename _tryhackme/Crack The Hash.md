@@ -124,11 +124,23 @@ One of the results is [bcrypt](https://en.wikipedia.org/wiki/Bcrypt). The code f
 
 running this command, as thm tells us, will take a long time. This is beacuse bcrypt is a [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function). What we can do to speed up the process is filtering out combinations of more than 4 chars from `rockyou.txt`:
 
-`LC_ALL=C awk length==4 /usr/share/wordlists/rockyou.txt > ~/rockyou_len4.txt`
+`LC_ALL=C awk length==4 /usr/share/wordlists/rockyou.txt > ~/rock4.txt`
 
 or, alternatively, useing grep and regular expressions: 
 
 `LC_ALL=C grep -x .\{4\} /usr/share/wordlists/rockyou.txt > ~/rock4.txt`
+
+Running the old command will now take less time:
+
+`hashcat -m 3200 -a 0 hash.txt rock4.txt`
+
+This will return:
+
+`$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom:bleh`
+
+our plaintext will be:
+
+> `bleh`
 
 - `279412f945939ba78ce0758d3fd83daa`
 
