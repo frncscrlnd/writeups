@@ -8,11 +8,11 @@ We'll use [hashcat](https://hashcat.net/hashcat/), [hashid](https://www.kali.org
 
 ### Table of contents:
 - [Level 1](#level-1)
-  - [`48bb6e862e54f2a795ffc4e541caed4d`](#48bb6e862e54f2a795ffc4e541caed4d)
-  - [`CBFDAC6008F9CAB4083784CBD1874F76618D2A97`](#cbfdac6008f9cab4083784cbd1874f76618d2a97)
-  - [`1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032`](#1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032)
-  - [`$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`](#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom)
-  - [`279412f945939ba78ce0758d3fd83daa`](#279412f945939ba78ce0758d3fd83daa)
+  - [48bb6e862e54f2a795ffc4e541caed4d](#48bb6e862e54f2a795ffc4e541caed4d)
+  - [CBFDAC6008F9CAB4083784CBD1874F76618D2A97](#cbfdac6008f9cab4083784cbd1874f76618d2a97)
+  - [1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032](#1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032)
+  - [$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom](#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom)
+  - [279412f945939ba78ce0758d3fd83daa](#279412f945939ba78ce0758d3fd83daa)
 - [Level 2](#level-2)
   - [F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85](#f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85)
   - [1DFECA0C002AE40B8619ECF94819CC1B](#1dfeca0c002ae40b8619ecf94819cc1b)
@@ -21,7 +21,7 @@ We'll use [hashcat](https://hashcat.net/hashcat/), [hashid](https://www.kali.org
 
 ## Level 1
 
-### `48bb6e862e54f2a795ffc4e541caed4d`
+### 48bb6e862e54f2a795ffc4e541caed4d
 
 First write the digest inside a file `echo 48bb6e862e54f2a795ffc4e541caed4d > hash.txt`
 
@@ -52,7 +52,7 @@ The plaintext will be:
 
 > `easy`
 
-### `CBFDAC6008F9CAB4083784CBD1874F76618D2A97`
+### CBFDAC6008F9CAB4083784CBD1874F76618D2A97
   
 Let's do the same for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo CBFDAC6008F9CAB4083784CBD1874F76618D2A97 hash.txt` 
 
@@ -78,7 +78,7 @@ the plaintext will be:
 
 > `password123`
 
-### `1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032`
+### 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032
 
 Let's do the same for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032 hash.txt` 
 
@@ -106,7 +106,7 @@ so the plaintext will be:
 
 > `letmein`
 
-### `$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`
+### $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom
 
 Let's do it all over again for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' > hash.txt` 
 
@@ -155,7 +155,7 @@ our plaintext will be:
 
 > `bleh`
 
-### `279412f945939ba78ce0758d3fd83daa`
+### 279412f945939ba78ce0758d3fd83daa
 
 New digest, same stuff: `> hash.txt` to empty the `hash.txt` file, then `echo 279412f945939ba78ce0758d3fd83daa > hash.txt`
 
