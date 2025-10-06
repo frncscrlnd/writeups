@@ -13,6 +13,10 @@ ul li {
   display: list-item; 
   margin-bottom: 5px;
 }
+
+summary:hover{
+  cursor: pointer;
+}
 </style>
 
 # Stuck on a challenge/room/CTF?
