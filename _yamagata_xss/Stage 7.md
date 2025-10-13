@@ -3,7 +3,9 @@ layout: page
 title: Stage 7
 order: 7
 ---
-https://xss-quiz.int21h.jp/stage07.php
+
+# [Stage 7](https://xss-quiz.int21h.jp/stage07.php)
+
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
 **Hint:** *nearly the same... but a bit more tricky.*

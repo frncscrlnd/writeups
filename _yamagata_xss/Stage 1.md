@@ -7,9 +7,7 @@ order: 1
 
 The XSS Challenges by Yamagata21 constitute one of the pioneering and educational XSS (Cross‑Site Scripting) challenge sets available, dating back to 2008. Comprised of 20 successive stages (though a few later ones may only function properly in legacy environments like older versions of Internet Explorer), the series begins with straightforward reflected XSS injections using `alert(document.domain)` and gradually progresses towards less intuitive scenarios.
 
-## Stage 1
-https://xss-quiz.int21h.jp/
-
+## [Stage 1](https://xss-quiz.int21h.jp/)
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`

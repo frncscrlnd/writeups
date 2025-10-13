@@ -5,9 +5,7 @@ order: 4
 ---
 
 
-# Stage 4
-https://xss-quiz.int21h.jp/stage_4.php
-
+# [Stage 4](https://xss-quiz.int21h.jp/stage_4.php)
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`

@@ -4,9 +4,7 @@ title: Stage 10
 order: 10
 ---
 
-# Stage 10
-https://xss-quiz.int21h.jp/stage00010.php
-
+# [Stage 10](https://xss-quiz.int21h.jp/stage00010.php)
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`

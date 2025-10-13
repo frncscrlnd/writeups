@@ -5,8 +5,8 @@ order: 3
 ---
 
 
-# Stage 3
-https://xss-quiz.int21h.jp/stage-3.php
+# [Stage 3](https://xss-quiz.int21h.jp/stage-3.php)
+
 
 
 **What you have to do:** 
