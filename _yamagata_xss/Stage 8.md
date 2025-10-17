@@ -9,6 +9,7 @@ order: 8
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *the 'javascript' scheme*.
 
 This page turns user input into a URL. We'll follow the hint and type a JavaScript URI like this: 

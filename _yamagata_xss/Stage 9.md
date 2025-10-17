@@ -9,6 +9,7 @@ order: 9
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *UTF-7 XSS*.
 
 Since this is a UTF-7 related XSS, most browser's won't support it. Learn more [here](https://en.wikipedia.org/wiki/UTF-7#Security). Also check this [resource](https://gihyo.jp/admin/serial/01/charcode/0001) out. 

@@ -9,6 +9,7 @@ order: 5
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *length limited text box.*
 
 While looking thtough the code we notice that the textbox has a `maxlength` attribute set to 15:

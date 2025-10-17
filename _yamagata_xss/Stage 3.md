@@ -11,6 +11,7 @@ order: 3
 
 **What you have to do:** 
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint**: *the input in text box is properly escaped.*
 
 The textbox input can not hold any payload anymore; this means we have to turn our attention to the select tag:

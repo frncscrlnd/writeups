@@ -8,6 +8,7 @@ order: 10
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *s/domain//g*
 
 The hint suggests a **regex** rule is used to sanitize user input. Specifically, this rule searches for the `domain` string in the text and replaces (`s`) it with a void string (`//`). This rule applies to all of the user submitted text (`g`).

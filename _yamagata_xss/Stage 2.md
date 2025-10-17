@@ -9,6 +9,7 @@ order: 2
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *close the current tag and add SCRIPT tag...*
 
 As hinted, let's check for open tags; this time, the response page **doesn't display user input.** 

@@ -8,6 +8,7 @@ order: 12
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *"s/[\x00-\x20\<\>\"\']//g;"*
 
 The hint suggests a **regex** rule is used to sanitize user input. Specifically, this rule searches the input text for:

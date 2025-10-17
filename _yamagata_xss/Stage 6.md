@@ -9,6 +9,7 @@ order: 6
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *event handler attributes.*
 
 Everything in the code **looks** normal, but trying the same payload as [[Stage 2]] (`"><script>alert(document.domain)</script>`) doesn't work:

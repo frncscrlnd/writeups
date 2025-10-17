@@ -9,6 +9,7 @@ order: 4
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *invisible input field.*
 
 While looking a the code we stumble upon an "**hidden**" input field, as the hint suggests:

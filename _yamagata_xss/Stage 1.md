@@ -11,6 +11,7 @@ The XSS Challenges by Yamagata21 constitute one of the pioneering and educationa
 
 **What you have to do:**  
 Inject the following JavaScript command: `alert(document.domain);`
+
 **Hint:** *very simple...*
 
 If characters like `<`, `>`, or `&` are submitted, they are displayed exactly as entered (e.g., _"No results for **"<"**"_, when it should be _"No results for **"<"**_").  
