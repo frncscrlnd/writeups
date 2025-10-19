@@ -14,9 +14,9 @@ Inject the following JavaScript command: `alert(document.domain);`
 The hint suggests a **regex** rule is used to sanitize user input. Specifically, this rule searches the input text for:
 
 - the first 32 ASCII chars (`\x00-\x20`), including NUL, TAB and Space
-- `<` `>` chars (`\<\>`)
-- double quotes `"` (`\"`)
-- `'` single quote (`\'`)
+- `<` `>` chars
+- double quotes `"`
+- `'` single quote
 
 and replaces (`s`) them with a void string (`//`). This means that we can not use any of these chars.
 
