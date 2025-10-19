@@ -13,7 +13,7 @@ Inject the following JavaScript command: `alert(document.domain);`
 
 The hint suggests a **regex** rule is used to sanitize user input. Specifically, this rule searches the input text for:
 
-- the first 32 ASCII chars (`\x00-\x20`), including NUL, TAB and Space
+- the first 32 ASCII chars (`\x00-\x20`), including `NUL`, `TAB` and Space
 - `<` `>` chars
 - double quotes `"`
 - `'` single quote
