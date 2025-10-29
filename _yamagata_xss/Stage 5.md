@@ -18,5 +18,5 @@ While looking thtough the code we notice that the textbox has a `maxlength` attr
 Let's change that back to a useful value:
 ![5.2]({{ site.baseurl }}/assets/images/xss21/5/5.2.png)
 
-We'll now deliver the payload through this textbox as we did for [[Stage 2]]:
+We'll now deliver the payload through this textbox as we did for [Stage 2]({{ site.baseurl }}/xss/Stage-2/):
 `"><script>alert(document.domain)</script>`.

@@ -12,7 +12,7 @@ Inject the following JavaScript command: `alert(document.domain);`
 
 **Hint:** *event handler attributes.*
 
-Everything in the code **looks** normal, but trying the same payload as [[Stage 2]] (`"><script>alert(document.domain)</script>`) doesn't work:
+Everything in the code **looks** normal, but trying the same payload as [Stage 2]({{ site.baseurl }}/xss/Stage-2/) (`"><script>alert(document.domain)</script>`) doesn't work:
 ![6.1]({{ site.baseurl }}/assets/images/xss21/6/6.1.png)
 
 This means that user input is "html-escaped/encoded" and that the `<` and `>` signs get encoded to `&lt` and `&gt`.
