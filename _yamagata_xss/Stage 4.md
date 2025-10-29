@@ -21,5 +21,5 @@ Let's change the type back to  `"text"`:
 A textbox will now be reflected in the webpage:
 ![4.3]({{ site.baseurl }}/assets/images/xss21/4/4.3.png)
 
-We'll now deliver the payload through this textbox as we did for [[Stage 2]]:
+We'll now deliver the payload through this textbox as we did for [2]({{ site.baseurl }}xss/Stage-2):
 `"><script>alert(document.domain)</script>`.
