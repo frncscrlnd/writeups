@@ -7,7 +7,7 @@ order: 1
 
 "the cryptopals crypto challenges" are 8 sets of 10 cryptography-based challenges. I'll try to cover them all in the following writeups. 
 
-# Convert hex to base64
+# [Convert hex to base64](https://cryptopals.com/sets/1/challenges/1)
 
 In this challenge we need to turn an hex string into a base64 encoded string:
 
