@@ -65,13 +65,13 @@ summary:hover{
   {% for set in grouped_sets %}
     <details>
       <summary>> Set {{ set.name }}</summary>
-      <ul>
+      <ol>
         {% for page in set.items %}
           <li>
             <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
           </li>
         {% endfor %}
-      </ul>
+      </ol>
     </details>
   {% endfor %}
 
