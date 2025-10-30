@@ -4,7 +4,7 @@ title: Level 2 → Level 3
 order: 3
 ---
 
-# Level 2 → Level 3
+# [Level 2 → Level 3](https://overthewire.org/wargames/bandit/bandit3.html)
 After logging in with 
 
 `ssh bandit2@bandit.labs.overthewire.org -p 2220`

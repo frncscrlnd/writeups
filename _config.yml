@@ -15,7 +15,7 @@ collections:
     permalink: /xss/:title/
   bandit:
     output: true
-    permalink: /bandit/:name/
+    permalink: /bandit/:title/
   cryptopals:
     output: true
     permalink: /cryptopals/:title

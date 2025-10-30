@@ -4,7 +4,7 @@ title: Level 16 → Level 17
 order: 17
 ---
 
-# Level 16 → Level 17
+# [Level 16 → Level 17](https://overthewire.org/wargames/bandit/bandit17.html)
 
 After logging in with 
 

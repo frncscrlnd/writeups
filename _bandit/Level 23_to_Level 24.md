@@ -4,7 +4,7 @@ title: Level 23 → Level 24
 order: 24
 ---
 
-# Level 23 → Level 24
+# [Level 23 → Level 24](https://overthewire.org/wargames/bandit/bandit24.html)
 After logging in with 
 
 `ssh bandit23@bandit.labs.overthewire.org -p 2220`

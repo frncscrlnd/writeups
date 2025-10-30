@@ -4,7 +4,7 @@ title: Level 8 → Level 9
 order: 9
 ---
 
-# Level 8 → Level 9
+# [Level 8 → Level 9](https://overthewire.org/wargames/bandit/bandit9.html)
 After logging in with 
 
 `ssh bandit8@bandit.labs.overthewire.org -p 2220`

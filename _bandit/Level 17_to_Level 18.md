@@ -4,7 +4,7 @@ title: Level 17 → Level 18
 order: 18
 ---
 
-# Level 17 → Level 18
+# [Level 17 → Level 18](https://overthewire.org/wargames/bandit/bandit18.html)
 After logging in with the private key ([Level 16 → Level 17]({{ site.baseurl }}/bandit/level-16_to_level-17) for reference) we can see, by running `ls`, that there are 2 files in the home/bandit17 directory:
 `passwords.new` and `passwords.old`. the game tells us that the password for the next level is the only line that has been changed from `passwords.old` to `passwords.new`.
 

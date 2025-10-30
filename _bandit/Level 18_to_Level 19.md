@@ -4,7 +4,7 @@ title: Level 18 → Level 19
 order: 19
 ---
 
-# Level 18 → Level 19
+# [Level 18 → Level 19](https://overthewire.org/wargames/bandit/bandit19.html)
 After logging in with 
 
 `ssh bandit18@bandit.labs.overthewire.org -p 2220`

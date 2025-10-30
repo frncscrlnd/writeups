@@ -4,7 +4,7 @@ title: Level 11 → Level 12
 order: 12
 ---
 
-# Level 11 → Level 12
+# [Level 11 → Level 12](https://overthewire.org/wargames/bandit/bandit12.html)
 After logging in with 
 
 `ssh bandit11@bandit.labs.overthewire.org -p 2220`

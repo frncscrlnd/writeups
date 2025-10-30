@@ -10,7 +10,7 @@ Bandit is designed to teach you by doing: you connect over SSH, inspect director
 
 > Tip: Make a list of all passwords as they won't be saved anywhere else
 
-# Level 0
+# [Level 0](https://overthewire.org/wargames/bandit/bandit0.html)
 
 To get to Level 0 you'll need to log in to the target machine (bandit.labs.overthewire.org) using ssh on port 2220. The username is bandit0 and the password is bandit0.
 Syntax for ssh connections goes as follows:
