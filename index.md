@@ -54,3 +54,25 @@ summary:hover{
     {% endfor %}
   </ul>
 </details>
+
+## the cryptopals crypto challenges
+<details>
+  <summary>> show/hide</summary>
+
+  {% assign sorted_cryptopals = site.cryptopals | sort: "order" %}
+  {% assign grouped_sets = sorted_cryptopals | group_by: "set" %}
+
+  {% for set in grouped_sets %}
+    <details>
+      <summary>Set {{ set.name }}</summary>
+      <ul>
+        {% for page in set.items %}
+          <li>
+            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </details>
+  {% endfor %}
+
+</details>
