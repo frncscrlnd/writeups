@@ -25,7 +25,15 @@ Achievement Unlocked
 You now have our permission to make "ETAOIN SHRDLU" jokes on Twitter.
 ```
 
-The XOR operation we know from [Challenge 2 of this set]({{ site.baseurl }}/cryptopals/Fixed-XOR/)is symmetric: the same key is used fo encryption and decryption. To find the key we'll use a brtuteforce approach: trying all possible combinations until we get it right. But how do we do that? As the instruction tell us, we need to rate each XORed string by how similar it is to the English language:
+The XOR operation ($\oplus$) we know from [Challenge 2 of this set]({{ site.baseurl }}/cryptopals/Fixed-XOR/)is symmetric: the same key is used fo encryption and decryption.
+
+```
+C = Ciphered text, P = Plain text, K = Key
+C = P $\oplus$ K
+P = C $\oplus K
+```
+
+ To find the key we'll use a brtuteforce approach: trying all possible combinations until we get it right. But how do we do that? As the instruction tell us, we need to rate each XORed string by how similar it is to the English language:
 
 ```
 def score_text(text):

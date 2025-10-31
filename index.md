@@ -21,7 +21,7 @@ summary:hover{
 
 # Stuck on a challenge/room/CTF?
 <br>
-## TryHackMe
+## [TryHackMe](https://tryhackme.com/)
 <details>
   <summary>> show/hide</summary>
   <ul>
@@ -33,7 +33,7 @@ summary:hover{
 </ul>
 </details>
 <hr>
-## XSS challenges (by yamagata21)
+## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
   <summary>> show/hide</summary>
     <ul>
@@ -44,7 +44,7 @@ summary:hover{
     </ul>
 </details>
 <hr>
-## Bandit (OverTheWire)
+## [Bandit (OverTheWire)](https://overthewire.org/wargames/bandit/)
 <details>
   <summary>> show/hide</summary>
   <ul>
@@ -55,7 +55,7 @@ summary:hover{
   </ul>
 </details>
 <hr>
-## the cryptopals crypto challenges
+## [the cryptopals crypto challenges](https://cryptopals.com/)
 <details>
   <summary>> show/hide</summary>
   {% assign sorted_cryptopals = site.cryptopals | sort: "order" %}
