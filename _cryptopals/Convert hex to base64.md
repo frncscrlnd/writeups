@@ -29,7 +29,7 @@ The correct syntax will be:
 
 This will return:
 
-`I'm killing your brain like a poisonous mushroom`, a lyric from a [song](https://www.youtube.com/watch?v=rog8ou-ZepE) i wish i had forgotten.
+`I'm killing your brain like a poisonous mushroom`.
 
 We'll then use [`base64`](https://en.wikipedia.org/wiki/Base64) to encode the string.
 
