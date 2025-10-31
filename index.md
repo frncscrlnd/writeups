@@ -20,7 +20,7 @@ summary:hover{
 </style>
 
 # Stuck on a challenge/room/CTF?
-
+<br>
 ## TryHackMe
 <details>
   <summary>> show/hide</summary>
@@ -32,7 +32,7 @@ summary:hover{
   {% endfor %}
 </ul>
 </details>
-
+<hr>
 ## XSS challenges (by yamagata21)
 <details>
   <summary>> show/hide</summary>
@@ -43,7 +43,7 @@ summary:hover{
       {% endfor %}
     </ul>
 </details>
-
+<hr>
 ## Bandit (OverTheWire)
 <details>
   <summary>> show/hide</summary>
@@ -54,14 +54,12 @@ summary:hover{
     {% endfor %}
   </ul>
 </details>
-
+<hr>
 ## the cryptopals crypto challenges
 <details>
   <summary>> show/hide</summary>
-
   {% assign sorted_cryptopals = site.cryptopals | sort: "order" %}
   {% assign grouped_sets = sorted_cryptopals | group_by: "set" %}
-
   {% for set in grouped_sets %}
     <details>
       <summary>> Set {{ set.name }}</summary>
@@ -74,5 +72,4 @@ summary:hover{
       </ol>
     </details>
   {% endfor %}
-
 </details>
