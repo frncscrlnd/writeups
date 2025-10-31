@@ -25,7 +25,7 @@ Achievement Unlocked
 You now have our permission to make "ETAOIN SHRDLU" jokes on Twitter.
 ```
 
-The XOR operation ($\oplus$) we know from [Challenge 2 of this set]({{ site.baseurl }}/cryptopals/Fixed-XOR/)is symmetric: the same key is used fo encryption and decryption.
+The XOR operation ($\oplus$) we know from [Challenge 2 of this set]({{ site.baseurl }}/cryptopals/Fixed-XOR/) is symmetric: the same key is used fo encryption and decryption.
 
 ```
 C = Ciphered text, P = Plain text, K = Key
