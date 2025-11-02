@@ -285,7 +285,7 @@ To view the picture instead, we need to close the SSH session and copy the pictu
 
 The dot at the end specifies that you want to save the file to the current directory (the one you're in).
 
-Once we copied the picture we can upload it to a reverse image search tool, such as [TinEye](https://tineye.com/), by selecting the FoxNews entry as THM tells us in the hint, we get to know  that this image was faked by a filmmaker and is known as `Roswell alien autopsy`:
+Once we copied the picture we can upload it to a reverse image search tool, such as [TinEye](https://tineye.com/), and by selecting the FoxNews entry as THM tells us in the hint, we get to know that this image was faked by a filmmaker and is known as `Roswell alien autopsy`:
 
 ![alien]({{ site.baseurl }}/assets/images/thm/as/alien.png)
 
