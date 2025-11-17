@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: Stage 7
 order: 7
 ---
