@@ -3,7 +3,7 @@ layout: default
 title: Blue
 ---
 
-# [Blue](https://tryhackme.com/room/blue)
+# [Blue](https://tryhackme.com/room/blue)<!-- omit in toc -->
 
 "Blue" is an entry-level TryHackMe room, designed to introduce users to basic Windows exploitation techniques. The main objective is to gain root access by exploiting a known vulnerability in the SMB (Server Message Block) protocol. Specifically, the target machine is vulnerable to [EternalBlue](https://it.wikipedia.org/wiki/EternalBlue) ([CVE-2017-0144](https://nvd.nist.gov/vuln/detail/CVE-2017-0144)), a critical flaw in Microsoft’s SMBv1 implementation.
 
@@ -12,13 +12,11 @@ EternalBlue was originally developed by the NSA and later leaked by the Shadow B
 This machine can be downloaded from [this page](https://darkstar7471.com/resources.html).
 
 ### Table of contents:
-- [Blue](#blue)
-    - [Table of contents:](#table-of-contents)
-  - [Recon](#recon)
-  - [Gain Access](#gain-access)
-  - [Escalate](#escalate)
-  - [Cracking](#cracking)
-  - [Find flags!](#find-flags)
+- [Recon](#recon)
+- [Gain Access](#gain-access)
+- [Escalate](#escalate)
+- [Cracking](#cracking)
+- [Find flags!](#find-flags)
 
 ---
 

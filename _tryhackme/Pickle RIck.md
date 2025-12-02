@@ -3,16 +3,14 @@ layout: default
 title: Pickle Rick
 ---
 
-# [Pickle Rick](https://tryhackme.com/room/picklerick)
+# [Pickle Rick](https://tryhackme.com/room/picklerick)<!-- omit in toc -->
 
 This Rick and Morty-themed challenge requires you to exploit a web server and find three ingredients to help Rick make his potion and transform himself back into a human from a pickle.
 
 ### Table of contents:
-- [Pickle Rick](#pickle-rick)
-    - [Table of contents:](#table-of-contents)
-  - [What is the first ingredient that Rick needs?](#what-is-the-first-ingredient-that-rick-needs)
-  - [What is the second ingredient in Rick’s potion?](#what-is-the-second-ingredient-in-ricks-potion)
-  - [What is the last and final ingredient?](#what-is-the-last-and-final-ingredient)
+- [What is the first ingredient that Rick needs?](#what-is-the-first-ingredient-that-rick-needs)
+- [What is the second ingredient in Rick’s potion?](#what-is-the-second-ingredient-in-ricks-potion)
+- [What is the last and final ingredient?](#what-is-the-last-and-final-ingredient)
 
 ## What is the first ingredient that Rick needs?
 
