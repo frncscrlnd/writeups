@@ -112,4 +112,53 @@ This will return:
 Which is the first ingredient.
  
 ## What is the second ingredient in Rick’s potion?
+
+`ls` tells us ther'also a `clue.txt` file. Opening it with `tac clue.txt` reveals an hint:
+
+`Look around the file system for the other ingredient.`
+
+let's look at the root directory with `ls /`.
+
+This will return:
+
+```
+bin
+boot
+dev
+etc
+home
+initrd.img
+initrd.img.old
+lib
+lib64
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+snap
+srv
+sys
+tmp
+usr
+var
+vmlinuz
+vmlinuz.old
+```
+
+Let's find out which users there are: `ls /home` shows the `rick` user. Let's dive into it: `ls /home/rick`. 
+
+This will return:
+
+`second ingredients`
+
+We can read the content of this file with `tac "second ingredients"`. Make sure to put double wuotes around the file name since it has whitespaces inside.
+
+This will return:
+
+`1 jerry tear`
+
 ## What is the last and final ingredient?
