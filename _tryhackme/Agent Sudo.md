@@ -3,6 +3,8 @@ layout: default
 title: Agent Sudo
 ---
 
+# [Agent Sudo](https://tryhackme.com/room/agentsudoctf)
+
 This is an easy-level CTF concerning some of the fundamental steps of the [security killchain](https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html):
 
 - enumeration;
@@ -11,10 +13,12 @@ This is an easy-level CTF concerning some of the fundamental steps of the [secur
 - privilege escalation.
 
 ### Table of contents
-- [Enumerate](#enumerate)
-- [Hash cracking and brute-force](#hash-cracking-and-brute-force)
-- [Capture the user flag](#capture-the-user-flag)
-- [Privilege escalation](#privilege-escalation)
+- [Agent Sudo](#agent-sudo)
+    - [Table of contents](#table-of-contents)
+  - [Enumerate](#enumerate)
+  - [Hash cracking and brute-force](#hash-cracking-and-brute-force)
+  - [Capture the user flag](#capture-the-user-flag)
+  - [Privilege escalation](#privilege-escalation)
 
 ---
 
