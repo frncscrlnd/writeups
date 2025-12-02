@@ -42,13 +42,17 @@ Since `R1ckRul3s` could well be an SSH username, we might as well try and use [h
 
 This will return
 
-`[ERROR] target ssh://[target_IP]:22/ does not support password authentication (method reply 4)`
+```
+[ERROR] target ssh://[target_IP]:22/ does not support password authentication (method reply 4)
+```
 
 Meaning that this is not the right way.
 
 Since the web application's homepage provides no additional information, let's esplore more of the app by enumerating its' directories by using [dirb](https://www.kali.org/tools/dirb/):
 
-`dirb http://[target_IP] /usr/share/wordlists/dirb/common.txt -X .php,.txt,.html,.js`
+```
+dirb http://[target_IP] /usr/share/wordlists/dirb/common.txt -X .php,.txt,.html,.js
+```
 
 The `-X` flag means extensions. All words in the wordlist will be followed by these extensions.
 
@@ -160,5 +164,7 @@ We can read the content of this file with `tac "second ingredients"`. Make sure 
 This will return:
 
 `1 jerry tear`
+
+Which is the second ingredient.
 
 ## What is the last and final ingredient?
