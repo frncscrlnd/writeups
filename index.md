@@ -62,7 +62,7 @@ summary:hover{
   {% assign grouped_sets = sorted_cryptopals | group_by: "set" %}
   {% for set in grouped_sets %}
     <details>
-      <summary> > Set {{ set.name }}</summary>
+      <summary>&nbsp;&nbsp;&nbsp;&nbsp;> Set {{ set.name }}</summary>
       <ol>
         {% for page in set.items %}
           <li>
