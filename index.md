@@ -39,7 +39,6 @@ summary:hover{
     />
   </a>
 </div>
-<a href="https://pwn.college/hacker/frncscrlnd" target="_blank">pwn.college profile</a>
 <br>
 ## [TryHackMe](https://tryhackme.com/)
 <details>
