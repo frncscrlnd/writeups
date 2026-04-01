@@ -20,7 +20,7 @@ summary:hover{
 </style>
 
 <div style="display: flex; justify-content: space-between;">
-  <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"></iframe>
+  <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567" style="width: 200px; padding: 0;"></iframe>
   <a href="https://pwn.college/hacker/frncscrlnd">pwn.college profile</a>
   <a href="https://app.hackthebox.com/users/1392650">Hack The Box profile</a>
 </div>
