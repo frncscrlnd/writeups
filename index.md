@@ -21,7 +21,7 @@ summary:hover{
 
 
 # Stuck on a challenge/room/CTF?
-<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+<div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px;">
   <div style="overflow: hidden; height: 80px;">
     <iframe
       src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"
@@ -31,15 +31,14 @@ summary:hover{
       style="border: none; display: block;">
     </iframe>
   </div>
-</div>
-<a href="https://app.hackthebox.com/users/1392650" target="_blank">
-  <img 
-    src="https://www.hackthebox.com/badge/image/1392650" 
-    alt="Hack The Box Profile"
-    height="40"
-  />
-</a>
-<a href="https://pwn.college/hacker/frncscrlnd" target="_blank">pwn.college profile</a>
+  <a href="https://app.hackthebox.com/users/1392650" target="_blank">
+    <img
+      src="https://www.hackthebox.com/badge/image/1392650"
+      alt="Hack The Box Profile"
+      height="40"
+    />
+  </a>
+  <a href="https://pwn.college/hacker/frncscrlnd" target="_blank">pwn.college profile</a>
 </div>
 <br>
 ## [TryHackMe](https://tryhackme.com/)
