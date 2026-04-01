@@ -19,10 +19,18 @@ summary:hover{
 }
 </style>
 
-<div style="display: flex; justify-content: space-between;">
-  <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567" style="overflow: hidden; padding: 0; margin: 0;" target="blank"></iframe>
+<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+  <div style="overflow: hidden; height: 80px;">
+    <iframe
+      src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"
+      width="480"
+      height="80"
+      scrolling="no"
+      style="border: none; display: block;">
+    </iframe>
+  </div>
   <a href="https://pwn.college/hacker/frncscrlnd" target="_blank">pwn.college profile</a>
-  <a href="https://app.hackthebox.com/users/1392650" target="blank">Hack The Box profile</a>
+  <a href="https://app.hackthebox.com/users/1392650" target="_blank">Hack The Box profile</a>
 </div>
 
 # Stuck on a challenge/room/CTF?
