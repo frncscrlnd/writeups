@@ -19,6 +19,12 @@ summary:hover{
 }
 </style>
 
+<div style="display: flex; justify-content: space-between;">
+  <iframe src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"></iframe>
+  <a href="https://pwn.college/hacker/frncscrlnd">pwn.college profile</a>
+  <a href="https://app.hackthebox.com/users/1392650">Hack The Box profile</a>
+</div>
+
 # Stuck on a challenge/room/CTF?
 <br>
 ## [TryHackMe](https://tryhackme.com/)
