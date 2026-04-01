@@ -21,7 +21,7 @@ summary:hover{
 
 
 # Stuck on a challenge/room/CTF?
-<div style="display: flex; align-items: center; gap: 18px; flex-wrap: nowrap;">
+<div style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
   <div style="overflow: hidden; height: 80px; flex-shrink: 0; padding: 0; margin: 0;">
     <iframe
       src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"
