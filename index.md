@@ -51,6 +51,9 @@ summary:hover{
       height="80"
     />
   </a>
+  <details>
+    <summary>> show/hide</summary>
+  </details>
 <hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
