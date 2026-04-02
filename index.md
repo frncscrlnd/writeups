@@ -44,7 +44,7 @@ summary:hover{
 </details>
 <hr>
 ## [Hack The Box](https://www.hackthebox.com)
-<a href="https://app.hackthebox.com/users/1392650" target="_blank" style="flex-shrink: 0; line-height: 0;">
+<a href="https://app.hackthebox.com/users/1392650" target="_blank" style="flex-shrink: 0; line-height: 0; padding: 0;">
     <img
       src="https://www.hackthebox.com/badge/image/1392650"
       alt="Hack The Box Profile"
