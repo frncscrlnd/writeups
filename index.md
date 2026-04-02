@@ -21,26 +21,17 @@ summary:hover{
 
 
 # Stuck on a challenge/room/CTF?
-<div style="display: flex; align-items: center; gap: 0; flex-wrap: nowrap;">
-  <div style="overflow: hidden; height: 80px; flex-shrink: 0;">
-    <iframe
-      src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"
-      width="480"
-      height="80"
-      scrolling="no"
-      style="border: none; display: block;">
-    </iframe>
-  </div>
-  <a href="https://app.hackthebox.com/users/1392650" target="_blank" style="flex-shrink: 0; line-height: 0;">
-    <img
-      src="https://www.hackthebox.com/badge/image/1392650"
-      alt="Hack The Box Profile"
-      height="80"
-    />
-  </a>
-</div>
 <br>
 ## [TryHackMe](https://tryhackme.com/)
+<div style="overflow: hidden; height: 80px; flex-shrink: 0;">
+  <iframe
+    src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3695567"
+    width="480"
+    height="80"
+    scrolling="no"
+    style="border: none; display: block;">
+  </iframe>
+</div>
 <details>
   <summary>> show/hide</summary>
   <ul>
@@ -51,6 +42,15 @@ summary:hover{
   {% endfor %}
 </ul>
 </details>
+<hr>
+## [Hack The Box](https://www.hackthebox.com)
+<a href="https://app.hackthebox.com/users/1392650" target="_blank" style="flex-shrink: 0; line-height: 0;">
+    <img
+      src="https://www.hackthebox.com/badge/image/1392650"
+      alt="Hack The Box Profile"
+      height="80"
+    />
+  </a>
 <hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
