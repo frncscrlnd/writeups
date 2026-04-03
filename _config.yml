@@ -19,4 +19,7 @@ collections:
   cryptopals:
     output: true
     permalink: /cryptopals/:title
+  try2hack:
+    output: true
+    permalink: /try2hack/:title
 

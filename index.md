@@ -95,3 +95,15 @@ summary:hover{
     </details>
   {% endfor %}
 </details>
+<hr>
+## [try2hack.nl](https://try2hack.nl)
+<details>
+  <summary>> show/hide</summary>
+  <ul>
+    {% assign sorted_try2hack = site.try2hack | sort: "order" %}
+    {% for page in sorted_try2hack %}
+      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+    {% endfor %}
+  </ul>
+</details>
+<hr>
