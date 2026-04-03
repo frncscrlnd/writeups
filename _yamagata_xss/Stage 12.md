@@ -20,7 +20,7 @@ The hint suggests a **regex** rule is used to sanitize user input. Specifically,
 
 and replaces (`s`) them with a void string (`//`). This means that we can not use any of these chars.
 
-This would make it impossible to submit a payload if only the backtick (`` ` ``) character didn't exist: this character will allow us to close the input text's `value` attribute and submit a new onmouseover attribute: ``` ``onmouseover=alert(document.domain); ```
+This would make it impossible to submit a payload, if it weren't for the backtick (`` ` ``) character: this character will allow us to close the input text's `value` attribute and submit a new onmouseover attribute: ``` ``onmouseover=alert(document.domain); ```
 
 ![12.1]({{ site.baseurl }}/assets/images/xss21/12/12.1.png)
 
