@@ -10,7 +10,7 @@ Welcome to this series of write‑ups covering the tr2hack challenges from 2003.
 
 We are asked to enter a password:
 
-![password prompt]({{ site.baseurl }}/assets/images/t2h/1.1.png)
+![password prompt]({{ site.baseurl }}/assets/images/t2h/1/1.1.png)
 
 The first level is straightforward: after taking a look at the page's source code, we can spot a cleartext password inside a `<script>` tag that reveals how the page validates the password:
 
