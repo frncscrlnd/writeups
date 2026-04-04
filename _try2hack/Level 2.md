@@ -29,7 +29,3 @@ Also, most importantly the next level's url is `level3-.xhtml`
 We could simply append this to the website's URL like this https://try2hack.nl/levels/level3-.xhtml but we can also render it as intended by installing the [ruffle Flash emulator](https://ruffle.rs/) extension on our browser: 
 
 ![login]({{ site.baseurl }}/assets/images/t2h/2/2.1.png)
-
-```
-
-```
