@@ -36,6 +36,6 @@ It isn't this easy. Try again :)
 
 We can easily spot what's going on by analyzing the source code closely:
 
-The `if (pwd==PASSWORD)` condition and the `PASSWORD="AbCdE";` assignment happen  at two different times: this means that `PASSWORD` at the time of comparison to `pwd` has no value.
+The `if (pwd==PASSWORD)` condition and the `PASSWORD="AbCdE";` assignment happen  at two different times: this means that `PASSWORD` at the time of comparison to `pwd` has a different value.
 
-We can assign a value to `PASSWORD` by typing `PASSWORD=1337` in the console and then typing `1337` in the prompt. You can of course change `1337` to anything you want.
+We can discover the value of `PASSSWORD` just by tiping `PASSWORD` in the console. This will return `try2hackrawks`. Put it in the prompt to get to Level 4.
