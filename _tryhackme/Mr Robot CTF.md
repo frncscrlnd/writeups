@@ -1,6 +1,6 @@
 ---
 layout: default
-title: TryHackme Mr Robot CTF
+title: TryHackMe Mr Robot CTF
 ---
 
 # [Mr Robot CTF](https://tryhackme.com/room/mrrobot)<!-- omit in toc -->

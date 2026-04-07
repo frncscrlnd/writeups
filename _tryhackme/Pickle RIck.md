@@ -1,6 +1,6 @@
 ---
 layout: default
-title: TryHackme Pickle Rick
+title: TryHackMe Pickle Rick
 ---
 
 # [Pickle Rick](https://tryhackme.com/room/picklerick)<!-- omit in toc -->
