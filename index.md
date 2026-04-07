@@ -37,7 +37,7 @@ summary:hover{
   <ul>
   {% for page in site.tryhackme %}
     <li>
-      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+      <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "TryHackMe " }}</a>
     </li>
   {% endfor %}
 </ul>
