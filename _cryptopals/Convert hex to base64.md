@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Convert hex to base64
+title: the cryptopals crypto challenges Convert hex to base64
 set: 1
 order: 1
 ---

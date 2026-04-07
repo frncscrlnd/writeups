@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Blue
+title: TryHackMe Blue
 ---
 
 # [Blue](https://tryhackme.com/room/blue)<!-- omit in toc -->

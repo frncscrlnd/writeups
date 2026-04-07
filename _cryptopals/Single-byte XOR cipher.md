@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Single-byte XOR cipher
+title: the cryptopals crypto challenges Single-byte XOR cipher
 set: 1
 order: 3
 ---

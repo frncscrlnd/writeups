@@ -1,13 +1,11 @@
 ---
 layout: default
-title: Stage 3
+title: XSS Challenges (by yamagata21) Stage 3
 order: 3
 ---
 
 
 # [Stage 3](https://xss-quiz.int21h.jp/stage-3.php)
-
-
 
 **What you have to do:** 
 Inject the following JavaScript command: `alert(document.domain);`

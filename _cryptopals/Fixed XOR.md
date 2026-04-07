@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Fixed XOR
+title: the cryptopals crypto challenges Fixed XOR
 set: 1
 order: 2
 ---

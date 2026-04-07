@@ -53,6 +53,13 @@ summary:hover{
   </a>
   <details>
     <summary>> show/hide</summary>
+      <ul>
+        {% for page in site.hackthebox %}
+          <li>
+            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
+          </li>
+        {% endfor %}
+      </ul>
   </details>
 <hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
@@ -61,7 +68,7 @@ summary:hover{
     <ul>
       {% assign sorted_xss = site.yamagata_xss | sort: "order" %}
       {% for page in sorted_xss %}
-      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "XSS Challenges (by yamagata21) " }}</a></li>
       {% endfor %}
     </ul>
 </details>
@@ -88,7 +95,7 @@ summary:hover{
       <ol>
         {% for page in set.items %}
           <li>
-            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "the cryptopals crypto challenges " }}</a>
           </li>
         {% endfor %}
       </ol>
@@ -102,7 +109,7 @@ summary:hover{
   <ul>
     {% assign sorted_try2hack = site.try2hack | sort: "order" %}
     {% for page in sorted_try2hack %}
-      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "try2hack " }}</a></li>
     {% endfor %}
   </ul>
 </details>

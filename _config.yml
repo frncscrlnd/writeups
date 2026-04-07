@@ -22,4 +22,7 @@ collections:
   try2hack:
     output: true
     permalink: /try2hack/:title
+  hackthebox:
+    output: true
+    permalink: /hackthebox/:title
 

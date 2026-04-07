@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Crack The Hash
+title: TryHackMe Crack The Hash
 ---
 
 # [Crack The Hash](https://tryhackme.com/room/crackthehash)<!-- omit in toc -->

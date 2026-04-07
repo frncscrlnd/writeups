@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Agent Sudo
+title: TryHackMe Agent Sudo
 ---
 
 # [Agent Sudo](https://tryhackme.com/room/agentsudoctf)<!-- omit in toc -->

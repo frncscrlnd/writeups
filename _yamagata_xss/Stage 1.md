@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Stage 1
+title: XSS Challenges (by yamagata21) Stage 1
 order: 1
 ---
 

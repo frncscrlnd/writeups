@@ -1,6 +1,7 @@
 ---
 layout: default
-title: Level 2
+title: try2hack Level 2
+description: Writeup of try2hack level 2, a CTF-style challenge about web hacking
 order: 2
 ---
 
