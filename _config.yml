@@ -3,6 +3,9 @@ markdown: kramdown
 theme: jekyll-theme-midnight
 permalink: pretty
 
+plugins:
+  - jekyll-sitemap
+
 baseurl: "/writeups"  
 url: "https://frncscrlnd.github.io" 
 
