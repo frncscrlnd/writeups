@@ -26,7 +26,7 @@ This Starting Point machine revolves entirely around [FTP](https://en.wikipedia.
 
 *What does the 3-letter acronym FTP stand for?*
 
-As we said, we are talk about the 
+As we said, we are talking about 
 
 >File Transfer Protocol
 
