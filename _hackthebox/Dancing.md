@@ -6,7 +6,7 @@ description: Walkthorugh/Writeup for Dancing, a Starting Point Hack The Box mach
 
 # [Dancing](https://app.hackthebox.com/machines/Dancing)<!-- omit in toc -->
 
-This Starting Point Hack The Box machine about the SMB protocol walks us through the basics of Server Message Block
+This Starting Point Hack The Box machine about the SMB (Samba) protocol walks us through the basics of Server Message Block
 
 ### Table of contents:
 - [Task 1](#task-1)
