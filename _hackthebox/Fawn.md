@@ -1,11 +1,12 @@
 ---
 layout: default
 title: Hack The Box Fawn
+description: Walkthrough/writeup of Fawn, a Tsarting Point Hack The Box machine about FTP
 ---
 
 # [Fawn](https://app.hackthebox.com/machines/Fawn)<!-- omit in toc -->
 
-This machine revolves entirely around [FTP](https://en.wikipedia.org/wiki/File_Transfer_Protocol), a protocol designed for sharing files across a network. 
+This Starting Point machine revolves entirely around [FTP](https://en.wikipedia.org/wiki/File_Transfer_Protocol), a protocol designed for sharing files across a network. 
 
 ### Table of contents:
 - [Task 1](#task-1)

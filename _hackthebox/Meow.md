@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Hack The Box Meow
-description: Writeup for your first Hack The Box machine, Meow. 
+description: Walkthrough/writeup for your first Hack The Box machine, Meow. 
 ---
 
 # [Meow](https://app.hackthebox.com/machines/Meow)<!-- omit in toc -->
