@@ -50,7 +50,7 @@ Most of the time, secure versions of protocols only add a final `s` to the origi
 
 *What is the command we can use to send an ICMP echo request to test our connection to the target?*
 
-Just like we did in [Meow](https://frncscrlnd.github.io/writeups/hackthebox/Meow), one of the ways to test our connection to anothe machine is through the
+Just like we did in [Meow](https://frncscrlnd.github.io/writeups/hackthebox/Meow), one of the ways to test our connection to another machine is through the
 
 >ping
 
@@ -60,7 +60,7 @@ command.
 
 *From your scans, what version is FTP running on the target?*
 
-`nmap target-id-here -sV` (where `-sV` means "service version") will return
+`nmap target-id-here -sV` (`-sV` means "service version") will return
 
 ```
 PORT   STATE SERVICE VERSION
