@@ -34,7 +34,7 @@ As we said, we are talking about
 
 *Which port does the FTP service listen on usually?*
 
-This protocol cusually runs on [port](https://en.wikipedia.org/wiki/Port_(computer_networking)#Port_number)
+This protocol usually runs on [port](https://en.wikipedia.org/wiki/Port_(computer_networking)#Port_number)
 
 >21
 
