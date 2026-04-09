@@ -13,9 +13,15 @@ collections:
   tryhackme:
     output: true
     permalink: /tryhackme/:title/
+  hackthebox:
+    output: true
+    permalink: /hackthebox/:title
   yamagata_xss:
     output: true
-    permalink: /xss/:title/
+    permalink: /yamagata_xss/:title/
+  y0n3uchy_xss:
+    output: true
+    permalink: /y0n3uchy_xss/:title/
   bandit:
     output: true
     permalink: /bandit/:title/
@@ -25,7 +31,5 @@ collections:
   try2hack:
     output: true
     permalink: /try2hack/:title
-  hackthebox:
-    output: true
-    permalink: /hackthebox/:title
+
 

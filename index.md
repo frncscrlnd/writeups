@@ -73,6 +73,25 @@ summary:hover{
     </ul>
 </details>
 <hr>
+## XSS Challenge (by y0n3uchy)
+<details>
+  <summary>> show/hide</summary>
+  {% assign sorted_y0n3uchy_xss = site.y0n3uchy_xss | sort: "order" %}
+  {% assign grouped_sets = sorted_y0n3uchy_xss | group_by: "set" %}
+  {% for set in grouped_sets %}
+    <details>
+      <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+      <ol>
+        {% for page in set.items %}
+          <li>
+            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "the cryptopals crypto challenges " }}</a>
+          </li>
+        {% endfor %}
+      </ol>
+    </details>
+  {% endfor %}
+</details>
+<hr>
 ## [Bandit (OverTheWire)](https://overthewire.org/wargames/bandit/)
 <details>
   <summary>> show/hide</summary>
