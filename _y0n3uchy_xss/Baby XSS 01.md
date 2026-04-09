@@ -9,7 +9,7 @@ Welcome to this XSS-related writeup series. We'll walk through some interesting 
 
 # [Baby XSS 01](https://xss.challenge.training.hacq.me/challenges/baby01.php)
 
-In this first challenge, the webpage source is visible:
+In this first challenge, the webpage's backend source is visible:
 
 ```
 <script src="hook.js"></script>
