@@ -2,6 +2,9 @@
 layout: default
 title: Hack The Box Fawn
 description: Walkthrough/writeup of Fawn, a Tsarting Point Hack The Box machine about FTP
+set: Starting Point
+subset: Tier 0 - Foundations
+order: 2
 ---
 
 # [Fawn](https://app.hackthebox.com/machines/Fawn)<!-- omit in toc -->

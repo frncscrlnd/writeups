@@ -2,6 +2,9 @@
 layout: default
 title: Hack The Box Meow
 description: Walkthrough/writeup for your first Hack The Box machine, Meow. 
+set: Starting Point
+subset: Tier 0 - Foundations
+order: 1
 ---
 
 # [Meow](https://app.hackthebox.com/machines/Meow)<!-- omit in toc -->

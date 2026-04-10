@@ -2,6 +2,9 @@
 layout: default
 title: Hack The Box Redeemer
 description: Walkthorugh/Writeup for Redeemer, a Starting Point Hack The Box machine about the the Redis Database Management System
+set: Starting Point
+subset: Tier 0 - Foundations
+order: 4
 ---
 
 # [Redeemer](https://app.hackthebox.com/machines/Redeemer)<!-- omit in toc -->

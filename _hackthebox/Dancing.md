@@ -2,6 +2,9 @@
 layout: default
 title: Hack The Box Dancing
 description: Walkthorugh/Writeup for Dancing, a Starting Point Hack The Box machine about the SMB protocol
+set: Starting Point
+subset: Tier 0 - Foundations
+order: 3
 ---
 
 # [Dancing](https://app.hackthebox.com/machines/Dancing)<!-- omit in toc -->

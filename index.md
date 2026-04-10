@@ -53,13 +53,20 @@ summary:hover{
   </a>
   <details>
     <summary>> show/hide</summary>
-      <ul>
-        {% for page in site.hackthebox %}
-          <li>
-            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+    {% assign sorted_htb = site.hackthebox | sort: "order" %}
+    {% assign grouped_sets = sorted_htb | group_by: "set" %}
+    {% for set in grouped_sets %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ol>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
+            </li>
+          {% endfor %}
+        </ol>
+      </details>
+    {% endfor %}
   </details>
 <hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
@@ -73,23 +80,23 @@ summary:hover{
     </ul>
 </details>
 <hr>
-## XSS Challenge (by y0n3uchy)
+## [XSS Challenge (by y0n3uchy)](https://xss.challenge.training.hacq.me/)
 <details>
   <summary>> show/hide</summary>
   {% assign sorted_y0n3uchy_xss = site.y0n3uchy_xss | sort: "order" %}
-  {% assign grouped_sets = sorted_y0n3uchy_xss | group_by: "set" %}
-  {% for set in grouped_sets %}
-    <details>
-      <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
-      <ol>
-        {% for page in set.items %}
-          <li>
-            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "the cryptopals crypto challenges " }}</a>
-          </li>
-        {% endfor %}
-      </ol>
-    </details>
-  {% endfor %}
+    {% assign grouped_sets = sorted_y0n3uchy_xss | group_by: "set" %}
+    {% for set in grouped_sets %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ol>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "XSS Challenge by y0n3uchy " }}</a>
+            </li>
+          {% endfor %}
+        </ol>
+      </details>
+    {% endfor %}
 </details>
 <hr>
 ## [Bandit (OverTheWire)](https://overthewire.org/wargames/bandit/)
