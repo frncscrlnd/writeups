@@ -50,24 +50,40 @@ summary:hover{
       alt="Hack The Box Profile"
       height="80"
     />
-  </a>
-  <details>
-    <summary>> show/hide</summary>
-    {% assign sorted_htb = site.hackthebox | sort: "order" %}
-    {% assign grouped_sets = sorted_htb | group_by: "set" %}
-    {% for set in grouped_sets %}
-      <details>
-        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
-        <ol>
-          {% for page in set.items %}
-            <li>
-              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
-            </li>
-          {% endfor %}
-        </ol>
-      </details>
-    {% endfor %}
-  </details>
+</a>
+<details>
+  <summary>> show/hide</summary>
+  {% assign sorted_htb = site.hackthebox | sort: "order" %}
+  {% assign grouped_sets = sorted_htb | group_by: "set" %}
+  {% for set in grouped_sets %}
+    <details>
+      <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+      {% assign grouped_subsets = set.items | group_by: "subset" %}
+      {% for subset in grouped_subsets %}
+        {% if subset.name != "" %}
+          <details>
+            <summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> {{ subset.name }}</summary>
+            <ol>
+              {% for page in subset.items %}
+                <li>
+                  <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
+                </li>
+              {% endfor %}
+            </ol>
+          </details>
+        {% else %}
+          <ol>
+            {% for page in subset.items %}
+              <li>
+                <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
+              </li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+      {% endfor %}
+    </details>
+  {% endfor %}
+</details>
 <hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
