@@ -44,7 +44,7 @@ $escaped = preg_replace("/[()]/", "", $_GET['payload']);
 $escaped = preg_replace("/.*o.*n.*/i", "", $escaped);
 ```
 
-This means that we cannot use the following characters: `[,(,),]` as they will be replaced with `""`
+This means that we cannot use the following characters: `(` and `)` as they will be replaced with `""`
 
 Also, any string that contains the `on` will be removed (replaced with `""`).
 
