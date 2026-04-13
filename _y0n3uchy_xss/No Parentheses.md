@@ -50,6 +50,6 @@ Also, any string that contains the `on` will be removed (replaced with `""`).
 
 However we can still easily get through this filter with the `` ` `` (backtick) character by using [tagged templates](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#tagged_templates): the `` ` `` can, in fact, act like a `(` parenthesis:
 
-`alert("XSS")` `==` `` alert`XSS` ``
+`<script>alert("XSS")</script>` `==` ``<script>alert`XSS`</script>``
 
 This last payload will solve the challenge.
