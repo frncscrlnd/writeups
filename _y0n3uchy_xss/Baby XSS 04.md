@@ -34,3 +34,5 @@ $escaped = preg_replace("/[`<>ux]\\/", "", $_GET['payload']);
 <h1>src</h1>
 <?php highlight_string(file_get_contents(basename(__FILE__))); ?>
 ```
+
+However, no payload is visible after submitting. Il will always return こんにちは!
