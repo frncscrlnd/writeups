@@ -58,9 +58,9 @@ summary:hover{
   {% for set in grouped_sets %}
     <details>
       <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
-      {% assign grouped_subsets = set.items | group_by: "subset" %}
+      {% assign sorted_items = set.items | sort: "subset" %}
+      {% assign grouped_subsets = sorted_items | group_by: "subset" %}
       {% for subset in grouped_subsets %}
-        {% if subset.name != "" %}
           <details>
             <summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> {{ subset.name }}</summary>
             <ol>
