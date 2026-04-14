@@ -137,7 +137,7 @@ To [download a file from ftp](https://learn.microsoft.com/en-us/windows-server/a
 
 >get
 
-## Submit flag
+## Submit Flag
 
 *Submit root flag*
 

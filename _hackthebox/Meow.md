@@ -118,7 +118,7 @@ we got in, that means the username is
 
 >root
 
-## Submit flag
+## Submit Flag
 
 *Submit root flag*
 

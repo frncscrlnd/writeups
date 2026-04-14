@@ -19,7 +19,7 @@ This Starting Point Hack The Box machine about the SMB (Samba) protocol walks us
 - [Task 5](#task-5)
 - [Task 6](#task-6)
 - [Task 7](#task-7)
-- [Submit flag](#submit-flag)
+- [Submit Flag](#submit-flag)
 
 ## Task 1
 
@@ -149,7 +149,7 @@ Just like we did in [Fawn](https://frncscrlnd.github.io/writeups/hackthebox/Fawn
 
 is the command we can use to download files via SMB.
 
-## Submit flag
+## Submit Flag
 
 *Submit root flag*
 

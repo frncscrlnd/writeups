@@ -22,7 +22,7 @@ This Starting Point machine revolves entirely around [Redis](https://en.wikipedi
 - [Task 8](#task-8)
 - [Task 9](#task-9)
 - [Task 10](#task-10)
-- [Submit flag](#submit-flag)
+- [Submit Flag](#submit-flag)
 
 ## Task 1
 
@@ -297,7 +297,7 @@ in our case it will return:
 4) "temp"
 ```
 
-## Submit flag
+## Submit Flag
 
 *Submit root flag*
 

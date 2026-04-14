@@ -104,13 +104,13 @@ summary:hover{
     {% for set in grouped_sets %}
       <details>
         <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
-        <ol>
+        <ul>
           {% for page in set.items %}
             <li>
               <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "XSS Challenge by y0n3uchy " }}</a>
             </li>
           {% endfor %}
-        </ol>
+        </ul>
       </details>
     {% endfor %}
 </details>
