@@ -7,7 +7,7 @@ subset: Tier 1 - Fundamental Exploitation
 order: 1
 ---
 
-# [Appointmen](https://app.hackthebox.com/machines/Appointment)<!-- omit in toc -->
+# [Appointment](https://app.hackthebox.com/machines/Appointment)<!-- omit in toc -->
 
 This Starting Point Hack The Box machine revolves around the SQL language.
 
