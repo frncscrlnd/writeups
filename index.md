@@ -63,13 +63,13 @@ summary:hover{
       {% for subset in grouped_subsets %}
           <details>
             <summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> {{ subset.name }}</summary>
-            <ol>
+            <ul>
               {% for page in subset.items %}
                 <li>
                   <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
                 </li>
               {% endfor %}
-            </ol>
+            </ul>
           </details>
         {% else %}
           <ol>
