@@ -56,7 +56,6 @@ We can answer this question by visiting the 2021 OWASP Top 10 page](https://owas
 
 *What does Nmap report as the service and version that are running on port 80 of the target?*
 
-
 We now need to run a [nmap](https://nmap.org/download) scan on the target machine. Port 80 sits inside the [most used 1000 ports](https://nmap.org/book/man-port-specification.html), so we don't need to specify a port. However, we need to know the service and the version that is running on port 80, so we need the `-sV` flag: `nmap target-ip-here -sV` which will return
 
 ```
