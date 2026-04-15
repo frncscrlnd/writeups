@@ -61,6 +61,7 @@ summary:hover{
       {% assign sorted_items = set.items | sort: "subset" %}
       {% assign grouped_subsets = sorted_items | group_by: "subset" %}
       {% for subset in grouped_subsets %}
+        {% if subset.name != "" %}
           <details>
             <summary>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;> {{ subset.name }}</summary>
             <ul>
@@ -72,13 +73,13 @@ summary:hover{
             </ul>
           </details>
         {% else %}
-          <ol>
+          <ul>
             {% for page in subset.items %}
               <li>
                 <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "Hack The Box " }}</a>
               </li>
             {% endfor %}
-          </ol>
+          </ul>
         {% endif %}
       {% endfor %}
     </details>
