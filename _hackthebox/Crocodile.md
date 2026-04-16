@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Hack The Box Crocodile
-description: Walkthorugh/Writeup for Crocodile, a Starting Point Hack The Box machine about MariaDB, an open-source DBMS
+description: Walkthorugh/Writeup for Crocodile, a Starting Point Hack The Box machine about FTP, nmap and gobuster
 set: Starting Point
 subset: Tier 1 - Fundamental Exploitation
 order: 3
