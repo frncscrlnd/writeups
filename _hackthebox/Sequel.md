@@ -4,7 +4,7 @@ title: Hack The Box Sequel
 description: Walkthorugh/Writeup for Sequel, a Starting Point Hack The Box machine about MariaDB, an open-source DBMS
 set: Starting Point
 subset: Tier 1 - Fundamental Exploitation
-order: 1
+order: 2
 ---
 
 # [Sequel](https://app.hackthebox.com/machines/Sequel)<!-- omit in toc -->
