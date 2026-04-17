@@ -197,6 +197,8 @@ Now we're in the target host. Let's navigate directories (list directories with 
 
 ## Submit Flag
 
+*Submit root flag*
+
 Let's read the flag with `cat flag.txt`:
 
 >ea81b7afddd03efaa0945333ed147fac
