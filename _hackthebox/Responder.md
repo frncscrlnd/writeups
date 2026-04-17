@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Hack The Box Redeemer
+title: Hack The Box Responder
 description: Walkthorugh/Writeup for Responder, a Starting Point Hack The Box machine about responder, a tool made to capture NTLMv2 Challenge/Response
 set: Starting Point
 subset: Tier 1 - Fundamental Exploitation
-order: 3
+order: 4
 ---
 
 # [Responder](https://app.hackthebox.com/machines/Responder)<!-- omit in toc -->
