@@ -107,7 +107,7 @@ status code.
 
 *Gobuster is one tool used to brute force directories on a webserver. What switch do we use with Gobuster to specify we're looking to discover directories, and not subdomains?*
 
-To solve this tasl we'll need [Gobuster](https://github.com/OJ/gobuster), which is included in [Kali linux](https://www.kali.org/). We'll use a wordlist from [SecLists](https://github.com/danielmiessler/SecLists) to try and guess some directory names to practice directory enumeration:
+To solve this task we'll need [Gobuster](https://github.com/OJ/gobuster), which is included in [Kali linux](https://www.kali.org/). We'll use a wordlist from [SecLists](https://github.com/danielmiessler/SecLists) to try and guess some directory names to practice directory enumeration:
 
 `gobuster dir -u target-ip-here -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt`
 
