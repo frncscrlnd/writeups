@@ -67,7 +67,7 @@ is showing up on port 445
 
 The challenge is now telling us to interact with the SMB server. We can do so by using the [`smbclient`](https://www.samba.org/samba/docs/current/man-html/smbclient.1.html) like this: `smbclient target-ip-here command`. With this interface we can list all available SMB shares with the 
 
->-L
+>`-L`
 
 flag/switch 
 
