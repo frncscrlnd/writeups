@@ -9,6 +9,8 @@ order: 4
 
 # [Responder](https://app.hackthebox.com/machines/Responder)<!-- omit in toc -->
 
+This Starting Point machine revolves entirely around [responder](https://github.com/SpiderLabs/Responder), a tool made to capture NTLMv2 Challenge/Response
+
 ### Table of contents:
 - [Task 1](#task-1)
 - [Task 2](#task-2)
@@ -31,7 +33,7 @@ After pasting the machine's IP address in the address bar, we get redirected to
 
 >`unika.htb`
 
-However, we can't access the web page. This is because Hack The Box is probably using [virtual hosting](https://portswigger.net/web-security/host-header#:~:text=Virtual%20hosting). This means that the requested website changes based on the value of the `Host` [HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers). We can change this value by adding the server's IP address and domain name to our `/etc/hosts` like this: `nano /etc/hosts` then paste `target-ip-here unika.htb` on a new line at the end of the file. `Ctrl+x` then `y` then press Enter. Now we can visit `unika.htb`
+However, we can't access the web page. This is because Hack The Box is probably using [virtual hosting](https://portswigger.net/web-security/host-header#:~:text=Virtual%20hosting). This means that the requested website changes based on the value of the `Host` [HTTP header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers). We can change this value by adding the server's IP address and domain name to our `/etc/hosts` like this: `sudo nano /etc/hosts` then paste `target-ip-here unika.htb` on a new line at the end of the file. `Ctrl+x` then `y` then press Enter. Now we can visit `unika.htb`
 
 ## Task 2
 
@@ -183,7 +185,7 @@ means that this service is listening on port
 
 *On which user's desktop is the flag located?*
 
-We now need to remotely access this machine. We'll do so with [evil-winrm]:
+We now need to remotely access this machine. We'll do so with [evil-winrm](https://github.com/Hackplayers/evil-winrm):
 
 ```
 evil-winrm -i 10.129.98.102 -u administrator -p badminton
