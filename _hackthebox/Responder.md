@@ -75,7 +75,7 @@ Almost all of these values look legitimate: `french.html` is the actual value to
 
 is, however, a clear [LFI](https://en.wikipedia.org/wiki/File_inclusion_vulnerability#:~:text=Local%20file%20inclusion,-%5Bedit) attempt as it tries to navigate the host's file system back (`..`) to the root to the known WIndows file `hosts`, which holds domain name records, just like for `etc/hosts` on GNU/Linux distributions. Let's try and submit this payload as the value to the `page` parameter: `http://unika.htb/index.php?page=../../../../../../../../windows/system32/drivers/etc/hosts`
 
-![LFI]({{ site.baseurl }}/assets/images/htb/responder/hosts.png)
+![LFI]({{ site.baseurl }}/assets/images/htb/responder/lfi.png)
 
 ## Task 5
 
