@@ -48,7 +48,7 @@ or SQLi. It's a SQL-specific [code injection vulnerability](https://en.wikipedia
 
 *What is the 2021 OWASP Top 10 classification for this vulnerability?*
 
-We can answer this question by visiting the 2021 OWASP Top 10 page](https://owasp.org/Top10/2021/). [OWASP](https://owasp.org/) (Open Worldwide Application Security Project) is a foundation that works to create and mantain application security frameworks such as [WSTG](https://owasp.org/www-project-web-security-testing-guide/v42/). On that page you can scroll down to Injection and see that the code relative to SQL injections is
+We can answer this question by visiting the [2021 OWASP Top 10 page](https://owasp.org/Top10/2021/). [OWASP](https://owasp.org/) (Open Worldwide Application Security Project) is a foundation that works to create and mantain application security frameworks such as [WSTG](https://owasp.org/www-project-web-security-testing-guide/v42/). On that page you can scroll down to Injection and see that the code relative to SQL injections is
 
 >A03:2021-Injection
 
