@@ -13,12 +13,12 @@ We'll use [hashcat](https://hashcat.net/hashcat/), [hashid](https://www.kali.org
   - [48bb6e862e54f2a795ffc4e541caed4d](#48bb6e862e54f2a795ffc4e541caed4d)
   - [CBFDAC6008F9CAB4083784CBD1874F76618D2A97](#cbfdac6008f9cab4083784cbd1874f76618d2a97)
   - [1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032](#1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032)
-  - [$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom](#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom)
+  - [`$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`](#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom)
   - [279412f945939ba78ce0758d3fd83daa](#279412f945939ba78ce0758d3fd83daa)
 - [Level 2](#level-2)
   - [F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85](#f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85)
   - [1DFECA0C002AE40B8619ECF94819CC1B](#1dfeca0c002ae40b8619ecf94819cc1b)
-  - [$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.](#6areallyhardsalt6wkutqzquqqmrm0pt7mppmbgnnzxpmaxi4bjml9becfi3qxifhsgps41bqmhsrhvxgmpdjs6xekzas02)
+  - [`$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.`](#6areallyhardsalt6wkutqzquqqmrm0pt7mppmbgnnzxpmaxi4bjml9becfi3qxifhsgps41bqmhsrhvxgmpdjs6xekzas02)
   - [e5d8870e5bdd26602cab8dbe07a942c8669e56d6](#e5d8870e5bdd26602cab8dbe07a942c8669e56d6)
 
 ## Level 1
@@ -108,7 +108,7 @@ so the plaintext will be:
 
 > `letmein`
 
-### $2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom
+### `$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom`
 
 Let's do it all over again for this digest: `> hash.txt` to empty the `hash.txt` file, then `echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' > hash.txt` 
 
@@ -251,7 +251,7 @@ So our plaintext will be:
 
 > `n63umy8lkf4i`
 
-### $6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.
+### `$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.`
 
 Just like before, use `> hash.txt` to empty the `hash.txt` file, then write the digest inside a file with `echo $6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02 > hash.txt`
 
