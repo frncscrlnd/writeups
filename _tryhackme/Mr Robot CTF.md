@@ -1,6 +1,7 @@
 ---
 layout: default
 title: TryHackMe Mr Robot CTF
+description: Walkthrough/Writeup of a TryHackMe room about directory enumeration, WordPress and reverse shells
 ---
 
 # [Mr Robot CTF](https://tryhackme.com/room/mrrobot)<!-- omit in toc -->
@@ -76,7 +77,7 @@ fsocity.dic
 key-1-of-3.txt
 ```
 
-This means that ther's also a `key-1-of-3.txt` file, which turns out to be our first flag if we go to `[target_IP]/ley-1-of-3.txt`:
+This means that ther's also a `key-1-of-3.txt` file, which turns out to be our first flag if we go to `[target_IP]/key-1-of-3.txt`:
 
 > `073403c8a58a1f80d943455fb30724b9`
 

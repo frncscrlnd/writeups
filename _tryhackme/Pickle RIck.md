@@ -1,6 +1,7 @@
 ---
 layout: default
 title: TryHackMe Pickle Rick
+description: Walkthrough/Writeup of a TryHackMe room about directory enumeration, web shells and privilege escalation
 ---
 
 # [Pickle Rick](https://tryhackme.com/room/picklerick)<!-- omit in toc -->

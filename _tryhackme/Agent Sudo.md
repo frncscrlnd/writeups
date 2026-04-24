@@ -1,6 +1,7 @@
 ---
 layout: default
 title: TryHackMe Agent Sudo
+description: Walkthrough/Writeup of a TryHackMe room about nmap, ftp, steganography and privilege escalation
 ---
 
 # [Agent Sudo](https://tryhackme.com/room/agentsudoctf)<!-- omit in toc -->

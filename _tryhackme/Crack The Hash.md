@@ -1,6 +1,7 @@
 ---
 layout: default
 title: TryHackMe Crack The Hash
+description: Walkthrough/Writeup of a TryHackMe room about hash functions, hashcat and hashid.  
 ---
 
 # [Crack The Hash](https://tryhackme.com/room/crackthehash)<!-- omit in toc -->

@@ -1,6 +1,7 @@
 ---
 layout: default
 title: TryHackMe Blue
+description: Walkthrough/Writeup of a TryHackMe room about EternalBlue, the SMB protocol and Windows
 ---
 
 # [Blue](https://tryhackme.com/room/blue)<!-- omit in toc -->
