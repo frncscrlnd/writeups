@@ -259,12 +259,10 @@ To figure out which hash function has been used, run
 
 `hashcat '$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.'` or`hashcat hash.txt`
 
-as i told you for [this digest](#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom):
-
 ---
 **NOTE**
 
-If you type hashcat [digest], remember to use '' quotes as `$` chars won't be displayed as they are used for variables and parameters. 
+If you type `hashcat [digest]`, remember to use `''` quotes as `$` chars won't be displayed as they are used for variables and parameters. 
 
 ---
 
@@ -272,7 +270,7 @@ both `hashcat` and `hashid` don't return anything. We can try [crackstation](htt
 
 This means that we have to resort to looking for this digest's pattern among [hashcat's wiki examples](https://hashcat.net/wiki/doku.php?id=example_hashes).
 
-Once we've gone through them, it turns out that the hashing function that's been used is `sha512crypt` the function used in the `/etc/shadow` folder to hash passwords. Its' hashact code is 1800:
+Once we've gone through them, it turns out that the hashing function that's been used is `sha512crypt` the function used in the `/etc/shadow` folder to hash passwords. Its' hashcat code is 1800:
 
 `hashcat -a 0 -m 1800 '$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.' /usr/share/wordlists/rockyou.txt`
 
