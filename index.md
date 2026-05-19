@@ -21,7 +21,16 @@ summary:hover{
 
 
 # Stuck on a challenge/room/CTF?
-<br>
+## Setup tutorials
+<details>
+  <summary>> show/hide</summary>
+    <ul>
+      {% for page in site.setup %}
+      <li><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+      {% endfor %}
+    </ul>
+</details>
+<hr>
 ## [TryHackMe](https://tryhackme.com/)
 <div style="overflow: hidden; height: 80px; flex-shrink: 0;">
   <iframe
