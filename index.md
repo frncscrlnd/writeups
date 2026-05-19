@@ -21,7 +21,7 @@ summary:hover{
 
 
 # Stuck on a challenge/room/CTF?
-
+<br>
 ## Setup tutorials
 <details>
   <summary>> show/hide</summary>
