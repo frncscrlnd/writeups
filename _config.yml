@@ -10,9 +10,6 @@ baseurl: "/writeups"
 url: "https://frncscrlnd.github.io" 
 
 collections:
-  setup:
-    output: true
-    permalink: /setup/:title/
   tryhackme:
     output: true
     permalink: /tryhackme/:title/
