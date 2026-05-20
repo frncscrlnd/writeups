@@ -96,6 +96,18 @@ summary:hover{
   {% endfor %}
 </details>
 <hr>
+## [FIRST CTF](https://ctf.first.org/)
+<details>
+  <summary>> show/hide</summary>
+  <ul>
+    {% for page in site.first %}
+      <li>
+        <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "FIRST CTF " }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</details>
+<hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
   <summary>> show/hide</summary>

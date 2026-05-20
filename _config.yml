@@ -34,5 +34,8 @@ collections:
   try2hack:
     output: true
     permalink: /try2hack/:title
+  first:
+    output: true
+    permalink: /first/:title
 
 
