@@ -99,15 +99,21 @@ summary:hover{
 ## [FIRST CTF](https://ctf.first.org/)
 <details>
   <summary>> show/hide</summary>
-  <ul>
-    {% for page in site.first %}
-      <li>
-        <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "FIRST CTF " }}</a>
-      </li>
+  {% assign sorted_first = site.first | sort: "order" %}
+    {% assign grouped_sets = sorted_first| group_by: "set" %}
+    {% for set in grouped_sets %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ul>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "FIRST CTF " }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
     {% endfor %}
-  </ul>
 </details>
-<hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
   <summary>> show/hide</summary>
