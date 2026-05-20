@@ -114,6 +114,7 @@ summary:hover{
       </details>
     {% endfor %}
 </details>
+<hr>
 ## [XSS challenges (by yamagata21)](https://xss-quiz.int21h.jp/)
 <details>
   <summary>> show/hide</summary>
