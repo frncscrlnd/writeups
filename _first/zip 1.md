@@ -1,7 +1,7 @@
 ---
 layout: default
 title: FIRST CTF zip 1
-description: Walkthorugh/Writeup for the zip 1 challenge, part of the Inter-regional CyberDrill October 2023 section.
+description: Walkthorugh/Writeup for the zip 1 challenge, part of the Inter-regional CyberDrill October 2023 section of the FIRST CTF.
 set: Inter-regional CyberDrill October 2023
 order: 4
 ---
