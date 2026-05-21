@@ -26,6 +26,6 @@ After opening up `network_traffic.pcap`, we can use this filter in the filter ba
 
 `SYN-ACK` segments directed towards the attacker (`192.168.1.18`) come from the following ports:
 
->22,
+>22,2375
 
 This will be the challenge's flag.
