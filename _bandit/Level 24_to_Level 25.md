@@ -61,7 +61,7 @@ This means that we can get the password by using sort, just like we did in [Leve
 sort res.txt | grep -v "again"
 ```
 
-or we could also use uniq -u, as we did, again, in [Level 7 → Level 8]({{ site.baseurl }}/bandit/level-7_to_level-8)
+or we could also use `uniq -u`, as we did, again, in [Level 7 → Level 8]({{ site.baseurl }}/bandit/level-7_to_level-8)
 
 ```
 uniq -u res.txt
@@ -75,7 +75,7 @@ I am the pincode checker for user bandit25. Please enter the password for user b
 The password of user bandit25 is iCi86ttT4KSNe1armKiwbQNmB3YJP3q4
 ```
 
-while uniq -u will return:
+while `uniq -u` will return:
 
 ```
 I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
