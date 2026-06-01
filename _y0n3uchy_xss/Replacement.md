@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy Replacement
+description: Walkthorugh/Writeup for the "Replacement" challenge, part of the "Battle with Logic" section of XSS Challenge by y0n3uchy.
 set: Battle with Logic
 order: 1
 ---

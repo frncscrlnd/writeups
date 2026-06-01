@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy Calculator
+description: Walkthorugh/Writeup for the "Calculator" challenge, part of the "Battle with Content-Security-Policy" section of XSS Challenge by y0n3uchy.
 set: Battle with Content-Security-Policy
 order: 2
 ---

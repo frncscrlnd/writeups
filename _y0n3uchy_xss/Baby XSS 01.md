@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy Baby XSS 01
+description: Walkthorugh/Writeup for the "Baby XSS 01" challenge, part of the "For Newbies" section of XSS Challenge by y0n3uchy.
 set: For Newbies
 order: 1
 ---

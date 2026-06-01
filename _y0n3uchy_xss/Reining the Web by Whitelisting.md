@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy Reining the Web by Whitelisting
+description: Walkthorugh/Writeup for the "Reining the Web by Whitelisting" challenge, part of the "Battle with Content-Security-Policy" section of XSS Challenge by y0n3uchy.
 set: Battle with Content-Security-Policy
 order: 1
 ---

@@ -87,9 +87,35 @@ Let's keep looking at those directories we found earlier: `wp-login` is probably
 
 ![login]({{ site.baseurl }}/assets/images/thm/mr/login.png)
 
-We are going to look at the rest of the directories just in case we missed anything useful. 
+We are going to look at the rest of the directories just in case we missed anything useful. Remember that `fsocity.dic` dictionary file? Let's download it with `wget http://<target-ip>/fsocity.dic`
 
-We stumble upon the /license directory. It displays a message:
+We can now use it to enumerate usernames (and possibly get a password) from the login form. We notice that trying to login with a random username will return the `ERROR: Invalid username. Lost your password?` error, so that means that we are actually able to enumerate usernames.
+
+Let's get this POST request's body with [burp](https://en.wikipedia.org/wiki/Burp_Suite). We'll see:
+
+`log=<username>&pwd=<password>`
+
+We'll use [`hydra`](https://www.kali.org/tools/hydra/) to run a [dictionary attack](https://en.wikipedia.org/wiki/Dictionary_attack) based on the `fsocity.dic` dictionary file.
+
+Username enumeration with hydra will look like this
+
+`hydra -L fsocity.dic -p test <target-ip> http-post-form "/wp-login:log=^USER^&pwd=^PWD^:Invalid username"` (`-L` means that we are using a username list instead of a single username)
+
+this will return
+
+```
+[80][http-post-form] host: 10.112.162.72   login: Elliot   password: test
+```
+
+This means that `Elliot` is the correct username. Logging in with that username and a random password will return the `ERROR: The password you entered for the username Elliot is incorrect. Lost your password?` error. Let's guess the password with the same wordlist:
+
+`hydra -l Elliot -P fsocity.dic <target-ip> http-post-form "/wp-login:log=^USER^&pwd=^PWD^:The password you entered for the username"` (`-P` means that we are using a password list instead of a single password). This will return:
+
+```
+
+```
+
+We stumble upon the `/license` directory. It displays a message:
 
 `what you do just pull code from Rapid9 or some s@#% since when did you become a script kitty?`
 
@@ -101,7 +127,7 @@ Scrolling down even further:
 
 `ZWxsaW90OkVSMjgtMDY1Mgo=`
 
-This might actually be a password, but to me this looks more like a [base64](https://en.wikipedia.org/wiki/Base64) encoded string: base64 encoded strings, in fact, works by dividng the input string in blocks of 3 bytes; if the total number of chars that make up the input string is not a multiple of 3, you'll se either 1 or 2 `=` chars.
+This might actually be a password, but to me this looks more like a [base64](https://en.wikipedia.org/wiki/Base64) encoded string: base64, in fact, works by dividing the input string in blocks of 3 bytes; if the total number of chars that make up the input string is not a multiple of 3, you'll se either 1 or 2 `=` chars.
 
 Let's decode this string:
 
@@ -116,6 +142,5 @@ Which is most probably the `/wp-login` username and password. Let's try and use 
 ![elliot]({{ site.baseurl }}/assets/images/thm/mr/elliot.png)
 
 We're in!
-
 
 ## What is key 3?

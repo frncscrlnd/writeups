@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy No Parentheses Again
+description: Walkthorugh/Writeup for the "No Parentheses Again" challenge, part of the "Battle with Filters" section of XSS Challenge by y0n3uchy.
 set: Battle with Filters
 order: 4
 ---

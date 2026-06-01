@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy Frustrating App
+description: Walkthorugh/Writeup for the "Frustrating App" challenge, part of the "Battle with Content-Security-Policy" section of XSS Challenge by y0n3uchy.
 set: Battle with Content-Security-Policy
 order: 4
 ---

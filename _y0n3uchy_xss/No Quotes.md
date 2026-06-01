@@ -1,6 +1,7 @@
 ---
 layout: default
 title: XSS Challenge by y0n3uchy No Quotes
+description: Walkthorugh/Writeup for the "No Quotes" challenge, part of the "Battle with Filters" section of XSS Challenge by y0n3uchy.
 set: Battle with Filters
 order: 3
 ---
