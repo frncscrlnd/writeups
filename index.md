@@ -146,6 +146,25 @@ summary:hover{
   </ul>
 </details>
 <hr>
+## [SadServers](https://sadservers.com/)
+<details>
+  <summary>> show/hide</summary>
+  {% assign sorted_sad = site.sad | sort: "order" %}
+    {% assign grouped_sets = sorted_sad | group_by: "set" %}
+    {% for set in grouped_sets %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ul>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "SadServers " }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% endfor %}
+</details>
+<hr>
 ## [the cryptopals crypto challenges](https://cryptopals.com/)
 <details>
   <summary>> show/hide</summary>
