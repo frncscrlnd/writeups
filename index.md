@@ -149,7 +149,7 @@ summary:hover{
 ## [SadServers](https://sadservers.com/)
 <details>
   <summary>> show/hide</summary>
-  {% assign sorted_sad = site.sadservers | sort: "order" %}
+  {% assign sorted_sad = site.sad | sort: "order" %}
     {% assign grouped_sets = sorted_sad | group_by: "set" %}
     {% for set in grouped_sets %}
       <details>
