@@ -157,7 +157,7 @@ summary:hover{
         <ul>
           {% for page in set.items %}
             <li>
-              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "SadServers " }}</a>
             </li>
           {% endfor %}
         </ul>
