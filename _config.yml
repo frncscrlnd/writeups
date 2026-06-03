@@ -34,7 +34,7 @@ collections:
   first:
     output: true
     permalink: /first/:title
-  sad:
+  sadservers:
     output: true
     permalink: /sad/:title
 
