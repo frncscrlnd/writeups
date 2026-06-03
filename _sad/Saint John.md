@@ -1,6 +1,6 @@
 ---
 layout: default
-title: SadServers "Saint John": what is writing to this log file?
+title: SadServers Saint John: what is writing to this log file?
 description: Walkthorugh/Writeup for the "Saint John: what is writing to this log file?" challenge, part of the easy section of the SadServers challenges.
 set: Easy
 order: 1

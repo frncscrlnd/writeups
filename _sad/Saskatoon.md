@@ -1,6 +1,6 @@
 ---
 layout: default
-title: SadServers "Saskatoon": counting IPs
+title: SadServers Saskatoon: counting IPs
 description: Walkthorugh/Writeup for the "Saskatoon: counting IPs" challenge, part of the easy section of the SadServers challenges.
 set: Easy
 order: 2
