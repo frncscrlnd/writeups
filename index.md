@@ -152,8 +152,18 @@ summary:hover{
   {% assign sorted_sad = site.sad | sort: "order" %}
   {% assign grouped_sets = sorted_sad | group_by: "set" %}
   {% for set in grouped_sets %}
-    <details>
-      <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+    {% if set.name != "" %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ul>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "SadServers " }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% else %}
       <ul>
         {% for page in set.items %}
           <li>
@@ -161,7 +171,7 @@ summary:hover{
           </li>
         {% endfor %}
       </ul>
-    </details>
+    {% endif %}
   {% endfor %}
 </details>
 <hr>
