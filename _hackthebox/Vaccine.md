@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Hack The Box Three
-description: Walkthorugh/Writeup for Three, a Starting Point Hack The Box machine about AWS S3 buckets, PHP web shells and directory/subdomain enumeration 
+title: Hack The Box Vaccine
+description: Walkthorugh/Writeup for Vaccine, a boot to root Starting Point Hack The Box machine featuring SQL injections and privilege escalation. 
 set: Starting Point
 subset: Tier 2 - Multi-Step Attacks and Privilege Escalation
 order: 5
@@ -9,7 +9,7 @@ order: 5
 
 # [Vaccine](https://app.hackthebox.com/machines/Vaccine)<!-- omit in toc -->
 
-This Starting Point machine revolves entirely around [AWS S3 buckets](https://aws.amazon.com/s3/), PHP web shells and directory/subdomain enumeration.
+This Starting Point machine revolves around [SQL injections](https://en.wikipedia.org/wiki/SQL_injection) and privilege escalation.
 
 ### Table of contents:
 - [Task 1](#task-1)
