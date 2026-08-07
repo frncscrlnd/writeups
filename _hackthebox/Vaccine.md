@@ -4,7 +4,7 @@ title: Hack The Box Vaccine
 description: Walkthorugh/Writeup for Vaccine, a boot to root Starting Point Hack The Box machine featuring SQL injections and privilege escalation. 
 set: Starting Point
 subset: Tier 2 - Multi-Step Attacks and Privilege Escalation
-order: 5
+order: 1
 ---
 
 # [Vaccine](https://app.hackthebox.com/machines/Vaccine)<!-- omit in toc -->
