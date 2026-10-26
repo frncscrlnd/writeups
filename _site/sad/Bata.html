@@ -1,0 +1,43 @@
+<h1 id="bata-find-in-proc"><a href="https://sadservers.com/scenario/bata">“Bata”: Find in /proc</a></h1>
+
+<p>This challenge tells us a spy has left a password in the <code class="language-plaintext highlighter-rouge">/proc/sys</code> directory. Let’s get into this directory with <code class="language-plaintext highlighter-rouge">cd /proc/sys</code>. We only know that the contents of the file starts with this format: <code class="language-plaintext highlighter-rouge">secret:</code>. We’ll have to put that secret into <code class="language-plaintext highlighter-rouge">/home/admin/secret.txt</code>.</p>
+
+<p>To search text for a line that matches a format we ca use <a href="https://www.gnu.org/software/grep/"><code class="language-plaintext highlighter-rouge">grep</code></a>. However, using <code class="language-plaintext highlighter-rouge">grep secret .</code> (<code class="language-plaintext highlighter-rouge">.</code> stands for current directory) is not enough as grep will only search for the line in this directory. To go deeper into subdirectories, we have to use the <code class="language-plaintext highlighter-rouge">-r</code> flag, like this: <code class="language-plaintext highlighter-rouge">grep -r "secret" .</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>grep: ./fs/binfmt_misc/register: Permission denied
+grep: ./fs/protected_fifos: Permission denied
+grep: ./fs/protected_hardlinks: Permission denied
+grep: ./fs/protected_regular: Permission denied
+grep: ./fs/protected_symlinks: Permission denied
+grep: ./kernel/cad_pid: Permission denied
+./kernel/core_pattern:secret:excalibur
+grep: ./kernel/unprivileged_userns_apparmor_policy: Permission denied
+grep: ./kernel/usermodehelper/bset: Permission denied
+grep: ./kernel/usermodehelper/inheritable: Permission denied
+grep: ./net/core/bpf_jit_harden: Permission denied
+grep: ./net/core/bpf_jit_kallsyms: Permission denied
+grep: ./net/core/bpf_jit_limit: Permission denied
+grep: ./net/ipv4/route/flush: Permission denied
+grep: ./net/ipv4/tcp_fastopen_key: Permission denied
+grep: ./net/ipv6/conf/all/stable_secret: Permission denied
+grep: ./net/ipv6/conf/default/stable_secret: Permission denied
+grep: ./net/ipv6/conf/docker0/stable_secret: Permission denied
+grep: ./net/ipv6/conf/ens5/stable_secret: Permission denied
+grep: ./net/ipv6/conf/lo/stable_secret: Permission denied
+grep: ./net/ipv6/route/flush: Permission denied
+grep: ./vm/compact_memory: Permission denied
+grep: ./vm/drop_caches: Permission denied
+grep: ./vm/mmap_rnd_bits: Permission denied
+grep: ./vm/mmap_rnd_compat_bits: Permission denied
+grep: ./vm/stat_refresh: Permission denied
+</code></pre></div></div>
+
+<p>This means that the password will be</p>
+
+<blockquote>
+  <p>excalibur</p>
+</blockquote>
+
+<p>We can now submit the password by using <code class="language-plaintext highlighter-rouge">echo "excalibur" &gt; /home/admin/secret.txt</code>.</p>

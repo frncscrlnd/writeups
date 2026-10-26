@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Appointment | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Appointment" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Appointment, a Starting Point Hack The Box machine about SQL" />
+<meta property="og:description" content="Walkthorugh/Writeup for Appointment, a Starting Point Hack The Box machine about SQL" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Appointment" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Appointment" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Appointment" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Appointment, a Starting Point Hack The Box machine about SQL","headline":"Hack The Box Appointment","url":"http://localhost:4000/hackthebox/Appointment"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="appointment"><a href="https://app.hackthebox.com/machines/Appointment">Appointment</a><!-- omit in toc --></h1>
+
+<p>This Starting Point Hack The Box machine revolves around the SQL language.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#task-8">Task 8</a></li>
+  <li><a href="#task-9">Task 9</a></li>
+  <li><a href="#task-10">Task 10</a></li>
+  <li><a href="#submit-flag">Submit Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>What does the acronym SQL stand for?</em></p>
+
+<p><a href="https://en.wikipedia.org/wiki/SQL">SQL</a> stands for</p>
+
+<blockquote>
+  <p>Structured Query Language</p>
+</blockquote>
+
+<p>and is used to manage data in relational DBMSs.</p>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>What is one of the most common type of SQL vulnerabilities?</em></p>
+
+<p>The most common type of SQL <a href="https://en.wikipedia.org/wiki/Vulnerability_(computer_security)">vulnerability</a> is</p>
+
+<blockquote>
+  <p>SQL injection</p>
+</blockquote>
+
+<p>or SQLi. It’s a SQL-specific <a href="https://en.wikipedia.org/wiki/Code_injection">code injection vulnerability</a>.</p>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>What is the 2021 OWASP Top 10 classification for this vulnerability?</em></p>
+
+<p>We can answer this question by visiting the <a href="https://owasp.org/Top10/2021/">2021 OWASP Top 10 page</a>. <a href="https://owasp.org/">OWASP</a> (Open Worldwide Application Security Project) is a foundation that works to create and mantain application security frameworks such as <a href="https://owasp.org/www-project-web-security-testing-guide/v42/">WSTG</a>. On that page you can scroll down to Injection and see that the code relative to SQL injections is</p>
+
+<blockquote>
+  <p>A03:2021-Injection</p>
+</blockquote>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>What does Nmap report as the service and version that are running on port 80 of the target?</em></p>
+
+<p>We now need to run a <a href="https://nmap.org/download">nmap</a> scan on the target machine. Port 80 sits inside the <a href="https://nmap.org/book/man-port-specification.html">most used 1000 ports</a>, so we don’t need to specify a port. However, we need to know the service and the version that is running on port 80, so we need the <code class="language-plaintext highlighter-rouge">-sV</code> flag: <code class="language-plaintext highlighter-rouge">nmap target-ip-here -sV</code> which will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.38 ((Debian))
+</code></pre></div></div>
+
+<p>Now we know that</p>
+
+<blockquote>
+  <p>Apache httpd 2.4.38 ((Debian))</p>
+</blockquote>
+
+<p>is running on that port</p>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>What is the standard port used for the HTTPS protocol?</em></p>
+
+<p>As we’ve seen before, <a href="https://en.wikipedia.org/wiki/Port_(computer_networking)">port</a> 80 is usually the standard port for the <a href="https://en.wikipedia.org/wiki/HTTP">HTTP protocol</a>. <a href="https://en.wikipedia.org/wiki/HTTPS">HTTPS</a>, however, is the secure version of HTTP and runs on port</p>
+
+<blockquote>
+  <p>443</p>
+</blockquote>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>What is a folder called in web-application terminology?</em></p>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Folder_(computing)">folder</a> in web-application technology is also known as a</p>
+
+<blockquote>
+  <p>directory</p>
+</blockquote>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>What is the HTTP response code that is returned for <code class="language-plaintext highlighter-rouge">Not Found</code> errors?</em></p>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">HTTP response codes</a> are quite many and mean different things:</p>
+
+<ol>
+  <li>Informational responses (<code class="language-plaintext highlighter-rouge">100</code> – <code class="language-plaintext highlighter-rouge">199</code>)</li>
+  <li>Successful responses (<code class="language-plaintext highlighter-rouge">200</code> – <code class="language-plaintext highlighter-rouge">299</code>)</li>
+  <li>Redirection messages (<code class="language-plaintext highlighter-rouge">300</code> – <code class="language-plaintext highlighter-rouge">399</code>)</li>
+  <li>Client error responses (<code class="language-plaintext highlighter-rouge">400</code> – <code class="language-plaintext highlighter-rouge">499</code>)</li>
+  <li>Server error responses (<code class="language-plaintext highlighter-rouge">500</code> – <code class="language-plaintext highlighter-rouge">599</code>)</li>
+</ol>
+
+<p><code class="language-plaintext highlighter-rouge">Not Found</code> errors fall under the <code class="language-plaintext highlighter-rouge">400</code> range, as the client is to be blamed for an unexisting direcroty being requested. More specifically, you’ll see a</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">404</code></p>
+</blockquote>
+
+<p>status code.</p>
+
+<h2 id="task-8">Task 8</h2>
+
+<p><em>Gobuster is one tool used to brute force directories on a webserver. What switch do we use with Gobuster to specify we’re looking to discover directories, and not subdomains?</em></p>
+
+<p>To solve this task we’ll need <a href="https://github.com/OJ/gobuster">Gobuster</a>, which is included in <a href="https://www.kali.org/">Kali linux</a>. We’ll use a wordlist from <a href="https://github.com/danielmiessler/SecLists">SecLists</a> to try and guess some directory names to practice directory enumeration:</p>
+
+<p><code class="language-plaintext highlighter-rouge">gobuster dir -u target-ip-here -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt</code></p>
+
+<p>As you can see (also read the <a href="https://github.com/OJ/gobuster">docs</a>), the switch to specify directory over subdomain enumeration is</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">dir</code></p>
+</blockquote>
+
+<p>in my case, the original command returned</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+css                  (Status: 301) [Size: 312] [--&gt; http://target-ip-here/css/]
+images               (Status: 301) [Size: 315] [--&gt; http://target-ip-here/images/]
+js                   (Status: 301) [Size: 311] [--&gt; http://target-ip-here/js/]
+fonts                (Status: 301) [Size: 314] [--&gt; http://target-ip-here/fonts/]
+vendor               (Status: 301) [Size: 315] [--&gt; http://target-ip-here/vendor/]
+server-status        (Status: 403) [Size: 278]
+</code></pre></div></div>
+
+<p>code <code class="language-plaintext highlighter-rouge">301</code> menas the request has been redirected; in our case it’s just a minor redirection as the destination directory is just the one that has been found + <code class="language-plaintext highlighter-rouge">/</code>.</p>
+
+<h2 id="task-9">Task 9</h2>
+
+<p><em>What single character can be used to comment out the rest of a line in MySQL?</em></p>
+
+<p>There are multiple ways of commenting out a line in <a href="https://en.wikipedia.org/wiki/MySQL">MySQL</a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">--</code> and</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#</code></p>
+</blockquote>
+
+<h2 id="task-10">Task 10</h2>
+
+<p><em>If user input is not handled carefully, it could be interpreted as a comment. Use a comment to login as admin without knowing the password. What is the first word on the webpage returned?</em></p>
+
+<p>This task wants us to paste the machine ip inside the address bar in our browser and vist its’ web page. A login form will appear. We need to put into practice what we learned in the last task: <code class="language-plaintext highlighter-rouge">#</code> comments out the rest of the line. This means that appending <code class="language-plaintext highlighter-rouge">#</code> to the username will log us in, right? Wrong, as <code class="language-plaintext highlighter-rouge">#</code> will also comment out <code class="language-plaintext highlighter-rouge">'</code>, which defines the end of a SQL query.</p>
+
+<p>So our payload will be <code class="language-plaintext highlighter-rouge">admin'#</code></p>
+
+<p>This will return</p>
+
+<blockquote>
+  <p>Congratulations</p>
+</blockquote>
+
+<p>and our flag</p>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p>On the same page you’ll see the flag:</p>
+
+<blockquote>
+  <p>e3d0796d002a446c0e622226f42e9672</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

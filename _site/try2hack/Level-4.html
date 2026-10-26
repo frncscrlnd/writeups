@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>try2hack Level 4 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="try2hack Level 4" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Writeup of try2hack level 4, a CTF-style challenge about web hacking" />
+<meta property="og:description" content="Writeup of try2hack level 4, a CTF-style challenge about web hacking" />
+<link rel="canonical" href="http://localhost:4000/try2hack/Level-4" />
+<meta property="og:url" content="http://localhost:4000/try2hack/Level-4" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="try2hack Level 4" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Writeup of try2hack level 4, a CTF-style challenge about web hacking","headline":"try2hack Level 4","url":"http://localhost:4000/try2hack/Level-4"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-4"><a href="https://try2hack.nl/levels/level4-kdnvxs.xhtml">Level 4</a></h1>
+
+<p>In this challenge’s source code we come across this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- content --&gt;
+    &lt;!--[if !IE]&gt;--&gt;
+    &lt;object classid="java:PasswdLevel4.class" type="application/x-java-applet" height="370" width="330"&gt;
+        &lt;!--&lt;![endif]--&gt;
+        &lt;object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" codebase="http://java.sun.com/update/1.6.0/jinstall-6u10-windows-i586.cab" height="370" width="330"&gt; 
+            &lt;param name="code" value="PasswdLevel4"&gt;
+        &lt;/object&gt; 
+        &lt;!--[if !IE]&gt;--&gt;
+    &lt;/object&gt;
+    &lt;!--&lt;![endif]--&gt;
+&lt;!-- end content --&gt;
+</code></pre></div></div>
+
+<p>and this is probably the reason there’s no visible content in this page. <code class="language-plaintext highlighter-rouge">PasswdLevel4.class</code> is a <a href="en.wikipedia.org/wiki/Java_applet">Java applet</a>, which has been discontinued just like Adobe Flash from <a href="https://frncscrlnd.github.io/writeups/try2hack/Level-2">Level 2</a>. Unfortunately, there are no browser java emulators available, so we’ll need to decompile the <code class="language-plaintext highlighter-rouge">.class</code> file (which is a compiled <code class="language-plaintext highlighter-rouge">.java</code> file) with <a href="https://www.benf.org/other/cfr/">CFR</a>. After downloading the <code class="language-plaintext highlighter-rouge">.jar</code> file and the <code class="language-plaintext highlighter-rouge">.class</code> file at try2hack.nl/levels/PasswdLevel4.class we can decompile it like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>java -jar cfr-0.152.jar PasswdLevel4.class
+</code></pre></div></div>
+
+<p>this will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class PasswdLevel4
+extends Applet
+implements ActionListener {
+    private URL finalurl;
+    String infile;
+    String[] inuser = new String[22];
+    int totno = 0;
+    InputStream countConn = null;
+    BufferedReader countData = null;
+    URL inURL = null;
+    TextField txtlogin = new TextField();
+    Label label1 = new Label();
+    Label label2 = new Label();
+    Label label3 = new Label();
+    TextField txtpass = new TextField();
+    Label lblstatus = new Label();
+    Button ButOk = new Button();
+    Button ButReset = new Button();
+    Label lbltitle = new Label();
+
+    void ButOk_ActionPerformed(ActionEvent actionEvent) {
+        boolean bl = false;
+        int n = 1;
+        while (n &lt;= this.totno / 2) {
+            if (this.txtlogin.getText().trim().toUpperCase().intern() == this.inuser[2 * (n - 1) + 2].trim().toUpperCase().intern() &amp;&amp; this.txtpass.getText().trim().toUpperCase().intern() == this.inuser[2 * (n - 1) + 3].trim().toUpperCase().intern()) {
+                this.lblstatus.setText("Login Success, Loading..");
+                bl = true;
+                String string = this.inuser[1].trim().intern();
+                String string2 = this.getParameter("targetframe");
+                if (string2 == null) {
+                    string2 = "_self";
+                }
+                try {
+                    this.finalurl = new URL(this.getCodeBase(), string);
+                }
+                catch (MalformedURLException malformedURLException) {
+                    this.lblstatus.setText("Bad URL");
+                }
+                this.getAppletContext().showDocument(this.finalurl, string2);
+            }
+            ++n;
+        }
+        if (!bl) {
+            this.lblstatus.setText("Invaild Login or Password");
+        }
+    }
+
+    void ButReset_ActionPerformed(ActionEvent actionEvent) {
+        ((TextComponent)this.txtlogin).setText("");
+        ((TextComponent)this.txtpass).setText("");
+    }
+
+    public void actionPerformed(ActionEvent actionEvent) {
+        Object object = actionEvent.getSource();
+        if (object == this.ButOk) {
+            this.ButOk_ActionPerformed(actionEvent);
+            return;
+        }
+        if (object == this.ButReset) {
+            this.ButReset_ActionPerformed(actionEvent);
+        }
+    }
+
+    public void destroy() {
+        this.ButOk.setEnabled(false);
+        this.ButReset.setEnabled(false);
+        this.txtlogin.setVisible(false);
+        this.txtpass.setVisible(false);
+    }
+
+    public void inFile() {
+        new StringBuffer();
+        try {
+            String string;
+            this.countConn = this.inURL.openStream();
+            this.countData = new BufferedReader(new InputStreamReader(this.countConn));
+            while ((string = this.countData.readLine()) != null) {
+                if (this.totno &lt; 21) {
+                    ++this.totno;
+                    this.inuser[this.totno] = string;
+                    string = "";
+                    continue;
+                }
+                this.lblstatus.setText("Cannot Exceed 10 users, Applet fail start!");
+                this.destroy();
+            }
+        }
+        catch (IOException iOException) {
+            this.getAppletContext().showStatus("IO Error:" + iOException.getMessage());
+        }
+        try {
+            this.countConn.close();
+            this.countData.close();
+            return;
+        }
+        catch (IOException iOException) {
+            this.getAppletContext().showStatus("IO Error:" + iOException.getMessage());
+            return;
+        }
+    }
+
+    public void init() {
+        this.setLayout(null);
+        this.setSize(361, 191);
+        this.add(this.txtlogin);
+        this.txtlogin.setBounds(156, 72, 132, 24);
+        this.label1.setText("Please Enter Login Name &amp; Password");
+        this.label1.setAlignment(1);
+        this.add(this.label1);
+        this.label1.setFont(new Font("Dialog", 1, 12));
+        this.label1.setBounds(41, 36, 280, 24);
+        this.label2.setText("Login");
+        this.add(this.label2);
+        this.label2.setFont(new Font("Dialog", 1, 12));
+        this.label2.setBounds(75, 72, 36, 24);
+        this.label3.setText("Password");
+        this.add(this.label3);
+        this.add(this.txtpass);
+        this.txtpass.setEchoChar('*');
+        this.txtpass.setBounds(156, 108, 132, 24);
+        this.lblstatus.setAlignment(1);
+        this.label3.setFont(new Font("Dialog", 1, 12));
+        this.label3.setBounds(75, 108, 57, 21);
+        this.add(this.lblstatus);
+        this.lblstatus.setFont(new Font("Dialog", 1, 12));
+        this.lblstatus.setBounds(14, 132, 344, 24);
+        this.ButOk.setLabel("OK");
+        this.add(this.ButOk);
+        this.ButOk.setFont(new Font("Dialog", 1, 12));
+        this.ButOk.setBounds(105, 156, 59, 23);
+        this.ButReset.setLabel("Reset");
+        this.add(this.ButReset);
+        this.ButReset.setFont(new Font("Dialog", 1, 12));
+        this.ButReset.setBounds(204, 156, 59, 23);
+        this.lbltitle.setAlignment(1);
+        this.add(this.lbltitle);
+        this.lbltitle.setFont(new Font("Dialog", 1, 12));
+        this.lbltitle.setBounds(12, 14, 336, 24);
+        String string = this.getParameter("title");
+        this.lbltitle.setText(string);
+        this.ButOk.addActionListener(this);
+        this.ButReset.addActionListener(this);
+        this.infile = new String("level4");
+        try {
+            this.inURL = new URL(this.getCodeBase(), this.infile);
+        }
+        catch (MalformedURLException malformedURLException) {
+            this.getAppletContext().showStatus("Bad Counter URL:" + this.inURL);
+        }
+        this.inFile();
+    }
+}
+</code></pre></div></div>
+
+<p>the crucial code is</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>this.infile = new String("level4");
+this.inURL = new URL(this.getCodeBase(), this.infile);
+this.inFile();
+</code></pre></div></div>
+
+<p>This means that the program reads a file named <code class="language-plaintext highlighter-rouge">level4</code> from the same directory. Let’s try to download it: <code class="language-plaintext highlighter-rouge">www.try2hack.nl/levels/level4</code></p>
+
+<p>This returns</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> level5-fdvbdf.xhtml
+appletking
+pieceofcake
+</code></pre></div></div>
+
+<p>Since there’s no way to emulate the applet, we can not input these credentials. We can, however, go directly to the next level: https://www.try2hack.nl/levels/level5-fdvbdf.xhtml.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

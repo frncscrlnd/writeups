@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 5 → Level 6 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 5 → Level 6" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 5 → Level 6 After logging in with ssh bandit5@bandit.labs.overthewire.org -p 2220 Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw and after cding into inhere we can see that ther’s multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find: human-readable; 1033 bytes in size; not an executable file. We can do this with this command: find inhere -type f -size 1033c This will only return files (-type f) that are 1033bytes (-size 1033c) in size. in our case: inhere/maybehere07/.file2 By using cat on inhere/maybehere07/.file2 we can see that the password is: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG" />
+<meta property="og:description" content="Level 5 → Level 6 After logging in with ssh bandit5@bandit.labs.overthewire.org -p 2220 Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw and after cding into inhere we can see that ther’s multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find: human-readable; 1033 bytes in size; not an executable file. We can do this with this command: find inhere -type f -size 1033c This will only return files (-type f) that are 1033bytes (-size 1033c) in size. in our case: inhere/maybehere07/.file2 By using cat on inhere/maybehere07/.file2 we can see that the password is: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-5_to_Level-6/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-5_to_Level-6/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 5 → Level 6" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 5 → Level 6 After logging in with ssh bandit5@bandit.labs.overthewire.org -p 2220 Password: 4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw and after cding into inhere we can see that ther’s multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find: human-readable; 1033 bytes in size; not an executable file. We can do this with this command: find inhere -type f -size 1033c This will only return files (-type f) that are 1033bytes (-size 1033c) in size. in our case: inhere/maybehere07/.file2 By using cat on inhere/maybehere07/.file2 we can see that the password is: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG","headline":"Level 5 → Level 6","url":"http://localhost:4000/bandit/Level-5_to_Level-6/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-5--level-6"><a href="https://overthewire.org/wargames/bandit/bandit6.html">Level 5 → Level 6</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit5@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">4oQYVPkxZOOEOO5pTW81FB8j8lxXGUQw</code></p>
+
+<p>and after <code class="language-plaintext highlighter-rouge">cd</code>ing into inhere we can see that ther’s multiple directories. Instead of viewing each one of them (since each directory hs multiple files), we can search for what the game tells us to find:</p>
+
+<ul>
+  <li>human-readable;</li>
+  <li>1033 bytes in size;</li>
+  <li>not an executable file.</li>
+</ul>
+
+<p>We can do this with this command: <code class="language-plaintext highlighter-rouge">find inhere -type f -size 1033c</code></p>
+
+<p>This will only return files (<code class="language-plaintext highlighter-rouge">-type f</code>) that are 1033bytes (<code class="language-plaintext highlighter-rouge">-size 1033c</code>) in size. in our case:</p>
+
+<p><code class="language-plaintext highlighter-rouge">inhere/maybehere07/.file2</code></p>
+
+<p>By using <code class="language-plaintext highlighter-rouge">cat</code> on <code class="language-plaintext highlighter-rouge">inhere/maybehere07/.file2</code> we can see that the password is:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">HWasnPhtq9AVKe0dmk45nxy20cvUa6EG</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

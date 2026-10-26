@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Crocodile | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Crocodile" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Crocodile, a Starting Point Hack The Box machine about FTP, nmap and gobuster" />
+<meta property="og:description" content="Walkthorugh/Writeup for Crocodile, a Starting Point Hack The Box machine about FTP, nmap and gobuster" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Crocodile" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Crocodile" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Crocodile" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Crocodile, a Starting Point Hack The Box machine about FTP, nmap and gobuster","headline":"Hack The Box Crocodile","url":"http://localhost:4000/hackthebox/Crocodile"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="crocodile"><a href="https://app.hackthebox.com/machines/Crocodile">Crocodile</a><!-- omit in toc --></h1>
+
+<p>This Hack The Box machine mainly revolves around FTP, Gobuster (thus directory enumeration) and nmap.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#task-8">Task 8</a></li>
+  <li><a href="#task-9">Task 9</a></li>
+  <li><a href="#submit-flag">Submit Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>What Nmap scanning switch employs the use of default scripts during a scan?</em></p>
+
+<p>As we saw in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Sequel">Sequel</a> machine, we can use the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">-sC</code></p>
+</blockquote>
+
+<p>flag to turn on the use of defaullt scripts.</p>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>What service version is found to be running on port 21?</em></p>
+
+<p>Running <code class="language-plaintext highlighter-rouge">nmap target-ip-here -sC</code> will answer this question, as it will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE
+21/tcp open  ftp
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.14.42
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 3
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 ftp      ftp            33 Jun 08  2021 allowed.userlist
+|_-rw-r--r--    1 ftp      ftp            62 Apr 20  2021 allowed.userlist.passwd
+80/tcp open  http
+|_http-title: Smash - Bootstrap Business Template
+</code></pre></div></div>
+
+<p>This means that</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">vsFTPd 3.0.3</code></p>
+</blockquote>
+
+<p>is running on port 21</p>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>What FTP code is returned to us for the “Anonymous FTP login allowed” message?</em></p>
+
+<p>To login <a href="https://learn.microsoft.com/en-us/iis/configuration/system.applicationhost/sites/site/ftpserver/security/authentication/anonymousauthentication">anonymously</a> into a FTP instance you’ll need to run</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp anonymous@target-ip-here
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>220 (vsFTPd 3.0.3)
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+</code></pre></div></div>
+
+<p>This means that the FTP code returned for the “Anonymous FTP login allowed” message is</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">230</code></p>
+</blockquote>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>After connecting to the FTP server using the ftp client, what username do we provide when prompted to log in anonymously?</em></p>
+
+<p>As we saw in the last task, to login anonymously into a FTP instance you need to use the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">anonymous</code></p>
+</blockquote>
+
+<p>username.</p>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>After connecting to the FTP server anonymously, what command can we use to download the files we find on the FTP server?</em></p>
+
+<p>To <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ftp-get">download a file via FTP</a> we need to use the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">get</code></p>
+</blockquote>
+
+<p>command. However, we first need to know which files there are. To lits files, use <code class="language-plaintext highlighter-rouge">ls</code> just like you would on a machine running a GNU/Linux distro</p>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>What is one of the higher-privilege sounding usernames in ‘allowed.userlist’ that we download from the FTP server?</em></p>
+
+<p>We need to download <code class="language-plaintext highlighter-rouge">allowed.userlist</code> with <code class="language-plaintext highlighter-rouge">get allowed.userlist</code>. This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>local: allowed.userlist remote: allowed.userlist
+229 Entering Extended Passive Mode (|||49049|)
+150 Opening BINARY mode data connection for allowed.userlist (33 bytes).
+100% |**********************************************************************************************************************************************************************************************|    33       14.27 KiB/s    00:00 ETA
+226 Transfer complete.
+33 bytes received in 00:00 (0.15 KiB/s)
+</code></pre></div></div>
+
+<p>You can exit the ftp session with <code class="language-plaintext highlighter-rouge">exit</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">allowed.userlist</code> will be downloaded in your current directory. Reas it with <code class="language-plaintext highlighter-rouge">cat allowed.userlist</code> :</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aron
+pwnmeow
+egotisticalsw
+admin
+</code></pre></div></div>
+
+<p>The higher-privilege sounding username is definitely</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">admin</code></p>
+</blockquote>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>What version of Apache HTTP Server is running on the target host?</em></p>
+
+<p>The nmap scan in <a href="#task-2">Task 2</a> told us that port 80 is open, but did not tell us which version of Apache HTTP server is running on it. Run <code class="language-plaintext highlighter-rouge">nmap target-ip-here -sV -p 80</code> to know. This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host is up (0.12s latency).
+
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+</code></pre></div></div>
+
+<p>That means that the version of Apache running on port 80 is</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Apache httpd 2.4.41</code></p>
+</blockquote>
+
+<h2 id="task-8">Task 8</h2>
+
+<p><em>What switch can we use with Gobuster to specify we are looking for specific filetypes?</em></p>
+
+<p>We already met the subdomain/directory enumeration tool <a href="https://github.com/OJ/gobuster">Gobuster</a> in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Appointment">Appointment</a> machine. In that challenge we learded that the <code class="language-plaintext highlighter-rouge">dir</code> flag is needed to tell gobuster we are enumerating directories and not subdomains. Now we need to tell the tool that we want to enumerate directories that end with specific file extensions (<code class="language-plaintext highlighter-rouge">.php</code>, <code class="language-plaintext highlighter-rouge">.html</code>, <code class="language-plaintext highlighter-rouge">.pdf</code>…). In order to do so, according to the <a href="https://github.com/OJ/gobuster#:~:text=%23%20With%20file%20extensions%20gobuster%20dir%20%2Du%20https%3A%2F%2Fexample%2Ecom%20%2Dw%20wordlist%2Etxt%20%2Dx%20php%2Chtml%2Cjs%2Ctxt">manual</a>, to use file xtansions we need the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">-x</code></p>
+</blockquote>
+
+<p>flag</p>
+
+<h2 id="task-9">Task 9</h2>
+
+<p><em>Which PHP file can we identify with directory brute force that will provide the opportunity to authenticate to the web service?</em></p>
+
+<p>SInce we know that we are interested in <code class="language-plaintext highlighter-rouge">.php</code> files, we need to specify this in gobuster:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster dir -u target-ip-here -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -x php
+</code></pre></div></div>
+
+<p>Note that i’m using <a href="https://github.com/danielmiessler/SecLists">seclists</a> but you can use any wordlist you want. Wordlists are available in <code class="language-plaintext highlighter-rouge">/usr/share/wordlists</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>===============================================================
+Gobuster v3.8.2
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://target-ip-here
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.8.2
+[+] Extensions:              php
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+js                   (Status: 301) [Size: 309] [--&gt; http://target-ip-here/js/]
+css                  (Status: 301) [Size: 310] [--&gt; http://target-ip-here/css/]
+logout.php           (Status: 302) [Size: 0] [--&gt; login.php]
+login.php            (Status: 200) [Size: 1577]
+config.php           (Status: 200) [Size: 0]
+assets               (Status: 301) [Size: 313] [--&gt; http://target-ip-here/assets/]
+fonts                (Status: 301) [Size: 312] [--&gt; http://target-ip-here/fonts/]
+dashboard            (Status: 301) [Size: 316] [--&gt; http://target-ip-here/dashboard/]
+</code></pre></div></div>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p><em>Submit root flag</em></p>
+
+<p>We can get from FTP enough info to log into the <code class="language-plaintext highlighter-rouge">login.php</code> page. Let’s see what’s the password for <code class="language-plaintext highlighter-rouge">admin</code> by logging back into an ftp session:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ftp anonymous@target-ip-here</code>, then <code class="language-plaintext highlighter-rouge">get allowed.userlist.passwd</code>. Exit ftp again with <code class="language-plaintext highlighter-rouge">exit</code>, then <code class="language-plaintext highlighter-rouge">cat allowed.userlist.passwd</code>. This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root
+Supersecretpassword1
+@BaASD&amp;9032123sADS
+rKXM59ESxesUFHAd
+</code></pre></div></div>
+
+<p>This means that the password fotr the <code class="language-plaintext highlighter-rouge">admin</code> account is <code class="language-plaintext highlighter-rouge">rKXM59ESxesUFHAd</code>. Let’s try it on the <code class="language-plaintext highlighter-rouge">login.php</code> page. This will return the <code class="language-plaintext highlighter-rouge">/dashboard/index.php</code> page, which will give you the flag:</p>
+
+<blockquote>
+  <p>c7110277ac44d78b6a9fff2232434d16</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

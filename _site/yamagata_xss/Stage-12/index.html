@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenges (by yamagata21) Stage 12 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenges (by yamagata21) Stage 12" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Stage 12 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: ”s/[\x00-\x20&lt;&gt;&quot;&#39;]//g;” The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches the input text for: the first 32 ASCII chars (\x00-\x20), including NUL, TAB and Space &lt; &gt; chars double quotes &quot; &#39; single quote and replaces (s) them with a void string (//). This means that we can not use any of these chars. This would make it impossible to submit a payload, if it weren’t for the backtick (`) character: this character will allow us to close the input text’s value attribute and submit a new onmouseover attribute: ``onmouseover=alert(document.domain); like this: we can also use ``onclick=alert(document.domain);" />
+<meta property="og:description" content="Stage 12 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: ”s/[\x00-\x20&lt;&gt;&quot;&#39;]//g;” The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches the input text for: the first 32 ASCII chars (\x00-\x20), including NUL, TAB and Space &lt; &gt; chars double quotes &quot; &#39; single quote and replaces (s) them with a void string (//). This means that we can not use any of these chars. This would make it impossible to submit a payload, if it weren’t for the backtick (`) character: this character will allow us to close the input text’s value attribute and submit a new onmouseover attribute: ``onmouseover=alert(document.domain); like this: we can also use ``onclick=alert(document.domain);" />
+<link rel="canonical" href="http://localhost:4000/yamagata_xss/Stage-12/" />
+<meta property="og:url" content="http://localhost:4000/yamagata_xss/Stage-12/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenges (by yamagata21) Stage 12" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Stage 12 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: ”s/[\\x00-\\x20&lt;&gt;&quot;&#39;]//g;” The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches the input text for: the first 32 ASCII chars (\\x00-\\x20), including NUL, TAB and Space &lt; &gt; chars double quotes &quot; &#39; single quote and replaces (s) them with a void string (//). This means that we can not use any of these chars. This would make it impossible to submit a payload, if it weren’t for the backtick (`) character: this character will allow us to close the input text’s value attribute and submit a new onmouseover attribute: ``onmouseover=alert(document.domain); like this: we can also use ``onclick=alert(document.domain);","headline":"XSS Challenges (by yamagata21) Stage 12","url":"http://localhost:4000/yamagata_xss/Stage-12/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="stage-12"><a href="http://xss-quiz.int21h.jp/stage_no012.php">Stage 12</a></h1>
+
+<p><strong>What you have to do:</strong><br />
+Inject the following JavaScript command: <code class="language-plaintext highlighter-rouge">alert(document.domain);</code></p>
+
+<p><strong>Hint:</strong> <em>”s/[\x00-\x20&lt;&gt;"']//g;”</em></p>
+
+<p>The hint suggests a <strong>regex</strong> rule is used to sanitize user input. Specifically, this rule searches the input text for:</p>
+
+<ul>
+  <li>the first 32 ASCII chars (<code class="language-plaintext highlighter-rouge">\x00-\x20</code>), including <code class="language-plaintext highlighter-rouge">NUL</code>, <code class="language-plaintext highlighter-rouge">TAB</code> and Space</li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;</code> <code class="language-plaintext highlighter-rouge">&gt;</code> chars</li>
+  <li>double quotes <code class="language-plaintext highlighter-rouge">"</code></li>
+  <li><code class="language-plaintext highlighter-rouge">'</code> single quote</li>
+</ul>
+
+<p>and replaces (<code class="language-plaintext highlighter-rouge">s</code>) them with a void string (<code class="language-plaintext highlighter-rouge">//</code>). This means that we can not use any of these chars.</p>
+
+<p>This would make it impossible to submit a payload, if it weren’t for the backtick (<code class="language-plaintext highlighter-rouge">`</code>) character: this character will allow us to close the input text’s <code class="language-plaintext highlighter-rouge">value</code> attribute and submit a new onmouseover attribute: <code class="language-plaintext highlighter-rouge">``onmouseover=alert(document.domain);</code></p>
+
+<p><img src="/assets/images/xss21/12/12.1.png" alt="12.1" /></p>
+
+<p>like this:</p>
+
+<p><img src="/assets/images/xss21/12/12.2.png" alt="12.2" /></p>
+
+<p>we can also use <code class="language-plaintext highlighter-rouge">``onclick=alert(document.domain); </code></p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

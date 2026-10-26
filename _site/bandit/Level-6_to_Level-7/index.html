@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 6 → Level 7 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 6 → Level 7" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 6 → Level 7 After logging in with ssh bandit6@bandit.labs.overthewire.org -p 2220 Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG we see, by running -ls, that no file is here. We’ll have to look at the machine’s root (/) directory with cd /. Just like Level 5 → Level 6 we have some info about our target file: it’s owned by user bandit7; it’s owned by group bandit6; it’s 33 bytes in size. That means, respectively: That means that if we run ls -l on the file’s directory, we’ll see: -rw-r--r-- 1 bandit7 bandit6 46 Apr 14 16:37 target.txt this is because the first name represents the user who owns the file, while second the group it belongs to. Just like we did in Level 5 → Level 6 we’ll have to use the find command: find / -type f -user bandit7 -group bandit6 -size 33c We’ll get, among others (you can also turn off permission denied messages with 2&gt;/dev/null), this file: ./var/lib/dpkg/info/bandit7.password Let’s run cat ./var/lib/dpkg/info/bandit7.password And we’ll get the password for the next level: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj" />
+<meta property="og:description" content="Level 6 → Level 7 After logging in with ssh bandit6@bandit.labs.overthewire.org -p 2220 Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG we see, by running -ls, that no file is here. We’ll have to look at the machine’s root (/) directory with cd /. Just like Level 5 → Level 6 we have some info about our target file: it’s owned by user bandit7; it’s owned by group bandit6; it’s 33 bytes in size. That means, respectively: That means that if we run ls -l on the file’s directory, we’ll see: -rw-r--r-- 1 bandit7 bandit6 46 Apr 14 16:37 target.txt this is because the first name represents the user who owns the file, while second the group it belongs to. Just like we did in Level 5 → Level 6 we’ll have to use the find command: find / -type f -user bandit7 -group bandit6 -size 33c We’ll get, among others (you can also turn off permission denied messages with 2&gt;/dev/null), this file: ./var/lib/dpkg/info/bandit7.password Let’s run cat ./var/lib/dpkg/info/bandit7.password And we’ll get the password for the next level: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-6_to_Level-7/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-6_to_Level-7/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 6 → Level 7" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 6 → Level 7 After logging in with ssh bandit6@bandit.labs.overthewire.org -p 2220 Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG we see, by running -ls, that no file is here. We’ll have to look at the machine’s root (/) directory with cd /. Just like Level 5 → Level 6 we have some info about our target file: it’s owned by user bandit7; it’s owned by group bandit6; it’s 33 bytes in size. That means, respectively: That means that if we run ls -l on the file’s directory, we’ll see: -rw-r--r-- 1 bandit7 bandit6 46 Apr 14 16:37 target.txt this is because the first name represents the user who owns the file, while second the group it belongs to. Just like we did in Level 5 → Level 6 we’ll have to use the find command: find / -type f -user bandit7 -group bandit6 -size 33c We’ll get, among others (you can also turn off permission denied messages with 2&gt;/dev/null), this file: ./var/lib/dpkg/info/bandit7.password Let’s run cat ./var/lib/dpkg/info/bandit7.password And we’ll get the password for the next level: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj","headline":"Level 6 → Level 7","url":"http://localhost:4000/bandit/Level-6_to_Level-7/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-6--level-7"><a href="https://overthewire.org/wargames/bandit/bandit7.html">Level 6 → Level 7</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit6@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">HWasnPhtq9AVKe0dmk45nxy20cvUa6EG</code></p>
+
+<p>we see, by running -ls, that no file is here. We’ll have to look at the machine’s root (<code class="language-plaintext highlighter-rouge">/</code>) directory with <code class="language-plaintext highlighter-rouge">cd /</code>. Just like <a href="/bandit/level-5_to_level-6">Level 5 → Level 6</a> we have some info about our target file:</p>
+
+<ul>
+  <li>it’s owned by user bandit7;</li>
+  <li>it’s owned by group bandit6;</li>
+  <li>it’s 33 bytes in size.</li>
+</ul>
+
+<p>That means, respectively:
+That means that if we run ls -l on the file’s directory, we’ll see:</p>
+
+<p><code class="language-plaintext highlighter-rouge">-rw-r--r-- 1 bandit7 bandit6 46 Apr 14 16:37 target.txt</code> this is because the first name represents the user who owns the file, while second the group it belongs to.</p>
+
+<p>Just like we did in <a href="/bandit/level-5_to_level-6">Level 5 → Level 6</a> we’ll have to use the <code class="language-plaintext highlighter-rouge">find</code> command:</p>
+
+<p><code class="language-plaintext highlighter-rouge">find / -type f -user bandit7 -group bandit6 -size 33c</code></p>
+
+<p>We’ll get, among others (you can also turn off <code class="language-plaintext highlighter-rouge">permission denied</code> messages with <code class="language-plaintext highlighter-rouge">2&gt;/dev/null</code>), this file: <code class="language-plaintext highlighter-rouge">./var/lib/dpkg/info/bandit7.password</code></p>
+
+<p>Let’s run</p>
+
+<p><code class="language-plaintext highlighter-rouge">cat ./var/lib/dpkg/info/bandit7.password</code></p>
+
+<p>And we’ll get the password for the next level:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj</code></p>
+</blockquote>
+
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

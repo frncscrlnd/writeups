@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 22 → Level 23 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 22 → Level 23" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 22 → Level 23 After logging in with ssh bandit22@bandit.labs.overthewire.org -p 2220 Password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q we find out that, just like in Level 21 → Level 22, a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the /etc/cron.d/ directory by using cd /etc/cron.d/, once we’re in this directory, ls shows something like: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat let’s read the content of cronjob_bandit23 with cat cronjob_bandit23 @reboot bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null * * * * * bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null This means that the cronjob_bandit23.sh script in the /usr/bin folder is executed. Let’ see what this script does: cd /usr/bin to move into the folder and cat cronjob_bandit23. We’ll get something along the lines of: #!/bin/bash myname=$(whoami) mytarget=$(echo I am user $myname | md5sum | cut -d &#39; &#39; -f 1) echo &quot;Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget&quot; cat /etc/bandit_pass/$myname &gt; /tmp/$mytarget This means that the password file from /etc/bandit_pass/bandit22 is copied into /tmp/[the result of the MD5 hash on bandit22, up to the first space char (-d ‘ ‘) (-f 1 stands for the first Field, as the result is separated in two fileds by a space)]. Let’ run the same command as we see in the script, with bandit23 as the result of the whoami command (we have to think of ourselves as the bandit23 user, since this script is executed by tha user): echo I am user bandit23 | md5sum | cut -d &#39; &#39; -f 1 this will return our destination folder: 8ca319486bfbbc3663ea0fbe81326349 let’s read the content of our /tmp/8ca319486bfbbc3663ea0fbe81326349 file: ` cat /tmp/8ca319486bfbbc3663ea0fbe81326349` this will return our password: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga" />
+<meta property="og:description" content="Level 22 → Level 23 After logging in with ssh bandit22@bandit.labs.overthewire.org -p 2220 Password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q we find out that, just like in Level 21 → Level 22, a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the /etc/cron.d/ directory by using cd /etc/cron.d/, once we’re in this directory, ls shows something like: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat let’s read the content of cronjob_bandit23 with cat cronjob_bandit23 @reboot bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null * * * * * bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null This means that the cronjob_bandit23.sh script in the /usr/bin folder is executed. Let’ see what this script does: cd /usr/bin to move into the folder and cat cronjob_bandit23. We’ll get something along the lines of: #!/bin/bash myname=$(whoami) mytarget=$(echo I am user $myname | md5sum | cut -d &#39; &#39; -f 1) echo &quot;Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget&quot; cat /etc/bandit_pass/$myname &gt; /tmp/$mytarget This means that the password file from /etc/bandit_pass/bandit22 is copied into /tmp/[the result of the MD5 hash on bandit22, up to the first space char (-d ‘ ‘) (-f 1 stands for the first Field, as the result is separated in two fileds by a space)]. Let’ run the same command as we see in the script, with bandit23 as the result of the whoami command (we have to think of ourselves as the bandit23 user, since this script is executed by tha user): echo I am user bandit23 | md5sum | cut -d &#39; &#39; -f 1 this will return our destination folder: 8ca319486bfbbc3663ea0fbe81326349 let’s read the content of our /tmp/8ca319486bfbbc3663ea0fbe81326349 file: ` cat /tmp/8ca319486bfbbc3663ea0fbe81326349` this will return our password: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-22_to_Level-23/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-22_to_Level-23/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 22 → Level 23" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 22 → Level 23 After logging in with ssh bandit22@bandit.labs.overthewire.org -p 2220 Password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q we find out that, just like in Level 21 → Level 22, a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the /etc/cron.d/ directory by using cd /etc/cron.d/, once we’re in this directory, ls shows something like: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat let’s read the content of cronjob_bandit23 with cat cronjob_bandit23 @reboot bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null * * * * * bandit23 /usr/bin/cronjob_bandit23.sh &amp;&gt; /dev/null This means that the cronjob_bandit23.sh script in the /usr/bin folder is executed. Let’ see what this script does: cd /usr/bin to move into the folder and cat cronjob_bandit23. We’ll get something along the lines of: #!/bin/bash myname=$(whoami) mytarget=$(echo I am user $myname | md5sum | cut -d &#39; &#39; -f 1) echo &quot;Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget&quot; cat /etc/bandit_pass/$myname &gt; /tmp/$mytarget This means that the password file from /etc/bandit_pass/bandit22 is copied into /tmp/[the result of the MD5 hash on bandit22, up to the first space char (-d ‘ ‘) (-f 1 stands for the first Field, as the result is separated in two fileds by a space)]. Let’ run the same command as we see in the script, with bandit23 as the result of the whoami command (we have to think of ourselves as the bandit23 user, since this script is executed by tha user): echo I am user bandit23 | md5sum | cut -d &#39; &#39; -f 1 this will return our destination folder: 8ca319486bfbbc3663ea0fbe81326349 let’s read the content of our /tmp/8ca319486bfbbc3663ea0fbe81326349 file: ` cat /tmp/8ca319486bfbbc3663ea0fbe81326349` this will return our password: 0Zf11ioIjMVN551jX3CmStKLYqjk54Ga","headline":"Level 22 → Level 23","url":"http://localhost:4000/bandit/Level-22_to_Level-23/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-22--level-23"><a href="https://overthewire.org/wargames/bandit/bandit23.html">Level 22 → Level 23</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit22@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q</code></p>
+
+<p>we find out that, just like in <a href="/bandit/level-21_to_level-22">Level 21 → Level 22</a>, a program is running automatically at regular intervals from cron, the time-based job scheduler. We have to look through the /etc/cron.d/ directory by using <code class="language-plaintext highlighter-rouge">cd /etc/cron.d/</code>, once we’re in this directory, <code class="language-plaintext highlighter-rouge">ls</code> shows something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>behemoth4_cleanup  cronjob_bandit22  cronjob_bandit24  leviathan5_cleanup    otw-tmp-dir
+clean_tmp          cronjob_bandit23  e2scrub_all       manpage3_resetpw_job  sysstat
+</code></pre></div></div>
+
+<p>let’s read the content of cronjob_bandit23 with <code class="language-plaintext highlighter-rouge">cat cronjob_bandit23</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@reboot bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null
+* * * * * bandit23 /usr/bin/cronjob_bandit23.sh  &amp;&gt; /dev/null
+</code></pre></div></div>
+
+<p>This means that the cronjob_bandit23.sh script in the /usr/bin folder is executed. Let’ see what this script does:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cd /usr/bin</code> to move into the folder and <code class="language-plaintext highlighter-rouge">cat cronjob_bandit23</code>. We’ll get something along the lines of:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+myname=$(whoami)
+mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
+
+echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
+
+cat /etc/bandit_pass/$myname &gt; /tmp/$mytarget
+</code></pre></div></div>
+
+<p>This means that the password file from /etc/bandit_pass/bandit22 is copied into /tmp/[the result of the MD5 hash on bandit22, up to the first space char (-d ‘ ‘) (-f 1 stands for the first Field, as the result is separated in two fileds by a space)].</p>
+
+<p>Let’ run the same command as we see in the script, with <code class="language-plaintext highlighter-rouge">bandit23</code> as the result of the <code class="language-plaintext highlighter-rouge">whoami</code> command (we have to think of ourselves as the bandit23 user, since this script is executed by tha user):</p>
+
+<p><code class="language-plaintext highlighter-rouge">echo I am user bandit23 | md5sum | cut -d ' ' -f 1</code></p>
+
+<p>this will return our destination folder:</p>
+
+<p><code class="language-plaintext highlighter-rouge">8ca319486bfbbc3663ea0fbe81326349</code></p>
+
+<p>let’s read the content of our /tmp/8ca319486bfbbc3663ea0fbe81326349 file: ` cat /tmp/8ca319486bfbbc3663ea0fbe81326349`</p>
+
+<p>this will return our password:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">0Zf11ioIjMVN551jX3CmStKLYqjk54Ga</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

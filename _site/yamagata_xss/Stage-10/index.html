@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenges (by yamagata21) Stage 10 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenges (by yamagata21) Stage 10" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Stage 10 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: s/domain//g The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches for the domain string in the text and replaces (s) it with a void string (//). This rule applies to all of the user submitted text (g). A workaround to this is to split the domain string in half and put the two halves around another domain string: domdomainain, ddomainomain, dodomainmain, domadomainin, domaidomainn are all valid alternatives. Let’s pick domadomainin. After typing &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; we get this: This means we have to deliver our payload (&quot;&gt;&lt;script&gt;alert(document.domadomainin)&lt;/script&gt;) in the textbox because special characters are not escaped." />
+<meta property="og:description" content="Stage 10 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: s/domain//g The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches for the domain string in the text and replaces (s) it with a void string (//). This rule applies to all of the user submitted text (g). A workaround to this is to split the domain string in half and put the two halves around another domain string: domdomainain, ddomainomain, dodomainmain, domadomainin, domaidomainn are all valid alternatives. Let’s pick domadomainin. After typing &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; we get this: This means we have to deliver our payload (&quot;&gt;&lt;script&gt;alert(document.domadomainin)&lt;/script&gt;) in the textbox because special characters are not escaped." />
+<link rel="canonical" href="http://localhost:4000/yamagata_xss/Stage-10/" />
+<meta property="og:url" content="http://localhost:4000/yamagata_xss/Stage-10/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenges (by yamagata21) Stage 10" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Stage 10 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: s/domain//g The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches for the domain string in the text and replaces (s) it with a void string (//). This rule applies to all of the user submitted text (g). A workaround to this is to split the domain string in half and put the two halves around another domain string: domdomainain, ddomainomain, dodomainmain, domadomainin, domaidomainn are all valid alternatives. Let’s pick domadomainin. After typing &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; we get this: This means we have to deliver our payload (&quot;&gt;&lt;script&gt;alert(document.domadomainin)&lt;/script&gt;) in the textbox because special characters are not escaped.","headline":"XSS Challenges (by yamagata21) Stage 10","url":"http://localhost:4000/yamagata_xss/Stage-10/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="stage-10"><a href="https://xss-quiz.int21h.jp/stage00010.php">Stage 10</a></h1>
+
+<p><strong>What you have to do:</strong><br />
+Inject the following JavaScript command: <code class="language-plaintext highlighter-rouge">alert(document.domain);</code></p>
+
+<p><strong>Hint:</strong> <em>s/domain//g</em></p>
+
+<p>The hint suggests a <strong>regex</strong> rule is used to sanitize user input. Specifically, this rule searches for the <code class="language-plaintext highlighter-rouge">domain</code> string in the text and replaces (<code class="language-plaintext highlighter-rouge">s</code>) it with a void string (<code class="language-plaintext highlighter-rouge">//</code>). This rule applies to all of the user submitted text (<code class="language-plaintext highlighter-rouge">g</code>).
+A workaround to this is to split the <code class="language-plaintext highlighter-rouge">domain</code> string in half and put the two halves around another <code class="language-plaintext highlighter-rouge">domain</code> string: <code class="language-plaintext highlighter-rouge">domdomainain</code>, <code class="language-plaintext highlighter-rouge">ddomainomain, dodomainmain, domadomainin, domaidomainn</code> are all valid alternatives. Let’s pick <code class="language-plaintext highlighter-rouge">domadomainin</code>.
+After typing <code class="language-plaintext highlighter-rouge">"&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;</code> we get this:</p>
+
+<p><img src="/assets/images/xss21/10/10.1.png" alt="10.1" /></p>
+
+<p>This means we have to deliver our payload (<code class="language-plaintext highlighter-rouge">"&gt;&lt;script&gt;alert(document.domadomainin)&lt;/script&gt;</code>) in the textbox because special characters are not escaped.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

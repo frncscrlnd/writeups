@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenge by y0n3uchy No Parentheses Again | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenge by y0n3uchy No Parentheses Again" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the “No Parentheses Again” challenge, part of the “Battle with Filters” section of XSS Challenge by y0n3uchy." />
+<meta property="og:description" content="Walkthorugh/Writeup for the “No Parentheses Again” challenge, part of the “Battle with Filters” section of XSS Challenge by y0n3uchy." />
+<link rel="canonical" href="http://localhost:4000/y0n3uchy_xss/No-Parentheses-Again/" />
+<meta property="og:url" content="http://localhost:4000/y0n3uchy_xss/No-Parentheses-Again/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenge by y0n3uchy No Parentheses Again" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the “No Parentheses Again” challenge, part of the “Battle with Filters” section of XSS Challenge by y0n3uchy.","headline":"XSS Challenge by y0n3uchy No Parentheses Again","url":"http://localhost:4000/y0n3uchy_xss/No-Parentheses-Again/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="no-parentheses-again"><a href="https://xss.challenge.training.hacq.me/challenges/easy04.php">No Parentheses Again</a></h1>
+
+<p>Let’s take a look at this level’s source code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script src="hook.js"&gt;&lt;/script&gt;
+&lt;?php
+$escaped = preg_replace("/[`()&lt;&gt;&amp;#]/", "", $_GET['payload']);
+?&gt;
+
+&lt;h1&gt;Hello, &lt;span id="&lt;?= $escaped ?&gt;"&gt;&lt;?= htmlspecialchars($_GET['payload']) ?&gt;&lt;/span&gt;!&lt;/h1&gt;
+
+&lt;h1&gt;inject&lt;/h1&gt;
+&lt;form&gt;
+    &lt;input type="text" name="payload" placeholder="your payload here"&gt;
+    &lt;input type="submit" value="GO"&gt;
+&lt;/form&gt;
+
+&lt;h1&gt;src&lt;/h1&gt;
+&lt;?php highlight_string(file_get_contents(basename(__FILE__))); ?&gt;
+</code></pre></div></div>
+
+<p>This means that we can’t use the <code class="language-plaintext highlighter-rouge">`</code>, <code class="language-plaintext highlighter-rouge">(</code>, <code class="language-plaintext highlighter-rouge">)</code>, <code class="language-plaintext highlighter-rouge">&lt;</code>, <code class="language-plaintext highlighter-rouge">&gt;</code>, <code class="language-plaintext highlighter-rouge">&amp;</code> and <code class="language-plaintext highlighter-rouge">#</code> characters. Also, since the payload appears twice, the second time our original input will be sanitized like we’ve seen in <a href="https://frncscrlnd.github.io/writeups/y0n3uchy_xss/Baby-XSS-03/">this challenge</a>. Again, <code class="language-plaintext highlighter-rouge">htmlsspecialchars</code> simply encodes the characters like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&amp; &amp;amp;
+&lt; &amp;lt;
+&gt; &amp;gt;
+" &amp;quot;
+' &amp;#039; 
+</code></pre></div></div>
+
+<p>Last time out, we used the <code class="language-plaintext highlighter-rouge">javascript:</code> attribute like this <code class="language-plaintext highlighter-rouge">javascript:alert(document.domain)</code>. This time we can’t use it since we can not use <code class="language-plaintext highlighter-rouge">(</code> and <code class="language-plaintext highlighter-rouge">)</code>. What is not sanitized from previous challenges, however, are event handlers such as <a href="https://www.w3schools.com/jsref/event_onclick.asp"><code class="language-plaintext highlighter-rouge">onclick</code></a>, <a href="https://www.w3schools.com/jsref/event_onmouseover.asp"><code class="language-plaintext highlighter-rouge">onmouseover</code></a> and <a href="https://www.w3schools.com/jsref/event_onfocus.asp"><code class="language-plaintext highlighter-rouge">onfocus</code></a>.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

@@ -37,4 +37,7 @@ collections:
   sad:
     output: true
     permalink: /sad/:title
+   letsdefend:
+    output: true
+    permalink: /letsdefend/:path/
 

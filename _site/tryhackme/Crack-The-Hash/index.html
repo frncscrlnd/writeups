@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Crack The Hash | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Crack The Hash" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about hash functions, hashcat and hashid." />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about hash functions, hashcat and hashid." />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Crack-The-Hash/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Crack-The-Hash/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Crack The Hash" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about hash functions, hashcat and hashid.","headline":"TryHackMe Crack The Hash","url":"http://localhost:4000/tryhackme/Crack-The-Hash/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="crack-the-hash"><a href="https://tryhackme.com/room/crackthehash">Crack The Hash</a><!-- omit in toc --></h1>
+
+<p>This room is all about finding the <a href="https://en.wikipedia.org/wiki/Hash_function">hash function</a> (<a href="https://en.wikipedia.org/wiki/MD5">MD5</a>, <a href="https://en.wikipedia.org/wiki/SHA-2">SHA-256</a>, <a href="https://en.wikipedia.org/wiki/SHA-1">SHA-1</a>…) from a given digest. 
+We’ll use <a href="https://hashcat.net/hashcat/">hashcat</a>, <a href="https://www.kali.org/tools/hashid/">hashid</a> and <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">hashcat’s wiki examples</a>.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#level-1">Level 1</a>
+    <ul>
+      <li><a href="#48bb6e862e54f2a795ffc4e541caed4d">48bb6e862e54f2a795ffc4e541caed4d</a></li>
+      <li><a href="#cbfdac6008f9cab4083784cbd1874f76618d2a97">CBFDAC6008F9CAB4083784CBD1874F76618D2A97</a></li>
+      <li><a href="#1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032">1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032</a></li>
+      <li><a href="#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom"><code class="language-plaintext highlighter-rouge">$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom</code></a></li>
+      <li><a href="#279412f945939ba78ce0758d3fd83daa">279412f945939ba78ce0758d3fd83daa</a></li>
+    </ul>
+  </li>
+  <li><a href="#level-2">Level 2</a>
+    <ul>
+      <li><a href="#f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85">F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85</a></li>
+      <li><a href="#1dfeca0c002ae40b8619ecf94819cc1b">1DFECA0C002AE40B8619ECF94819CC1B</a></li>
+      <li><a href="#6areallyhardsalt6wkutqzquqqmrm0pt7mppmbgnnzxpmaxi4bjml9becfi3qxifhsgps41bqmhsrhvxgmpdjs6xekzas02"><code class="language-plaintext highlighter-rouge">$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.</code></a></li>
+      <li><a href="#e5d8870e5bdd26602cab8dbe07a942c8669e56d6">e5d8870e5bdd26602cab8dbe07a942c8669e56d6</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="level-1">Level 1</h2>
+
+<h3 id="48bb6e862e54f2a795ffc4e541caed4d">48bb6e862e54f2a795ffc4e541caed4d</h3>
+
+<p>First write the digest inside a file <code class="language-plaintext highlighter-rouge">echo 48bb6e862e54f2a795ffc4e541caed4d &gt; hash.txt</code></p>
+
+<p>To figure out which hash function has been used, run</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat 48bb6e862e54f2a795ffc4e541caed4d</code> or<code class="language-plaintext highlighter-rouge">hashcat hash.txt</code></p>
+
+<p>we’ll get something like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>900</td>
+      <td>MD4</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>MD5</td>
+      <td>Raw Hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The first result will be <code class="language-plaintext highlighter-rouge">MD4</code>, let’s try it (<code class="language-plaintext highlighter-rouge">MD4</code>’s hascat code is <code class="language-plaintext highlighter-rouge">900</code>):</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 900 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">-m</code> specifies te hash function, <code class="language-plaintext highlighter-rouge">-a</code> means it’ a <a href="https://en.wikipedia.org/wiki/Dictionary_attack">dictionary attack</a> and <code class="language-plaintext highlighter-rouge">/usr/share/wordlists/rockyou.txt</code> is the path to <a href="https://en.wikipedia.org/wiki/RockYou">rockyou</a>, a famous wordlist we are going to use.</p>
+
+<p><code class="language-plaintext highlighter-rouge">MD4</code> is wrong, so let’s try the second result, <code class="language-plaintext highlighter-rouge">MD5</code>(code <code class="language-plaintext highlighter-rouge">0</code>):</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 0 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>This will return <code class="language-plaintext highlighter-rouge">48bb6e862e54f2a795ffc4e541caed4d:easy</code></p>
+
+<p>The plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">easy</code></p>
+</blockquote>
+
+<h3 id="cbfdac6008f9cab4083784cbd1874f76618d2a97">CBFDAC6008F9CAB4083784CBD1874F76618D2A97</h3>
+
+<p>Let’s do the same for this digest: <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then <code class="language-plaintext highlighter-rouge">echo CBFDAC6008F9CAB4083784CBD1874F76618D2A97 hash.txt</code></p>
+
+<p>Let’s figure out what hash function has been used:</p>
+
+<p><code class="language-plaintext highlighter-rouge">haschat CBFDAC6008F9CAB4083784CBD1874F76618D2A97</code> or <code class="language-plaintext highlighter-rouge">hascat hash.txt</code></p>
+
+<p>this will return:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100</td>
+      <td>SHA1</td>
+      <td>Raw Hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Let’s try <code class="language-plaintext highlighter-rouge">SHA1</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 100 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cbfdac6008f9cab4083784cbd1874f76618d2a97:password123</code></p>
+
+<p>the plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">password123</code></p>
+</blockquote>
+
+<h3 id="1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032">1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032</h3>
+
+<p>Let’s do the same for this digest: <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then <code class="language-plaintext highlighter-rouge">echo 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032 hash.txt</code></p>
+
+<p>Let’s figure out what hash function has been used:</p>
+
+<p><code class="language-plaintext highlighter-rouge">haschat 1C8BFE8F801D79745C4631D09FFF36C82AA37FC4CCE4FC946683D7B336B63032</code> or <code class="language-plaintext highlighter-rouge">hascat hash.txt</code></p>
+
+<p>this will return:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>34600</td>
+      <td>MD6 (256)</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td>1400</td>
+      <td>SHA256</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td>17400</td>
+      <td>SHA356</td>
+      <td>Raw Hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">MD6</code> looks like an unpopular function for this type of challenges, so we can skip it. Let’s try <code class="language-plaintext highlighter-rouge">SHA256</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 1400 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">1c8bfe8f801d79745c4631d09fff36c82aa37fc4cce4fc946683d7b336b63032:letmein</code></p>
+
+<p>so the plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">letmein</code></p>
+</blockquote>
+
+<h3 id="2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom"><code class="language-plaintext highlighter-rouge">$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom</code></h3>
+
+<p>Let’s do it all over again for this digest: <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then <code class="language-plaintext highlighter-rouge">echo '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom' &gt; hash.txt</code></p>
+
+<hr />
+<p><strong>NOTE</strong></p>
+
+<p>Use ‘’ quotes as <code class="language-plaintext highlighter-rouge">$</code> chars won’t be displayed as they are used for variables and parameters.</p>
+
+<hr />
+
+<p>Let’s figure out what hash function has been used:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat '$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom'</code> or <code class="language-plaintext highlighter-rouge">hashcat hash.txt</code></p>
+
+<p>This will return:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">25600</td>
+      <td>bcrypt(md5($pass))</td>
+      <td>Generic KDF</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">25800</td>
+      <td>bcrypt(sha1($pass))</td>
+      <td>Generic KDF</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">30600</td>
+      <td>bcrypt(sha256($pass))</td>
+      <td>Generic KDF</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">28400</td>
+      <td>bcrypt(sha512($pass))</td>
+      <td>Generic KDF</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3200</td>
+      <td>bcrypt $2*$, Blowfish (Unix)</td>
+      <td>Operating System</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>One of the results is <a href="https://en.wikipedia.org/wiki/Bcrypt">bcrypt</a>. The code for this function is <code class="language-plaintext highlighter-rouge">3200</code>. let’s try it:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 3200 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>running this command, as thm tells us, will take a long time. This is beacuse bcrypt is a <a href="https://en.wikipedia.org/wiki/Key_derivation_function">key derivation function</a>. What we can do to speed up the process is filtering out combinations of more than 4 chars from <code class="language-plaintext highlighter-rouge">rockyou.txt</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">LC_ALL=C awk length==4 /usr/share/wordlists/rockyou.txt &gt; ~/rock4.txt</code></p>
+
+<p>or, alternatively, useing grep and regular expressions:</p>
+
+<p><code class="language-plaintext highlighter-rouge">LC_ALL=C grep -x .\{4\} /usr/share/wordlists/rockyou.txt &gt; ~/rock4.txt</code></p>
+
+<p>Running the old command will now take less time:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 3200 -a 0 hash.txt rock4.txt</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$2y$12$Dwt1BZj6pcyc3Dy1FWZ5ieeUznr71EeNkJkUlypTsgbX1H68wsRom:bleh</code></p>
+
+<p>our plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">bleh</code></p>
+</blockquote>
+
+<h3 id="279412f945939ba78ce0758d3fd83daa">279412f945939ba78ce0758d3fd83daa</h3>
+
+<p>New digest, same stuff: <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then <code class="language-plaintext highlighter-rouge">echo 279412f945939ba78ce0758d3fd83daa &gt; hash.txt</code></p>
+
+<p>Let’s figure out what hash function has been used:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat 279412f945939ba78ce0758d3fd83daa</code> or <code class="language-plaintext highlighter-rouge">hascat hash.txt</code></p>
+
+<p>This will return:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>900</td>
+      <td>MD4</td>
+      <td>Raw Hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Let’s try <code class="language-plaintext highlighter-rouge">MD4</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 900 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>this method, unfortunely, won’t return anything (<code class="language-plaintext highlighter-rouge">Status...........: Exhausted
+</code>). This means that hashcat ha tried all of rocyou’s combinations and they all failed.</p>
+
+<p>What we can still do, however, is checking if this password was already cracked. Let’s try <a href="https://crackstation.net/">crackstation</a>:</p>
+
+<p><img src="/assets/images/thm/cth/crackstation.png" alt="crackstation" /></p>
+
+<p>We finally got it. Our plaintext is:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">Eternity22</code></p>
+</blockquote>
+
+<h2 id="level-2">Level 2</h2>
+
+<h3 id="f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85">F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85</h3>
+
+<p>First use <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then write the digest inside a file with <code class="language-plaintext highlighter-rouge">echo F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85 &gt; hash.txt</code></p>
+
+<p>To figure out which hash function has been used, run</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat F09EDCB1FCEFC6DFB23DC3505A882655FF77375ED8AA2D1C13F640FCCC2D0C85</code> or<code class="language-plaintext highlighter-rouge">hashcat hash.txt</code></p>
+
+<p>we’ll get something like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>34600</td>
+      <td>MD6 (256)</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td>1400</td>
+      <td>SHA256</td>
+      <td>Raw Hash</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>since <code class="language-plaintext highlighter-rouge">MD6</code> is quite unusual, we’ll go ahead with <code class="language-plaintext highlighter-rouge">SHA256</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 1400 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">f09edcb1fcefc6dfb23dc3505a882655ff77375ed8aa2d1c13f640fccc2d0c85:paule</code></p>
+
+<p>our plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">paule</code></p>
+</blockquote>
+
+<h3 id="1dfeca0c002ae40b8619ecf94819cc1b">1DFECA0C002AE40B8619ECF94819CC1B</h3>
+
+<p>Same as before. First use <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then write the digest inside a file with <code class="language-plaintext highlighter-rouge">echo 1DFECA0C002AE40B8619ECF94819CC1B &gt; hash.txt</code></p>
+
+<p>To figure out which hash function has been used, run</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat 1DFECA0C002AE40B8619ECF94819CC1B</code> or<code class="language-plaintext highlighter-rouge">hashcat hash.txt</code></p>
+
+<p>we’ll get something like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">ID</th>
+      <th>Name</th>
+      <th>Category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">900</td>
+      <td>MD4</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">0</td>
+      <td>MD5</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">70</td>
+      <td>md5(utf16le($pass))</td>
+      <td>Raw Hash</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">2600</td>
+      <td>md5(md5($pass))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">3500</td>
+      <td>md5(md5(md5($pass)))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4400</td>
+      <td>md5(sha1($pass))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">20900</td>
+      <td>md5(sha1($pass).md5($pass).sha1($pass))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">32800</td>
+      <td>md5(sha1(md5($pass)))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">4300</td>
+      <td>md5(strtoupper(md5($pass)))</td>
+      <td>Raw Hash salted and/or iterated</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">1000</td>
+      <td>NTLM</td>
+      <td>Operating System</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As thm tells us, we are going to need to use <a href="https://en.wikipedia.org/wiki/NTLM"><code class="language-plaintext highlighter-rouge">NTLM</code></a>, Microsoft’s <code class="language-plaintext highlighter-rouge">MD4</code>-based hash function. <code class="language-plaintext highlighter-rouge">NTLM</code>’s hashcat code is 1000:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 1000 -a 0 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">1dfeca0c002ae40b8619ecf94819cc1b:n63umy8lkf4i</code></p>
+
+<p>So our plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">n63umy8lkf4i</code></p>
+</blockquote>
+
+<h3 id="6areallyhardsalt6wkutqzquqqmrm0pt7mppmbgnnzxpmaxi4bjml9becfi3qxifhsgps41bqmhsrhvxgmpdjs6xekzas02"><code class="language-plaintext highlighter-rouge">$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.</code></h3>
+
+<p>Just like before, use <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then write the digest inside a file with <code class="language-plaintext highlighter-rouge">echo $6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02 &gt; hash.txt</code></p>
+
+<p>To figure out which hash function has been used, run</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat '$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.'</code> or<code class="language-plaintext highlighter-rouge">hashcat hash.txt</code></p>
+
+<hr />
+<p><strong>NOTE</strong></p>
+
+<p>If you type <code class="language-plaintext highlighter-rouge">hashcat [digest]</code>, remember to use <code class="language-plaintext highlighter-rouge">''</code> quotes as <code class="language-plaintext highlighter-rouge">$</code> chars won’t be displayed as they are used for variables and parameters.</p>
+
+<hr />
+
+<p>both <code class="language-plaintext highlighter-rouge">hashcat</code> and <code class="language-plaintext highlighter-rouge">hashid</code> don’t return anything. We can try <a href="https://crackstation.net/">crackstation</a> again, but it does nothing again.</p>
+
+<p>This means that we have to resort to looking for this digest’s pattern among <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">hashcat’s wiki examples</a>.</p>
+
+<p>Once we’ve gone through them, it turns out that the hashing function that’s been used is <code class="language-plaintext highlighter-rouge">sha512crypt</code> the function used in the <code class="language-plaintext highlighter-rouge">/etc/shadow</code> folder to hash passwords. Its’ hashcat code is 1800:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -a 0 -m 1800 '$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.' /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>Since this can take a lot of time, we can filter combinations of more then 6 chars from <code class="language-plaintext highlighter-rouge">rockyou.txt</code> like we did for <a href="#2y12dwt1bzj6pcyc3dy1fwz5ieeuznr71eenkjkulyptsgbx1h68wsrom">this digest</a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">LC_ALL=C awk length==6 /usr/share/wordlists/rockyou.txt &gt; ~/rock6.txt</code></p>
+
+<p>then run</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 1800 -a 0 hash.txt rock6.txt</code></p>
+
+<p>we’ll get:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$6$aReallyHardSalt$6WKUTqzq.UQQmrm0p/T7MPpMbGNnzXPMAXi4bJMl9be.cfi3/qxIf.hsGpS41BqMhSrHVXgMpdjS6xeKZAs02.:waka99</code></p>
+
+<p>so our plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">waka99</code></p>
+</blockquote>
+
+<h3 id="e5d8870e5bdd26602cab8dbe07a942c8669e56d6">e5d8870e5bdd26602cab8dbe07a942c8669e56d6</h3>
+
+<p>Thm tells us the hashing function that has been used is <a href="https://en.wikipedia.org/wiki/HMAC">HMAC-SHA1</a>. This means that the format for our hashcat parameter needs to be <code class="language-plaintext highlighter-rouge">digest:salt</code>. That means:</p>
+
+<p><code class="language-plaintext highlighter-rouge">e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme</code></p>
+
+<p>For one last time, use <code class="language-plaintext highlighter-rouge">&gt; hash.txt</code> to empty the <code class="language-plaintext highlighter-rouge">hash.txt</code> file, then write the digest and sal inside a file with <code class="language-plaintext highlighter-rouge">echo e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme &gt; hash.txt</code></p>
+
+<p>HMAC-SHA1’s hashcat code is 160, so we’ll need to run:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -a 0 -m 160 hash.txt /usr/share/wordlists/rockyou.txt</code></p>
+
+<p>we’ll get:</p>
+
+<p><code class="language-plaintext highlighter-rouge">e5d8870e5bdd26602cab8dbe07a942c8669e56d6:tryhackme:481616481616</code></p>
+
+<p>this emans that out plaintext will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">481616481616</code></p>
+</blockquote>
+
+<p>That’s it! This room is over.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

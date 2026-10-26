@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FIRST CTF Compromised host 2 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="FIRST CTF Compromised host 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the compromised host 2 challenge, part of the network section of the FIRST CTF." />
+<meta property="og:description" content="Walkthorugh/Writeup for the compromised host 2 challenge, part of the network section of the FIRST CTF." />
+<link rel="canonical" href="http://localhost:4000/first/Compromised-host-2" />
+<meta property="og:url" content="http://localhost:4000/first/Compromised-host-2" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FIRST CTF Compromised host 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the compromised host 2 challenge, part of the network section of the FIRST CTF.","headline":"FIRST CTF Compromised host 2","url":"http://localhost:4000/first/Compromised-host-2"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="compromised-host-24"><a href="https://ctf.first.org/challenges?#Compromised%20host%20(2/4)-43">Compromised host (2/4)</a></h1>
+
+<p>This challenge tells us that <code class="language-plaintext highlighter-rouge">network_traffic.pcap</code> captured traffic coming from a compromised <a href="https://docs.docker.com/get-started/docker-overview/">Docker</a> <a href="https://en.wikipedia.org/wiki/Containerization_(computing)">container</a>.</p>
+
+<p>The best way to inspect such traffic is using a <code class="language-plaintext highlighter-rouge">http</code> filter on <a href="https://www.wireshark.org/">Wireshark</a>. The resulting packets will be:</p>
+
+<p><img src="/assets/images/first/network/http.png" alt="http" /></p>
+
+<p>The packet we are looking for also comes from the server and is directed to the attacker. Let’s add filters for source and address IPs like this: <code class="language-plaintext highlighter-rouge">http &amp;&amp; ip.src == 192.168.1.25 &amp;&amp; ip.dst == 192.168.1.18</code></p>
+
+<p><img src="/assets/images/first/network/srcdst.png" alt="srcdst" /></p>
+
+<p>Let’s look at the specific packet that has this request URI: <code class="language-plaintext highlighter-rouge">/v1.42/exec/29e16f99002956474a3f86bf38b17822192876e11ac26d6b9d7adc5e8f2fe4ce/json</code>. This is an HTTP response that holds data about a specific container. If we look through the JavaScript Object Notation (JSON) content, we’ll see a <code class="language-plaintext highlighter-rouge">Container ID</code> key with its value:</p>
+
+<p><code class="language-plaintext highlighter-rouge">62d1f694c5d71e79f65003ce80bc2132c03cabd839c0cea62489f93dd9dc87b1</code></p>
+
+<p>The challenge only requires us to paste the first 12 characters from the ID, so the flag will be:</p>
+
+<blockquote>
+  <p>62d1f694c5d7</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

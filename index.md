@@ -146,6 +146,35 @@ summary:hover{
   </ul>
 </details>
 <hr>
+## [LetsDefend](https://letsdefend.io/)
+<details>
+  <summary>> show/hide</summary>
+  {% assign sorted_ld = site.letsdefend | sort: "order" %}
+  {% assign grouped_sets = sorted_ld | group_by: "set" %}
+  {% for set in grouped_sets %}
+    {% if set.name != "" %}
+      <details>
+        <summary>&nbsp;&nbsp;&nbsp;&nbsp;> {{ set.name }}</summary>
+        <ul>
+          {% for page in set.items %}
+            <li>
+              <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "LetsDefend " }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% else %}
+      <ul>
+        {% for page in set.items %}
+          <li>
+            <a href="{{ site.baseurl }}{{ page.url }}">{{ page.title | remove: "LetsDefend " }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
+</details>
+<hr>
 ## [SadServers](https://sadservers.com/)
 <details>
   <summary>> show/hide</summary>

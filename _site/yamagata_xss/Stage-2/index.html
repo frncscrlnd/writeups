@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenges (by yamagata21) Stage 2 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenges (by yamagata21) Stage 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Stage 2 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: close the current tag and add SCRIPT tag… As hinted, let’s check for open tags; this time, the response page doesn’t display user input. However, the input is reflected in the “value” attribute in the form being unsanitized, as it displays &lt;input type=&quot;text&quot; name=&quot;p1&quot; size=&quot;50&quot; value=&quot;&lt;script&gt;alert(document.domain)&lt;/script&gt;&quot;&gt; This means that we can close the attribute and the input tag by typing and submitting &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; in the textbox." />
+<meta property="og:description" content="Stage 2 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: close the current tag and add SCRIPT tag… As hinted, let’s check for open tags; this time, the response page doesn’t display user input. However, the input is reflected in the “value” attribute in the form being unsanitized, as it displays &lt;input type=&quot;text&quot; name=&quot;p1&quot; size=&quot;50&quot; value=&quot;&lt;script&gt;alert(document.domain)&lt;/script&gt;&quot;&gt; This means that we can close the attribute and the input tag by typing and submitting &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; in the textbox." />
+<link rel="canonical" href="http://localhost:4000/yamagata_xss/Stage-2/" />
+<meta property="og:url" content="http://localhost:4000/yamagata_xss/Stage-2/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenges (by yamagata21) Stage 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Stage 2 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: close the current tag and add SCRIPT tag… As hinted, let’s check for open tags; this time, the response page doesn’t display user input. However, the input is reflected in the “value” attribute in the form being unsanitized, as it displays &lt;input type=&quot;text&quot; name=&quot;p1&quot; size=&quot;50&quot; value=&quot;&lt;script&gt;alert(document.domain)&lt;/script&gt;&quot;&gt; This means that we can close the attribute and the input tag by typing and submitting &quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt; in the textbox.","headline":"XSS Challenges (by yamagata21) Stage 2","url":"http://localhost:4000/yamagata_xss/Stage-2/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h2 id="stage-2"><a href="https://xss-quiz.int21h.jp/stage2.php">Stage 2</a></h2>
+
+<p><strong>What you have to do:</strong><br />
+Inject the following JavaScript command: <code class="language-plaintext highlighter-rouge">alert(document.domain);</code></p>
+
+<p><strong>Hint:</strong> <em>close the current tag and add SCRIPT tag…</em></p>
+
+<p>As hinted, let’s check for open tags; this time, the response page <strong>doesn’t display user input.</strong> 
+<img src="/assets/images/xss21/2/2.1.png" alt="2.1" />
+However, the input is reflected in the “value” attribute in the form being unsanitized, as it displays <code class="language-plaintext highlighter-rouge">&lt;input type="text" name="p1" size="50" value="&lt;script&gt;alert(document.domain)&lt;/script&gt;"&gt;</code>
+<img src="/assets/images/xss21/2/2.2.png" alt="2.2" />
+This means that we can close the attribute and the input tag by typing and submitting <code class="language-plaintext highlighter-rouge">"&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;</code> in the textbox.
+<img src="/assets/images/xss21/2/2.3.png" alt="2.3" /></p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

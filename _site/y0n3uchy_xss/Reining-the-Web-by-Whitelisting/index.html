@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenge by y0n3uchy Reining the Web by Whitelisting | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenge by y0n3uchy Reining the Web by Whitelisting" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the “Reining the Web by Whitelisting” challenge, part of the “Battle with Content-Security-Policy” section of XSS Challenge by y0n3uchy." />
+<meta property="og:description" content="Walkthorugh/Writeup for the “Reining the Web by Whitelisting” challenge, part of the “Battle with Content-Security-Policy” section of XSS Challenge by y0n3uchy." />
+<link rel="canonical" href="http://localhost:4000/y0n3uchy_xss/Reining-the-Web-by-Whitelisting/" />
+<meta property="og:url" content="http://localhost:4000/y0n3uchy_xss/Reining-the-Web-by-Whitelisting/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenge by y0n3uchy Reining the Web by Whitelisting" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the “Reining the Web by Whitelisting” challenge, part of the “Battle with Content-Security-Policy” section of XSS Challenge by y0n3uchy.","headline":"XSS Challenge by y0n3uchy Reining the Web by Whitelisting","url":"http://localhost:4000/y0n3uchy_xss/Reining-the-Web-by-Whitelisting/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="reining-the-web-by-whitelisting"><a href="https://xss.challenge.training.hacq.me/challenges/csp01.php">Reining the Web by Whitelisting</a></h1>
+
+<p>When loading this challenge a <code class="language-plaintext highlighter-rouge">預金残高: 30000</code> alert will pop up. 預金残高 means “deposit balance” in Japanese.</p>
+
+<p>Let’s look at this level’s source code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php header("Content-Security-Policy: default-src 'self'; style-src 'unsafe-inline'"); ?&gt;
+&lt;script src="hook.js"&gt;&lt;/script&gt;
+
+
+&lt;script src="csp01-util.js"&gt;&lt;/script&gt;
+&lt;script src="csp01-jsonp.php?callback=callback"&gt;&lt;/script&gt;
+
+&lt;h1&gt;Hello, &lt;?= $_GET['payload'] ?&gt;!&lt;/h1&gt;
+
+&lt;h1&gt;inject&lt;/h1&gt;
+&lt;form&gt;
+    &lt;input type="text" name="payload" placeholder="your payload here"&gt;
+    &lt;input type="submit" value="GO"&gt;
+&lt;/form&gt;
+
+&lt;h1&gt;src&lt;/h1&gt;
+&lt;?php highlight_string(file_get_contents(basename(__FILE__))); ?&gt;
+</code></pre></div></div>
+
+<p>As you may have noticed, this challenge is the first of a set that is dedicated entirely to <a href="https://en.wikipedia.org/wiki/Content_Security_Policy">Content Security Policy (CSP)</a>. CSP is an <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers">HTTP header</a> which restricts the locations from which you can load resources.</p>
+
+<p>In our case, <code class="language-plaintext highlighter-rouge">&lt;?php header("Content-Security-Policy: default-src 'self'; style-src 'unsafe-inline'"); ?&gt;</code> means that any resource must be loaded only from the same domain (<code class="language-plaintext highlighter-rouge">default-src 'self';</code>) and that inline CSS is allowed (<code class="language-plaintext highlighter-rouge">style-src 'unsafe-inline'</code>) as an exception to the <code class="language-plaintext highlighter-rouge">default-src</code> rule.</p>
+
+<p>We can also see that there are two <code class="language-plaintext highlighter-rouge">script</code> tags:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;script src="csp01-util.js"&gt;&lt;/script&gt;
+&lt;script src="csp01-jsonp.php?callback=callback"&gt;&lt;/script&gt;
+</code></pre></div></div>
+
+<p>these two will work as intended because both resources (<code class="language-plaintext highlighter-rouge">csp01-util.js</code> and <code class="language-plaintext highlighter-rouge">csp01-jsonp.php</code>) are on this domain. Let’s take a look at these files:</p>
+
+<p><code class="language-plaintext highlighter-rouge">csp01-util.js</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function callback(money){
+    alert(`é é‡‘æ®‹é«˜: ${money}`);
+}
+</code></pre></div></div>
+
+<p>in this file a function which displays an alert is defined. This is what we see upon loading the challenge.</p>
+
+<p><code class="language-plaintext highlighter-rouge">csp01-jsonp.php</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>callback(30000);
+</code></pre></div></div>
+
+<p>this other file calls the function.</p>
+
+<p>This works not only because both resources are on the same domain, but also because it uses <a href="https://en.wikipedia.org/wiki/JSONP">JSONP</a>, a technique (that has now been replaced by <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS">CORS</a>) which allows to bypass the browser’s <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same Origin Policy</a> that prevents other website’s from accessing a website’s data.</p>
+
+<p>JSONP works by exploiting the fact that the <code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> tag can load resources from anywhere (that’s why this website uses a CSP). It appends the name of the function to call to the URL like this <code class="language-plaintext highlighter-rouge">?callback=function</code> or, in this case, <code class="language-plaintext highlighter-rouge">?callback=callback</code>.</p>
+
+<p>We can exploit this by changing which function is being called to standard JS:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">&lt;script src="csp01-jsonp.php?callback=alert(document.domain)"&gt;&lt;/script&gt;</code></p>
+</blockquote>
+
+<p>submitting this payload will solve the challenge</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

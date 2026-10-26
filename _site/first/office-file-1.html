@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FIRST CTF office 1 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="FIRST CTF office 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the office 1 challenge, part of the Inter-regional CyberDrill October 2023 section of the FIRST CTF." />
+<meta property="og:description" content="Walkthorugh/Writeup for the office 1 challenge, part of the Inter-regional CyberDrill October 2023 section of the FIRST CTF." />
+<link rel="canonical" href="http://localhost:4000/first/office-file-1" />
+<meta property="og:url" content="http://localhost:4000/first/office-file-1" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FIRST CTF office 1" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the office 1 challenge, part of the Inter-regional CyberDrill October 2023 section of the FIRST CTF.","headline":"FIRST CTF office 1","url":"http://localhost:4000/first/office-file-1"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="office-1"><a href="https://ctf.first.org/challenges#office%20file%201-13">office 1</a></h1>
+
+<p>This challenge is a follow up to the last one, <a href="https://frncscrlnd.github.io/writeups/first/zip-1">zip 1</a>. It tells us to <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force</a> an Microsoft Word file’s password. To access the <code class="language-plaintext highlighter-rouge">.docx</code> file you need to open the <code class="language-plaintext highlighter-rouge">it2.zip</code> file and insert the password we found earlier.</p>
+
+<p>We now get a <code class="language-plaintext highlighter-rouge">it2.docx</code> file. Just like we did for <a href="https://frncscrlnd.github.io/writeups/first/zip-1">zip 1</a>, we’ll use <a href="https://www.openwall.com/john/"><code class="language-plaintext highlighter-rouge">john</code></a> to turn the file into an hash:</p>
+
+<p><code class="language-plaintext highlighter-rouge">office2john it2.docx &gt; hash.txt</code></p>
+
+<p>This time we won’t guess the password (we already have a hint: the password starts with kuld and is 7 characters long) but we’ll brute force it with <a href="https://hashcat.net/hashcat/"><code class="language-plaintext highlighter-rouge">hashcat</code></a> starting from the original hint, <code class="language-plaintext highlighter-rouge">kuld***</code>.</p>
+
+<p>To use hashcat in brute-force mode, we need to use the <code class="language-plaintext highlighter-rouge">-a 3</code> flag. As we can see from the <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">example hashes</a> hashcat’s code for MS Office 2013 is <code class="language-plaintext highlighter-rouge">9600</code>. Our command’s mask (the unknown part of the string) will be made of 4 characters. We’ll use different placeholders for different charsets:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>?l lowercase (a-z) 
+?u uppercase (A-Z)
+?d digits (0-9) 
+?s symbols 
+?a all
+</code></pre></div></div>
+
+<p>Let’s try lowercase alphabetical characters first:</p>
+
+<p><code class="language-plaintext highlighter-rouge">hashcat -m 9600 hash.txt -a 3 kuld?l?l?l</code></p>
+
+<p>We’ll get:</p>
+
+<p><code class="language-plaintext highlighter-rouge">$office$*2013*100000*256*16*4fa274b82c7479757311707852c1d7de*b84fd3d4dd538a6484089051e92dff4f*95c194e063f98b8739e2115113b9f858449ac5e4c518ff2eca764d69391df8f9:kuldeep</code></p>
+
+<p>This means that our password will be:</p>
+
+<blockquote>
+  <p>kuldeep</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

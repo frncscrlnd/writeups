@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 16 → Level 17 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 16 → Level 17" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 16 → Level 17 After logging in with ssh bandit15@bandit.labs.overthewire.org -p 2220 Password: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx we can see that there isn’t any file in the home/bandit16. this is becuse, as the game tells us, we have to first find on which port (between 31000 to 32000) of the localhost machine the server is listening on, then find which of these active ports supports SSL/TLS, then submit the password for the current level to it via openssh s_client. First, we have to find open ports on the localhost: nmap will help us. nmap is a port scanning utility that sends TCP/UDP packets to scan for open ports. In our case, we’ll need the standard SYN scan on ports 31000-32000: nmap -p 31000-32000 localhost This will return: PORT STATE SERVICE 31046/tcp open unknown 31518/tcp open unknown 31691/tcp open unknown 31790/tcp open unknown 31960/tcp open unknown This means that there are 5 open ports in this port range on localhost. Now we just need to find which one supports ssl. Let’s run nmap -p [port] -sV localhost on each of our ports: nmap -p 31046 -sV localhost nmap -p 31518 -sV localhost nmap -p 31691 -sV localhost nmap -p 31790 -sV localhost nmap -p 31960 -sV localhost This will return, respectively to each command: PORT STATE SERVICE VERSION 31046/tcp open echo PORT STATE SERVICE VERSION 31518/tcp open ssl/echo PORT STATE SERVICE VERSION 31691/tcp open echo PORT STATE SERVICE VERSION 31790/tcp open ssl/unknown PORT STATE SERVICE VERSION 31960/tcp open echo The port we are looking for is claarly 31790, as it supports SSL and has an unknown service (but we definitely don’t need 31518’s echo service, as it would give us back our password). Let’s connect to the 31790 port with: openssl s_client -connect localhost:31790 and send our password. This will return the private key for our next level: -----BEGIN RSA PRIVATE KEY----- MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama +TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT 8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM 77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3 vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY= -----END RSA PRIVATE KEY----- Let’s connect copy the key to a file: like we did in Level 12 → Level 13, let’s cd into /tmp and make a temporary directory with mktemp -d; then move into the new directory with cd and create a file by running touch sshkey.private (or whatever name you want to give to the file). Use nano to edit the file by running nano sshkey.private, then paste the content of the key. The we need to change the permissions for this file, as a private key can only be used by one user: chmod 700 sshkey.private This means that the user has read, write and execute (rwx) permissions, while the group ond other users have no permissions. Then we can login into the next level with: ssh -p 2220 -i sshkey.private bandit17@localhost" />
+<meta property="og:description" content="Level 16 → Level 17 After logging in with ssh bandit15@bandit.labs.overthewire.org -p 2220 Password: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx we can see that there isn’t any file in the home/bandit16. this is becuse, as the game tells us, we have to first find on which port (between 31000 to 32000) of the localhost machine the server is listening on, then find which of these active ports supports SSL/TLS, then submit the password for the current level to it via openssh s_client. First, we have to find open ports on the localhost: nmap will help us. nmap is a port scanning utility that sends TCP/UDP packets to scan for open ports. In our case, we’ll need the standard SYN scan on ports 31000-32000: nmap -p 31000-32000 localhost This will return: PORT STATE SERVICE 31046/tcp open unknown 31518/tcp open unknown 31691/tcp open unknown 31790/tcp open unknown 31960/tcp open unknown This means that there are 5 open ports in this port range on localhost. Now we just need to find which one supports ssl. Let’s run nmap -p [port] -sV localhost on each of our ports: nmap -p 31046 -sV localhost nmap -p 31518 -sV localhost nmap -p 31691 -sV localhost nmap -p 31790 -sV localhost nmap -p 31960 -sV localhost This will return, respectively to each command: PORT STATE SERVICE VERSION 31046/tcp open echo PORT STATE SERVICE VERSION 31518/tcp open ssl/echo PORT STATE SERVICE VERSION 31691/tcp open echo PORT STATE SERVICE VERSION 31790/tcp open ssl/unknown PORT STATE SERVICE VERSION 31960/tcp open echo The port we are looking for is claarly 31790, as it supports SSL and has an unknown service (but we definitely don’t need 31518’s echo service, as it would give us back our password). Let’s connect to the 31790 port with: openssl s_client -connect localhost:31790 and send our password. This will return the private key for our next level: -----BEGIN RSA PRIVATE KEY----- MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama +TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT 8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM 77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3 vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY= -----END RSA PRIVATE KEY----- Let’s connect copy the key to a file: like we did in Level 12 → Level 13, let’s cd into /tmp and make a temporary directory with mktemp -d; then move into the new directory with cd and create a file by running touch sshkey.private (or whatever name you want to give to the file). Use nano to edit the file by running nano sshkey.private, then paste the content of the key. The we need to change the permissions for this file, as a private key can only be used by one user: chmod 700 sshkey.private This means that the user has read, write and execute (rwx) permissions, while the group ond other users have no permissions. Then we can login into the next level with: ssh -p 2220 -i sshkey.private bandit17@localhost" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-16_to_Level-17/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-16_to_Level-17/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 16 → Level 17" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 16 → Level 17 After logging in with ssh bandit15@bandit.labs.overthewire.org -p 2220 Password: kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx we can see that there isn’t any file in the home/bandit16. this is becuse, as the game tells us, we have to first find on which port (between 31000 to 32000) of the localhost machine the server is listening on, then find which of these active ports supports SSL/TLS, then submit the password for the current level to it via openssh s_client. First, we have to find open ports on the localhost: nmap will help us. nmap is a port scanning utility that sends TCP/UDP packets to scan for open ports. In our case, we’ll need the standard SYN scan on ports 31000-32000: nmap -p 31000-32000 localhost This will return: PORT STATE SERVICE 31046/tcp open unknown 31518/tcp open unknown 31691/tcp open unknown 31790/tcp open unknown 31960/tcp open unknown This means that there are 5 open ports in this port range on localhost. Now we just need to find which one supports ssl. Let’s run nmap -p [port] -sV localhost on each of our ports: nmap -p 31046 -sV localhost nmap -p 31518 -sV localhost nmap -p 31691 -sV localhost nmap -p 31790 -sV localhost nmap -p 31960 -sV localhost This will return, respectively to each command: PORT STATE SERVICE VERSION 31046/tcp open echo PORT STATE SERVICE VERSION 31518/tcp open ssl/echo PORT STATE SERVICE VERSION 31691/tcp open echo PORT STATE SERVICE VERSION 31790/tcp open ssl/unknown PORT STATE SERVICE VERSION 31960/tcp open echo The port we are looking for is claarly 31790, as it supports SSL and has an unknown service (but we definitely don’t need 31518’s echo service, as it would give us back our password). Let’s connect to the 31790 port with: openssl s_client -connect localhost:31790 and send our password. This will return the private key for our next level: -----BEGIN RSA PRIVATE KEY----- MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama +TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT 8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM 77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3 vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY= -----END RSA PRIVATE KEY----- Let’s connect copy the key to a file: like we did in Level 12 → Level 13, let’s cd into /tmp and make a temporary directory with mktemp -d; then move into the new directory with cd and create a file by running touch sshkey.private (or whatever name you want to give to the file). Use nano to edit the file by running nano sshkey.private, then paste the content of the key. The we need to change the permissions for this file, as a private key can only be used by one user: chmod 700 sshkey.private This means that the user has read, write and execute (rwx) permissions, while the group ond other users have no permissions. Then we can login into the next level with: ssh -p 2220 -i sshkey.private bandit17@localhost","headline":"Level 16 → Level 17","url":"http://localhost:4000/bandit/Level-16_to_Level-17/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-16--level-17"><a href="https://overthewire.org/wargames/bandit/bandit17.html">Level 16 → Level 17</a></h1>
+
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit15@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">kSkvUpMQ7lBYyCM4GBPvCvT1BfWRy0Dx</code></p>
+
+<p>we can see that there isn’t any file in the home/bandit16. this is becuse, as the game tells us, we have to first find on which port (between  31000 to 32000) of the localhost machine the server is listening on, then find which of these active ports supports SSL/TLS, then submit the password for the current level to it via openssh s_client.</p>
+
+<p>First, we have to find open ports on the localhost: nmap will help us. nmap is a port scanning utility that sends TCP/UDP packets to scan for open ports. In our case, we’ll need the standard <code class="language-plaintext highlighter-rouge">SYN</code> scan on ports  31000-32000:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap -p 31000-32000 localhost</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE
+31046/tcp open  unknown
+31518/tcp open  unknown
+31691/tcp open  unknown
+31790/tcp open  unknown
+31960/tcp open  unknown
+</code></pre></div></div>
+
+<p>This means that there are 5 open ports in this port range on localhost. Now we just need to find which one supports ssl. Let’s run  nmap -p [port] -sV localhost on each of our ports:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap -p 31046 -sV localhost
+nmap -p 31518 -sV localhost
+nmap -p 31691 -sV localhost
+nmap -p 31790 -sV localhost
+nmap -p 31960 -sV localhost
+</code></pre></div></div>
+
+<p>This will return, respectively to each command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE VERSION
+31046/tcp open  echo
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE  VERSION
+31518/tcp open  ssl/echo
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE VERSION
+31691/tcp open  echo
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE     VERSION
+31790/tcp open  ssl/unknown
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT      STATE SERVICE VERSION
+31960/tcp open  echo
+</code></pre></div></div>
+
+<p>The port we are looking for is claarly 31790, as it supports SSL and has an unknown service (but we definitely don’t need 31518’s echo service, as it would give us back our password). Let’s connect to the 31790 port with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">openssl s_client -connect localhost:31790</code></p>
+
+<p>and send our password. This will return the private key for our next level:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAvmOkuifmMg6HL2YPIOjon6iWfbp7c3jx34YkYWqUH57SUdyJ
+imZzeyGC0gtZPGujUSxiJSWI/oTqexh+cAMTSMlOJf7+BrJObArnxd9Y7YT2bRPQ
+Ja6Lzb558YW3FZl87ORiO+rW4LCDCNd2lUvLE/GL2GWyuKN0K5iCd5TbtJzEkQTu
+DSt2mcNn4rhAL+JFr56o4T6z8WWAW18BR6yGrMq7Q/kALHYW3OekePQAzL0VUYbW
+JGTi65CxbCnzc/w4+mqQyvmzpWtMAzJTzAzQxNbkR2MBGySxDLrjg0LWN6sK7wNX
+x0YVztz/zbIkPjfkU1jHS+9EbVNj+D1XFOJuaQIDAQABAoIBABagpxpM1aoLWfvD
+KHcj10nqcoBc4oE11aFYQwik7xfW+24pRNuDE6SFthOar69jp5RlLwD1NhPx3iBl
+J9nOM8OJ0VToum43UOS8YxF8WwhXriYGnc1sskbwpXOUDc9uX4+UESzH22P29ovd
+d8WErY0gPxun8pbJLmxkAtWNhpMvfe0050vk9TL5wqbu9AlbssgTcCXkMQnPw9nC
+YNN6DDP2lbcBrvgT9YCNL6C+ZKufD52yOQ9qOkwFTEQpjtF4uNtJom+asvlpmS8A
+vLY9r60wYSvmZhNqBUrj7lyCtXMIu1kkd4w7F77k+DjHoAXyxcUp1DGL51sOmama
++TOWWgECgYEA8JtPxP0GRJ+IQkX262jM3dEIkza8ky5moIwUqYdsx0NxHgRRhORT
+8c8hAuRBb2G82so8vUHk/fur85OEfc9TncnCY2crpoqsghifKLxrLgtT+qDpfZnx
+SatLdt8GfQ85yA7hnWWJ2MxF3NaeSDm75Lsm+tBbAiyc9P2jGRNtMSkCgYEAypHd
+HCctNi/FwjulhttFx/rHYKhLidZDFYeiE/v45bN4yFm8x7R/b0iE7KaszX+Exdvt
+SghaTdcG0Knyw1bpJVyusavPzpaJMjdJ6tcFhVAbAjm7enCIvGCSx+X3l5SiWg0A
+R57hJglezIiVjv3aGwHwvlZvtszK6zV6oXFAu0ECgYAbjo46T4hyP5tJi93V5HDi
+Ttiek7xRVxUl+iU7rWkGAXFpMLFteQEsRr7PJ/lemmEY5eTDAFMLy9FL2m9oQWCg
+R8VdwSk8r9FGLS+9aKcV5PI/WEKlwgXinB3OhYimtiG2Cg5JCqIZFHxD6MjEGOiu
+L8ktHMPvodBwNsSBULpG0QKBgBAplTfC1HOnWiMGOU3KPwYWt0O6CdTkmJOmL8Ni
+blh9elyZ9FsGxsgtRBXRsqXuz7wtsQAgLHxbdLq/ZJQ7YfzOKU4ZxEnabvXnvWkU
+YOdjHdSOoKvDQNWu6ucyLRAWFuISeXw9a/9p7ftpxm0TSgyvmfLF2MIAEwyzRqaM
+77pBAoGAMmjmIJdjp+Ez8duyn3ieo36yrttF5NSsJLAbxFpdlc1gvtGCWW+9Cq0b
+dxviW8+TFVEBl1O4f7HVm6EpTscdDxU+bCXWkfjuRb7Dy9GOtt9JPsX8MBTakzh3
+vBgsyi/sN3RqRBcGU40fOoZyfAMT8s1m/uYv52O6IgeuZ/ujbjY=
+-----END RSA PRIVATE KEY-----
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Let’s connect copy the key to a file: like we did in <a href="/bandit/level-12_to_level-13">Level 12 → Level 13</a>, let’s <code class="language-plaintext highlighter-rouge">cd</code> into <code class="language-plaintext highlighter-rouge">/tmp</code> and make a temporary directory with <code class="language-plaintext highlighter-rouge">mktemp -d</code>; then move into the new directory with cd and create a file by running <code class="language-plaintext highlighter-rouge">touch sshkey.private</code> (or whatever name you want to give to the file). Use nano to edit the file by running <code class="language-plaintext highlighter-rouge">nano sshkey.private</code>, then paste the content of the key. The we need to change the permissions for this file, as a private key can only be used by one user:</p>
+
+<p><code class="language-plaintext highlighter-rouge">chmod 700 sshkey.private</code></p>
+
+<p>This means that the user has read, write and execute (rwx) permissions, while the group ond other users have no permissions.</p>
+
+<p>Then we can login into the next level with:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">ssh -p 2220 -i sshkey.private bandit17@localhost</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

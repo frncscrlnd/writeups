@@ -1,0 +1,13 @@
+<p>Welcome to this writeup series about <a href="https://sadservers.com/">SadServers</a> challenges. We’ll walk through some interesting Linux and DevOps troubleshooting scenarios.</p>
+
+<h1 id="saint-john-what-is-writing-to-this-log-file"><a href="https://sadservers.com/scenario/saint-john">“Saint John”: what is writing to this log file?</a></h1>
+
+<p>This challenge wants us to terminate a running process. Howevers, we first need to know which program is running and writing to <code class="language-plaintext highlighter-rouge">/var/log/bad.log</code> to terminate it. By using <code class="language-plaintext highlighter-rouge">ls</code> we can see that there’s a <code class="language-plaintext highlighter-rouge">badlog.py</code> file in our current directory. To find out wheter this is the file that is writing logs to the file, we need to check if it is running or not. We can do so by using <code class="language-plaintext highlighter-rouge">ps aux</code>. this will return all processes (<code class="language-plaintext highlighter-rouge">a</code> will return all processes with a terminal, <code class="language-plaintext highlighter-rouge">u</code> stands for user-oriented format and <code class="language-plaintext highlighter-rouge">x</code> lists all processes that don’t have a terminal).</p>
+
+<p>Among all these processes, one stands out as it’s exactly what er are looking for:</p>
+
+<p><code class="language-plaintext highlighter-rouge">admin        586  0.0  1.7  12508  8228 ?        R    15:20   0:00 /usr/bin/python3 /home/admin/badlog.py</code></p>
+
+<p>Yours will have a different PID (<a href="https://en.wikipedia.org/wiki/Process_identifier">Process ID</a>) since it changes on each startup.</p>
+
+<p>In my case, all i need to do is running <code class="language-plaintext highlighter-rouge">kill 586</code> and the challenge will be solved. You just need to change PID.</p>

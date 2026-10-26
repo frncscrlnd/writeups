@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 21 → Level 22 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 21 → Level 22" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 21 → Level 22 After logging in with ssh bandit21@bandit.labs.overthewire.org -p 2220 Password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt the game tells us to look into the /etc/cron.d/ directory for the configuration of a scheduled job. ls inside this directory shows a cronjob_bandit22 file: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat We are gonna use cat on this file (cat cronjob_bandit22) to se what it does: #!/bin/bash chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv this basically changes the permissions on the /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv file and writes the password from bandit_22into it. Let’s read its content: cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv This returns our password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q" />
+<meta property="og:description" content="Level 21 → Level 22 After logging in with ssh bandit21@bandit.labs.overthewire.org -p 2220 Password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt the game tells us to look into the /etc/cron.d/ directory for the configuration of a scheduled job. ls inside this directory shows a cronjob_bandit22 file: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat We are gonna use cat on this file (cat cronjob_bandit22) to se what it does: #!/bin/bash chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv this basically changes the permissions on the /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv file and writes the password from bandit_22into it. Let’s read its content: cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv This returns our password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-21_to_Level-22/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-21_to_Level-22/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 21 → Level 22" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 21 → Level 22 After logging in with ssh bandit21@bandit.labs.overthewire.org -p 2220 Password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt the game tells us to look into the /etc/cron.d/ directory for the configuration of a scheduled job. ls inside this directory shows a cronjob_bandit22 file: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat We are gonna use cat on this file (cat cronjob_bandit22) to se what it does: #!/bin/bash chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv this basically changes the permissions on the /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv file and writes the password from bandit_22into it. Let’s read its content: cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv This returns our password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q","headline":"Level 21 → Level 22","url":"http://localhost:4000/bandit/Level-21_to_Level-22/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-21--level-22"><a href="https://overthewire.org/wargames/bandit/bandit22.html">Level 21 → Level 22</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit21@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">EeoULMCra2q0dSkYj561DX7s1CpBuOBt</code></p>
+
+<p>the game tells us to look into the <code class="language-plaintext highlighter-rouge">/etc/cron.d/</code> directory for the configuration of a scheduled job. <code class="language-plaintext highlighter-rouge">ls</code> inside this directory shows a <code class="language-plaintext highlighter-rouge">cronjob_bandit22</code> file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>behemoth4_cleanup  cronjob_bandit22  cronjob_bandit24  leviathan5_cleanup    otw-tmp-dir
+clean_tmp          cronjob_bandit23  e2scrub_all       manpage3_resetpw_job  sysstat
+</code></pre></div></div>
+
+<p>We are gonna use <code class="language-plaintext highlighter-rouge">cat</code> on this file (<code class="language-plaintext highlighter-rouge">cat cronjob_bandit22</code>) to se what it does:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+</code></pre></div></div>
+
+<p>this basically changes the permissions on the <code class="language-plaintext highlighter-rouge">/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</code> file and writes the password from <code class="language-plaintext highlighter-rouge">bandit_22</code>into it.</p>
+
+<p>Let’s read its content:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv</code></p>
+
+<p>This returns our password:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>FIRST CTF Compromised host 1 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="FIRST CTF Compromised host 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for the compromised host 1 challenge, part of the network section of the FIRST CTF." />
+<meta property="og:description" content="Walkthorugh/Writeup for the compromised host 1 challenge, part of the network section of the FIRST CTF." />
+<link rel="canonical" href="http://localhost:4000/first/Compromised-host-1" />
+<meta property="og:url" content="http://localhost:4000/first/Compromised-host-1" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="FIRST CTF Compromised host 1" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for the compromised host 1 challenge, part of the network section of the FIRST CTF.","headline":"FIRST CTF Compromised host 1","url":"http://localhost:4000/first/Compromised-host-1"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="compromised-host-14"><a href="https://ctf.first.org/challenges#Compromised%20host%20(1/4)-42">Compromised host (1/4)</a></h1>
+
+<p>This challenge gives us a <code class="language-plaintext highlighter-rouge">network_traffic.pcap</code> file to analyze. It also tells us that a <a href="https://nmap.org/book/man-port-scanning-basics.html">network scan</a> has occurred. It then asks us “What port/ports were opened on the host?”. <a href="en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP (Transmission Control Protocol)</a> is a connection-oriented trnasport level protocol. This means that data exchange happens after a <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment">triple handshake</a>.</p>
+
+<p>This “triple handshake” is estabilished via specific TCP segments:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">SYN</code></li>
+  <li><code class="language-plaintext highlighter-rouge">SYN-ACK</code></li>
+  <li><code class="language-plaintext highlighter-rouge">ACK</code></li>
+</ul>
+
+<p>If the server replies with <code class="language-plaintext highlighter-rouge">SYN-ACK</code> to an initial <code class="language-plaintext highlighter-rouge">SYN</code>, that means that port is open. Otherwise, the server would have dropped the segment or responded with a <code class="language-plaintext highlighter-rouge">RST</code>.</p>
+
+<p>This means that we have look for <code class="language-plaintext highlighter-rouge">SYN-ACK</code> segments in our <code class="language-plaintext highlighter-rouge">.pcap</code> file.</p>
+
+<p>After opening up <code class="language-plaintext highlighter-rouge">network_traffic.pcap</code> in <a href="https://www.wireshark.org/">Wireshark</a>, we can use this filter in the filter bar: <code class="language-plaintext highlighter-rouge">tcp.flags.syn==1 and tcp.flags.ack==1</code>. The resulting segments will be:</p>
+
+<p><img src="/assets/images/first/network/synack.png" alt="synack" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">SYN-ACK</code> segments directed towards the attacker (<code class="language-plaintext highlighter-rouge">192.168.1.18</code>) come from the following ports:</p>
+
+<blockquote>
+  <p>22,2375</p>
+</blockquote>
+
+<p>This will be the challenge’s flag.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

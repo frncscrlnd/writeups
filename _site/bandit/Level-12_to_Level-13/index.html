@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 12 → Level 13 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 12 → Level 13" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level Level 12 → Level 13 After logging in with ssh bandit12@bandit.labs.overthewire.org -p 2220 Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4 and running ls we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a hexdump of a file that’s been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We’ll go with the first option: lets cd to /tmp (cd /tmp) and make a temporary directory with mktemp -d, which will return the path to the directory (e.g /tmp/tmp.nNrWI3pdyH). We’ll then copy the content of data.txt to this directory with cp ~/data.txt . (~ stands for the home directory and . is the directory you want to copy the file to). We can also rename it with mv data.txt hexdata.txt (mv stands for move; the second field is the new file name). I renamed it hexdata since our file is still a hexdump. We now need to convert it back to compressed data. We can do this by using xxd: this command normally returns the hexdump of a file, but by using the -r flag we can revert it. Here’s how: xxd -r hexdata.txt zipdata (where zipdata is the name of the new file). We can now move on to decompressing the file. Before decompressing we need to know which decompression we need, and we can do this by looking at the hexdump: xxd hexdata will give us the hexdump, which starts with 1F 8B. We can compare this with a list of all file signatures adn finally find out that this is gzip’s file signature. So, first, we have to rename our zipdata file to zipdata.gz with mv zipdata zipdata.gzV (gz is gzip&#39;s file extension). Then. we&#39;ll use the compressing program gzip; with this program you can compress a file with gzip file.txt and decompress it with gzip -d file.txt.gz or gunzip file.txt.gz`. In our case we’ll have to use: gzip -d zipdata This will return another zip folder, as we can see with xxd zipdata, which returns a hexdump that starts with 42 5A 68, bzip2’s file signature. This means we’ll have to rename the file to fit bzip2’s extension: mv zipdata zipdata.bz2. We can then run: bzip2 -d zipdata.bz2 just like we did with gzip. This will return another zip file (run xxd zipdata again) and this time it starts again with gzip’s file signature. Let’s rename it with mv zipdata zipdata.gz and run: gzip -d zipdata again and finally we get a… tar archive, as we can see with xxd zipdata and seeing that the filename data5.bin appears. this means that zipdata is a tar archive. Let’s rename our file to a tar archive with mv zipdata zipdata.tar and extract it with tar -xf zipdata.tar Will return the data5.bin file we saw in the archive. Running xxd again prints out the name of another file (data6.bin), so we’re looking at a tar archive again. Let’ extract it with tar -xf data5.bin Running xxd on the resulting data6.bin file returns bzip2’s file signature again; extract it with: bzip2 -d data6.bin Running xxd on the resulting data6.bin.out file allows us to find out that it’s another tar archive with a data8.bin file inside. Let’s get its’ content with tar -xf data6.bin.out xxd on the resulting data8.bin returns gzip’s file signature again. Let’ rename our file with mv data8.bin data8.gz, then decompress it with: gzip -d file8.gz Running cat data8 returns our password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn" />
+<meta property="og:description" content="Level Level 12 → Level 13 After logging in with ssh bandit12@bandit.labs.overthewire.org -p 2220 Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4 and running ls we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a hexdump of a file that’s been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We’ll go with the first option: lets cd to /tmp (cd /tmp) and make a temporary directory with mktemp -d, which will return the path to the directory (e.g /tmp/tmp.nNrWI3pdyH). We’ll then copy the content of data.txt to this directory with cp ~/data.txt . (~ stands for the home directory and . is the directory you want to copy the file to). We can also rename it with mv data.txt hexdata.txt (mv stands for move; the second field is the new file name). I renamed it hexdata since our file is still a hexdump. We now need to convert it back to compressed data. We can do this by using xxd: this command normally returns the hexdump of a file, but by using the -r flag we can revert it. Here’s how: xxd -r hexdata.txt zipdata (where zipdata is the name of the new file). We can now move on to decompressing the file. Before decompressing we need to know which decompression we need, and we can do this by looking at the hexdump: xxd hexdata will give us the hexdump, which starts with 1F 8B. We can compare this with a list of all file signatures adn finally find out that this is gzip’s file signature. So, first, we have to rename our zipdata file to zipdata.gz with mv zipdata zipdata.gzV (gz is gzip&#39;s file extension). Then. we&#39;ll use the compressing program gzip; with this program you can compress a file with gzip file.txt and decompress it with gzip -d file.txt.gz or gunzip file.txt.gz`. In our case we’ll have to use: gzip -d zipdata This will return another zip folder, as we can see with xxd zipdata, which returns a hexdump that starts with 42 5A 68, bzip2’s file signature. This means we’ll have to rename the file to fit bzip2’s extension: mv zipdata zipdata.bz2. We can then run: bzip2 -d zipdata.bz2 just like we did with gzip. This will return another zip file (run xxd zipdata again) and this time it starts again with gzip’s file signature. Let’s rename it with mv zipdata zipdata.gz and run: gzip -d zipdata again and finally we get a… tar archive, as we can see with xxd zipdata and seeing that the filename data5.bin appears. this means that zipdata is a tar archive. Let’s rename our file to a tar archive with mv zipdata zipdata.tar and extract it with tar -xf zipdata.tar Will return the data5.bin file we saw in the archive. Running xxd again prints out the name of another file (data6.bin), so we’re looking at a tar archive again. Let’ extract it with tar -xf data5.bin Running xxd on the resulting data6.bin file returns bzip2’s file signature again; extract it with: bzip2 -d data6.bin Running xxd on the resulting data6.bin.out file allows us to find out that it’s another tar archive with a data8.bin file inside. Let’s get its’ content with tar -xf data6.bin.out xxd on the resulting data8.bin returns gzip’s file signature again. Let’ rename our file with mv data8.bin data8.gz, then decompress it with: gzip -d file8.gz Running cat data8 returns our password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-12_to_Level-13/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-12_to_Level-13/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 12 → Level 13" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level Level 12 → Level 13 After logging in with ssh bandit12@bandit.labs.overthewire.org -p 2220 Password: 7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4 and running ls we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a hexdump of a file that’s been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We’ll go with the first option: lets cd to /tmp (cd /tmp) and make a temporary directory with mktemp -d, which will return the path to the directory (e.g /tmp/tmp.nNrWI3pdyH). We’ll then copy the content of data.txt to this directory with cp ~/data.txt . (~ stands for the home directory and . is the directory you want to copy the file to). We can also rename it with mv data.txt hexdata.txt (mv stands for move; the second field is the new file name). I renamed it hexdata since our file is still a hexdump. We now need to convert it back to compressed data. We can do this by using xxd: this command normally returns the hexdump of a file, but by using the -r flag we can revert it. Here’s how: xxd -r hexdata.txt zipdata (where zipdata is the name of the new file). We can now move on to decompressing the file. Before decompressing we need to know which decompression we need, and we can do this by looking at the hexdump: xxd hexdata will give us the hexdump, which starts with 1F 8B. We can compare this with a list of all file signatures adn finally find out that this is gzip’s file signature. So, first, we have to rename our zipdata file to zipdata.gz with mv zipdata zipdata.gzV (gz is gzip&#39;s file extension). Then. we&#39;ll use the compressing program gzip; with this program you can compress a file with gzip file.txt and decompress it with gzip -d file.txt.gz or gunzip file.txt.gz`. In our case we’ll have to use: gzip -d zipdata This will return another zip folder, as we can see with xxd zipdata, which returns a hexdump that starts with 42 5A 68, bzip2’s file signature. This means we’ll have to rename the file to fit bzip2’s extension: mv zipdata zipdata.bz2. We can then run: bzip2 -d zipdata.bz2 just like we did with gzip. This will return another zip file (run xxd zipdata again) and this time it starts again with gzip’s file signature. Let’s rename it with mv zipdata zipdata.gz and run: gzip -d zipdata again and finally we get a… tar archive, as we can see with xxd zipdata and seeing that the filename data5.bin appears. this means that zipdata is a tar archive. Let’s rename our file to a tar archive with mv zipdata zipdata.tar and extract it with tar -xf zipdata.tar Will return the data5.bin file we saw in the archive. Running xxd again prints out the name of another file (data6.bin), so we’re looking at a tar archive again. Let’ extract it with tar -xf data5.bin Running xxd on the resulting data6.bin file returns bzip2’s file signature again; extract it with: bzip2 -d data6.bin Running xxd on the resulting data6.bin.out file allows us to find out that it’s another tar archive with a data8.bin file inside. Let’s get its’ content with tar -xf data6.bin.out xxd on the resulting data8.bin returns gzip’s file signature again. Let’ rename our file with mv data8.bin data8.gz, then decompress it with: gzip -d file8.gz Running cat data8 returns our password: FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn","headline":"Level 12 → Level 13","url":"http://localhost:4000/bandit/Level-12_to_Level-13/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-level-12--level-13"><a href="https://overthewire.org/wargames/bandit/bandit13.html">Level Level 12 → Level 13</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit12@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">7x16WNeHIi5YkIhWsfFIqoognUTyj9Q4</code></p>
+
+<p>and running <code class="language-plaintext highlighter-rouge">ls</code> we can see that there is a data.txt file inside the /home/bandit11 directory. As the game tells us, the file is a <a href="https://en.wikipedia.org/wiki/Hex_dump">hexdump</a> of a file that’s been repeatedly compressed. The game also tells us to use temporary directories or choose hard to guess directory names. We’ll go with the first option: lets <code class="language-plaintext highlighter-rouge">cd</code> to <code class="language-plaintext highlighter-rouge">/tmp</code> (<code class="language-plaintext highlighter-rouge">cd /tmp</code>) and make a temporary directory with <code class="language-plaintext highlighter-rouge">mktemp -d</code>, which will return the path to the directory (e.g <code class="language-plaintext highlighter-rouge">/tmp/tmp.nNrWI3pdyH</code>).</p>
+
+<p>We’ll then copy the content of <code class="language-plaintext highlighter-rouge">data.txt</code> to this directory with <code class="language-plaintext highlighter-rouge">cp ~/data.txt .</code> (<code class="language-plaintext highlighter-rouge">~</code> stands for the <code class="language-plaintext highlighter-rouge">home</code> directory and <code class="language-plaintext highlighter-rouge">.</code> is the directory you want to copy the file to). We can also rename it with <code class="language-plaintext highlighter-rouge">mv data.txt hexdata.txt</code> (<code class="language-plaintext highlighter-rouge">mv</code> stands for move; the second field is the new file name).</p>
+
+<p>I renamed it <code class="language-plaintext highlighter-rouge">hexdata</code> since our file is still a hexdump. We now need to convert it back to compressed data. We can do this by using <code class="language-plaintext highlighter-rouge">xxd</code>: this command normally returns the hexdump of a file, but by using the <code class="language-plaintext highlighter-rouge">-r</code> flag we can revert it. Here’s how:</p>
+
+<p><code class="language-plaintext highlighter-rouge">xxd -r hexdata.txt zipdata</code> (where zipdata is the name of the new file).</p>
+
+<p>We can now move on to decompressing the file. Before decompressing we need to know which decompression we need, and we can do this by looking at the hexdump: <code class="language-plaintext highlighter-rouge">xxd hexdata</code> will give us the hexdump, which starts with <code class="language-plaintext highlighter-rouge">1F 8B</code>. We can compare this with a <a href="https://en.wikipedia.org/wiki/List_of_file_signatures">list of all file signatures</a> adn finally find out that this is <code class="language-plaintext highlighter-rouge">gzip</code>’s file signature. So, first, we have to rename our zipdata file to zipdata.gz with <code class="language-plaintext highlighter-rouge">mv zipdata zipdata.gzV (</code>gz<code class="language-plaintext highlighter-rouge"> is gzip's file extension). Then. we'll use the compressing program gzip; with this program you can compress a file with </code>gzip file.txt<code class="language-plaintext highlighter-rouge"> and decompress it with </code>gzip -d file.txt.gz<code class="language-plaintext highlighter-rouge"> or </code>gunzip file.txt.gz`. In our case we’ll have to use:</p>
+
+<p><code class="language-plaintext highlighter-rouge">gzip -d zipdata</code></p>
+
+<p>This will return another zip folder, as we can see with <code class="language-plaintext highlighter-rouge">xxd zipdata</code>, which returns a hexdump that starts with <code class="language-plaintext highlighter-rouge">42 5A 68</code>, bzip2’s file signature. This means we’ll have to rename the file to fit bzip2’s extension: <code class="language-plaintext highlighter-rouge">mv zipdata zipdata.bz2</code>. We can then run:</p>
+
+<p><code class="language-plaintext highlighter-rouge">bzip2 -d zipdata.bz2</code></p>
+
+<p>just like we did with gzip. This will return another zip file (run <code class="language-plaintext highlighter-rouge">xxd zipdata</code> again) and this time it starts again with gzip’s file signature. Let’s rename it with <code class="language-plaintext highlighter-rouge">mv zipdata zipdata.gz</code> and run:</p>
+
+<p><code class="language-plaintext highlighter-rouge">gzip -d zipdata</code></p>
+
+<p>again and finally we get a… tar archive, as we can see with <code class="language-plaintext highlighter-rouge">xxd zipdata</code> and seeing that the filename data5.bin appears. this means that <code class="language-plaintext highlighter-rouge">zipdata</code> is a tar archive.</p>
+
+<p>Let’s rename our file to a tar archive with <code class="language-plaintext highlighter-rouge">mv zipdata zipdata.tar</code> and extract it with</p>
+
+<p><code class="language-plaintext highlighter-rouge">tar -xf zipdata.tar</code></p>
+
+<p>Will return the <code class="language-plaintext highlighter-rouge">data5.bin</code> file we saw in the archive. Running xxd again prints out the name of another file (data6.bin), so we’re looking at a tar archive again.  Let’ extract it with</p>
+
+<p><code class="language-plaintext highlighter-rouge">tar -xf data5.bin</code></p>
+
+<p>Running <code class="language-plaintext highlighter-rouge">xxd</code> on the resulting <code class="language-plaintext highlighter-rouge">data6.bin</code> file returns bzip2’s file signature again; extract it with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">bzip2 -d data6.bin</code></p>
+
+<p>Running <code class="language-plaintext highlighter-rouge">xxd</code> on the resulting <code class="language-plaintext highlighter-rouge">data6.bin.out</code> file allows us to find out that it’s another tar archive with a <code class="language-plaintext highlighter-rouge">data8.bin</code> file inside. Let’s get its’ content with</p>
+
+<p><code class="language-plaintext highlighter-rouge">tar -xf data6.bin.out</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">xxd</code> on the resulting <code class="language-plaintext highlighter-rouge">data8.bin</code> returns gzip’s file signature again. Let’ rename our file with <code class="language-plaintext highlighter-rouge">mv data8.bin data8.gz</code>, then decompress it with:</p>
+
+<p><code class="language-plaintext highlighter-rouge">gzip -d file8.gz</code></p>
+
+<p>Running <code class="language-plaintext highlighter-rouge">cat data8</code> returns our password:</p>
+
+<p><code class="language-plaintext highlighter-rouge">FO5dwFsc0cbaIiH0h8J2eUks2vdTDwAn</code></p>
+
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

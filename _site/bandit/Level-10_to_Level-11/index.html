@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Level 10 → Level 11 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Level 10 → Level 11" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Level 10 → Level 11 After logging in with ssh bandit10@bandit.labs.overthewire.org -p 2220 Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey and running ls we can see that there is a data.txt file inside the /home/bandit10 directory. as the game tells us, the data inside this file is base 64 encoded. To decode from base64, simply use base64 -d data.txt (-d stands for decode). This will give us our password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr" />
+<meta property="og:description" content="Level 10 → Level 11 After logging in with ssh bandit10@bandit.labs.overthewire.org -p 2220 Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey and running ls we can see that there is a data.txt file inside the /home/bandit10 directory. as the game tells us, the data inside this file is base 64 encoded. To decode from base64, simply use base64 -d data.txt (-d stands for decode). This will give us our password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr" />
+<link rel="canonical" href="http://localhost:4000/bandit/Level-10_to_Level-11/" />
+<meta property="og:url" content="http://localhost:4000/bandit/Level-10_to_Level-11/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Level 10 → Level 11" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Level 10 → Level 11 After logging in with ssh bandit10@bandit.labs.overthewire.org -p 2220 Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey and running ls we can see that there is a data.txt file inside the /home/bandit10 directory. as the game tells us, the data inside this file is base 64 encoded. To decode from base64, simply use base64 -d data.txt (-d stands for decode). This will give us our password: dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr","headline":"Level 10 → Level 11","url":"http://localhost:4000/bandit/Level-10_to_Level-11/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="level-10--level-11"><a href="https://overthewire.org/wargames/bandit/bandit11.html">Level 10 → Level 11</a></h1>
+<p>After logging in with</p>
+
+<p><code class="language-plaintext highlighter-rouge">ssh bandit10@bandit.labs.overthewire.org -p 2220</code></p>
+
+<p>Password: <code class="language-plaintext highlighter-rouge">FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey</code></p>
+
+<p>and running <code class="language-plaintext highlighter-rouge">ls</code> we can see that there is a data.txt file inside the /home/bandit10 directory. as the game tells us, the data inside this file is base 64 encoded.</p>
+
+<p>To decode from base64, simply use <code class="language-plaintext highlighter-rouge">base64 -d data.txt</code> (<code class="language-plaintext highlighter-rouge">-d</code> stands for decode). This will give us our password:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

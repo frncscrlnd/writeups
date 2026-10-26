@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XSS Challenges (by yamagata21) Stage 9 | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="XSS Challenges (by yamagata21) Stage 9" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Stage 9 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: UTF-7 XSS. Since this is a UTF-7 related XSS, most browser’s won’t support it. Learn more here. Also check this resource out. You can skip it by opening the console and typing alert(document.domain);. If you want to solve this, open Internet Explorer (version 8 or below, i used 5) and use this payload +ACI-+AD4-+ADw-script+AD4-alert(document.domain)+ADs-+ADw-/script+AD4- (which is &quot;&gt;&lt;script&gt;alert(document.domain);&lt;/script&gt; encoded as UTF-7). Then, change the value attribute in the charset input tag from euc-jp to utf-7: Then, submit the form." />
+<meta property="og:description" content="Stage 9 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: UTF-7 XSS. Since this is a UTF-7 related XSS, most browser’s won’t support it. Learn more here. Also check this resource out. You can skip it by opening the console and typing alert(document.domain);. If you want to solve this, open Internet Explorer (version 8 or below, i used 5) and use this payload +ACI-+AD4-+ADw-script+AD4-alert(document.domain)+ADs-+ADw-/script+AD4- (which is &quot;&gt;&lt;script&gt;alert(document.domain);&lt;/script&gt; encoded as UTF-7). Then, change the value attribute in the charset input tag from euc-jp to utf-7: Then, submit the form." />
+<link rel="canonical" href="http://localhost:4000/yamagata_xss/Stage-9/" />
+<meta property="og:url" content="http://localhost:4000/yamagata_xss/Stage-9/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="XSS Challenges (by yamagata21) Stage 9" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Stage 9 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: UTF-7 XSS. Since this is a UTF-7 related XSS, most browser’s won’t support it. Learn more here. Also check this resource out. You can skip it by opening the console and typing alert(document.domain);. If you want to solve this, open Internet Explorer (version 8 or below, i used 5) and use this payload +ACI-+AD4-+ADw-script+AD4-alert(document.domain)+ADs-+ADw-/script+AD4- (which is &quot;&gt;&lt;script&gt;alert(document.domain);&lt;/script&gt; encoded as UTF-7). Then, change the value attribute in the charset input tag from euc-jp to utf-7: Then, submit the form.","headline":"XSS Challenges (by yamagata21) Stage 9","url":"http://localhost:4000/yamagata_xss/Stage-9/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="stage-9"><a href="https://xss-quiz.int21h.jp/stage_09.php">Stage 9</a></h1>
+
+<p><strong>What you have to do:</strong><br />
+Inject the following JavaScript command: <code class="language-plaintext highlighter-rouge">alert(document.domain);</code></p>
+
+<p><strong>Hint:</strong> <em>UTF-7 XSS</em>.</p>
+
+<p>Since this is a UTF-7 related XSS, most browser’s won’t support it. Learn more <a href="https://en.wikipedia.org/wiki/UTF-7#Security">here</a>. Also check this <a href="https://gihyo.jp/admin/serial/01/charcode/0001">resource</a> out.</p>
+
+<p>You can skip it by opening the console and typing <code class="language-plaintext highlighter-rouge">alert(document.domain);</code>. If you want to solve this, open Internet Explorer (version 8 or below, i used 5) and use this payload <code class="language-plaintext highlighter-rouge">+ACI-+AD4-+ADw-script+AD4-alert(document.domain)+ADs-+ADw-/script+AD4-</code> (which is <code class="language-plaintext highlighter-rouge">"&gt;&lt;script&gt;alert(document.domain);&lt;/script&gt;</code> encoded as UTF-7). Then, change the <code class="language-plaintext highlighter-rouge">value</code> attribute in the <code class="language-plaintext highlighter-rouge">charset</code> input tag from <code class="language-plaintext highlighter-rouge">euc-jp</code></p>
+
+<p><img src="/assets/images/xss21/9/9.1.png" alt="9.1" /></p>
+
+<p>to <code class="language-plaintext highlighter-rouge">utf-7</code>:</p>
+
+<p><img src="/assets/images/xss21/9/9.2.png" alt="9.2" /></p>
+
+<p>Then, submit the form.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

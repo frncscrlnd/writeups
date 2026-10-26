@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hack The Box Sequel | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Hack The Box Sequel" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for Sequel, a Starting Point Hack The Box machine about MariaDB, an open-source DBMS" />
+<meta property="og:description" content="Walkthorugh/Writeup for Sequel, a Starting Point Hack The Box machine about MariaDB, an open-source DBMS" />
+<link rel="canonical" href="http://localhost:4000/hackthebox/Sequel" />
+<meta property="og:url" content="http://localhost:4000/hackthebox/Sequel" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hack The Box Sequel" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for Sequel, a Starting Point Hack The Box machine about MariaDB, an open-source DBMS","headline":"Hack The Box Sequel","url":"http://localhost:4000/hackthebox/Sequel"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="sequel"><a href="https://app.hackthebox.com/machines/Sequel">Sequel</a><!-- omit in toc --></h1>
+
+<p>This Hack The Box machine revolves around MariaDB, an <a href="https://en.wikipedia.org/wiki/Open_source">open-source</a> <a href="https://www.geeksforgeeks.org/git/git-fork/">fork</a> of <a href="https://www.mysql.com/">MySQL</a>.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#task-1">Task 1</a></li>
+  <li><a href="#task-2">Task 2</a></li>
+  <li><a href="#task-3">Task 3</a></li>
+  <li><a href="#task-4">Task 4</a></li>
+  <li><a href="#task-5">Task 5</a></li>
+  <li><a href="#task-6">Task 6</a></li>
+  <li><a href="#task-7">Task 7</a></li>
+  <li><a href="#submit-flag">Submit Flag</a></li>
+</ul>
+
+<h2 id="task-1">Task 1</h2>
+
+<p><em>During our scan, which port do we find serving MySQL?</em></p>
+
+<p>This task wants us to run an <a href="https://nmap.org/download">nmap</a> scan on the machine. Since the port we are looking for probably sits inside the <a href="https://nmap.org/book/man-port-specification.html">most used 1000 ports</a>, we don’t need to specify any port range:</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap target-ip-here</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT     STATE SERVICE
+3306/tcp open  mysql
+</code></pre></div></div>
+
+<p>This means that mysql is running on port</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">3306</code></p>
+</blockquote>
+
+<h2 id="task-2">Task 2</h2>
+
+<p><em>What community-developed MySQL version is the target running?</em></p>
+
+<p>We can answer this question by running a more in-depth nmap scan. Lets’s try <a href="https://nmap.org/book/man-version-detection.html"><code class="language-plaintext highlighter-rouge">-sV</code></a> (service version):</p>
+
+<p><code class="language-plaintext highlighter-rouge">nmap target-ip-here -sV</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT     STATE SERVICE VERSION
+3306/tcp open  mysql?
+</code></pre></div></div>
+
+<p>This is still not enough. We need to fin the exact version of MySQL that is running. We can get more details by using the <code class="language-plaintext highlighter-rouge">-sC</code> flag (equal to <code class="language-plaintext highlighter-rouge">--script=default</code>), which will activate the <a href="https://nmap.org/book/nse.html">NSE (Nmap Scripting Engine)</a> and its’ most basic scans. This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PORT     STATE SERVICE
+3306/tcp open  mysql
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.5.5-10.3.27-MariaDB-0+deb10u1
+|   Thread ID: 68
+|   Capabilities flags: 63486
+|   Some Capabilities: IgnoreSpaceBeforeParenthesis, SupportsLoadDataLocal, DontAllowDatabaseTableColumn, Support41Auth, LongColumnFlag, Speaks41ProtocolOld, ConnectWithDatabase, ODBCClient, IgnoreSigpipes, InteractiveClient, FoundRows, Speaks41ProtocolNew, SupportsTransactions, SupportsCompression, SupportsMultipleStatments, SupportsAuthPlugins, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: y7E3q`m"`=NR1&gt;#3uws]
+|_  Auth Plugin Name: mysql_native_password
+</code></pre></div></div>
+
+<p>This means that the machine is running</p>
+
+<blockquote>
+  <p>MariaDB</p>
+</blockquote>
+
+<h2 id="task-3">Task 3</h2>
+
+<p><em>When using the MySQL command line client, what switch do we need to use in order to specify a login username?</em></p>
+
+<p>According to the MySQL manual (get it from running <code class="language-plaintext highlighter-rouge">man mysql</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>--user=user_name, -u user_name
+
+           The MariaDB user name to use when connecting to the server.
+</code></pre></div></div>
+
+<p>This means that to login with a username we’ll need to use</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">-u</code></p>
+</blockquote>
+
+<h2 id="task-4">Task 4</h2>
+
+<p><em>Which username allows us to log into this MariaDB instance without providing a password?</em></p>
+
+<p>Let’s try standard usernames: <code class="language-plaintext highlighter-rouge">admin</code> and <code class="language-plaintext highlighter-rouge">root</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u admin -h 10.129.93.99 -P 3306
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR 1045 (28000): Access denied for user 'admin'@'10.10.14.42
+</code></pre></div></div>
+
+<p>Now with <code class="language-plaintext highlighter-rouge">root</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql -u root -h 10.129.93.99 -P 3306
+</code></pre></div></div>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Welcome to the MariaDB monitor.  Commands end with ; or \g.
+</code></pre></div></div>
+
+<p>and a shell to enter commands: <code class="language-plaintext highlighter-rouge">MariaDB [(none)]&gt;</code></p>
+
+<h2 id="task-5">Task 5</h2>
+
+<p><em>In SQL, what symbol can we use to specify within the query that we want to display everything inside a table?</em></p>
+
+<p>To display anything inside a table, we need to run <code class="language-plaintext highlighter-rouge">SELECT * FROM table;</code> That means that the</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">*</code></p>
+</blockquote>
+
+<p>symbol stands for “everything”.</p>
+
+<h2 id="task-6">Task 6</h2>
+
+<p><em>In SQL, what symbol do we need to end each query with?</em></p>
+
+<p>As we saw in the last task, each query needs to end with</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">;</code></p>
+</blockquote>
+
+<h2 id="task-7">Task 7</h2>
+
+<p><em>There are three databases in this MySQL instance that are common across all MySQL instances. What is the name of the fourth that’s unique to this host?</em></p>
+
+<p>To list all databases in this MySQL instance we need to run <code class="language-plaintext highlighter-rouge">SHOW DATABASES;</code></p>
+
+<p>This will return:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+--------------------+
+| Database           |
++--------------------+
+| htb                |
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">information_schema</code>, <code class="language-plaintext highlighter-rouge">mysql</code> and <code class="language-plaintext highlighter-rouge">performance_schema</code> are standard databases. The only custom one is</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">htb</code></p>
+</blockquote>
+
+<h2 id="submit-flag">Submit Flag</h2>
+
+<p><em>Submit root flag</em></p>
+
+<p>We now have to list the contents of a table. However, before we do that, we need to list all tables. First, select the <code class="language-plaintext highlighter-rouge">htb</code> database with <code class="language-plaintext highlighter-rouge">USE htb</code>, then display all of the tables in that database with <code class="language-plaintext highlighter-rouge">SHOW TABLES;</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+---------------+
+| Tables_in_htb |
++---------------+
+| config        |
+| users         |
++---------------+
+</code></pre></div></div>
+
+<p>Let’s read everything in the first one with <code class="language-plaintext highlighter-rouge">SELECT * FROM config</code></p>
+
+<p>This will return</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+----+-----------------------+----------------------------------+
+| id | name                  | value                            |
++----+-----------------------+----------------------------------+
+|  1 | timeout               | 60s                              |
+|  2 | security              | default                          |
+|  3 | auto_logon            | false                            |
+|  4 | max_size              | 2M                               |
+|  5 | flag                  | 7b4bec00d1a39e3dd4e021ec3d915da8 |
+|  6 | enable_uploads        | false                            |
+|  7 | authentication_method | radius                           |
++----+-----------------------+----------------------------------+
+</code></pre></div></div>
+
+<p>This means that the flag is</p>
+
+<blockquote>
+  <p>7b4bec00d1a39e3dd4e021ec3d915da8</p>
+</blockquote>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>
