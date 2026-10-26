@@ -23,7 +23,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Level 21 → Level 22 After logging in with ssh bandit21@bandit.labs.overthewire.org -p 2220 Password: EeoULMCra2q0dSkYj561DX7s1CpBuOBt the game tells us to look into the /etc/cron.d/ directory for the configuration of a scheduled job. ls inside this directory shows a cronjob_bandit22 file: behemoth4_cleanup cronjob_bandit22 cronjob_bandit24 leviathan5_cleanup otw-tmp-dir clean_tmp cronjob_bandit23 e2scrub_all manpage3_resetpw_job sysstat We are gonna use cat on this file (cat cronjob_bandit22) to se what it does: #!/bin/bash chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv cat /etc/bandit_pass/bandit22 &gt; /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv this basically changes the permissions on the /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv file and writes the password from bandit_22into it. Let’s read its content: cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv This returns our password: tRae0UfB9v0UzbCdn9cY0gQnds9GF58Q","headline":"Level 21 → Level 22","url":"http://localhost:4000/bandit/Level-21_to_Level-22/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <link rel="stylesheet" href="/assets/css/style.css?v=3d8937802201c759593e1f69618423ea7fcc519f">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="/assets/js/respond.js"></script>
     <!--[if lt IE 9]>

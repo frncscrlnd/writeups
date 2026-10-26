@@ -23,7 +23,7 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"Stage 12 What you have to do: Inject the following JavaScript command: alert(document.domain); Hint: ”s/[\\x00-\\x20&lt;&gt;&quot;&#39;]//g;” The hint suggests a regex rule is used to sanitize user input. Specifically, this rule searches the input text for: the first 32 ASCII chars (\\x00-\\x20), including NUL, TAB and Space &lt; &gt; chars double quotes &quot; &#39; single quote and replaces (s) them with a void string (//). This means that we can not use any of these chars. This would make it impossible to submit a payload, if it weren’t for the backtick (`) character: this character will allow us to close the input text’s value attribute and submit a new onmouseover attribute: ``onmouseover=alert(document.domain); like this: we can also use ``onclick=alert(document.domain);","headline":"XSS Challenges (by yamagata21) Stage 12","url":"http://localhost:4000/yamagata_xss/Stage-12/"}</script>
 <!-- End Jekyll SEO tag -->
 
-    <link rel="stylesheet" href="/assets/css/style.css?v=150d28b77225a4a207f11ff76d8d5a1e96152911">
+    <link rel="stylesheet" href="/assets/css/style.css?v=3d8937802201c759593e1f69618423ea7fcc519f">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="/assets/js/respond.js"></script>
     <!--[if lt IE 9]>
